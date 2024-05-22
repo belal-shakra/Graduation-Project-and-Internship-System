@@ -87,7 +87,7 @@
                                     </td>
                                     <td>
                                         <input type="text" value="{{ old('id'.$i) }}"
-                                        class="form-control" name="id{{ $i }}" placeholder="Make sure you write it correctly">
+                                        class="form-control" name="stu_id{{ $i }}" placeholder="Make sure you write it correctly">
                                     </td>
                                     <td>
                                         <input type="text" value="{{ old('major'.$i) }}"

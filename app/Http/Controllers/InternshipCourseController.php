@@ -15,8 +15,7 @@ class InternshipCourseController extends Controller
     private static $student;
     private $user;
 
-    public function __construct(){
-    }
+
 
 
     /**
