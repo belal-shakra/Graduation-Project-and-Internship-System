@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class AddGraduationProjectRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'department_id' => 'required',
+            'semester' => 'required|',
+            'type' => 'required|',
+
+            'supervisor_1' => 'required|string',
+            'email_1' => 'required|email',
+
+            'supervisor_2' => 'nullable',
+            'email_2' => 'nullable|email',
+
+            'name' => 'required|max:255',
+            'idea' => 'required|max:255',
+            'goal' => 'required|max:255',
+            'technologies' => 'required|max:128',
+        ];
+    }
+
+
+    public function attributes()
+    {
+        return [
+            'department_id' => 'department',
+            'type' => 'project type',
+            'supervisor_1' => 'supervisor',
+            'email_1' => 'email',
+            'supervisor_2' => 'supervisor',
+            'email_2' => 'email',
+            'name' => 'project name',
+        ];
+    }
+}
