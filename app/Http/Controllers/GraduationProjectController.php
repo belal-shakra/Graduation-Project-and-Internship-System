@@ -54,6 +54,10 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
+        // $gp = Student::firstWhere('user_id', Auth::user()->id)->get('graduation_project_id');
+        // dd($gp);
+
+
         $departments = Department::get(['id', 'name'])->all();
 
         $student_no = Department::find(Auth::user()->department_id)->no_team_member;
