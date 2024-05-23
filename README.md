@@ -11,6 +11,6 @@
 ### Graduation Project
 
 The remainders are :
-- Add the authenticated user to the acceptedStudents[] automatically.
+- How to share array over all actions ? (create spearte class ??).
 - Add graduation_project_id to every student's record that registed in the form.
 - Add validations to check if the supervisors info true or not.
