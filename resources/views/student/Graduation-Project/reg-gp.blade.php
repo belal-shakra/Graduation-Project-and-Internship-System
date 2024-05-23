@@ -60,14 +60,12 @@
                     <h2>Students Info</h2>
 
 
-                    {{-- <div class="text-danger">ERROR</div>
-                    <div class="text-danger">
-                    Soso Fofo is already in another team
-                    </div>
-
-                    <div class="text-danger">
-                        Toto Momo doesn't register in Graduation Project Course.
-                    </div> --}}
+                    @dump($rej_stus)
+                    <ul>
+                        @foreach ($rej_stus as $rej_stu)
+                            <li class="text-danger">{{ $rej_stu }}</li>
+                        @endforeach
+                    </ul>
 
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
@@ -100,27 +98,6 @@
                 </div>
 
 
-{{--
-
-                <div>
-                    <table class="table table-bordered table-striped mx-auto my-5" style="width: 98%;">
-                        <thead class="bg-primary">
-                            <th style="width: 0%;">#</th>
-                            <th>Full Name</th>
-                            <th>Student ID</th>
-                            <th>Major</th>
-                        </thead>
-
-                        <tbody class="table-group-divider">
-                            <tr>
-                                <th>1</th>
-                                <td>Belal Shakra</td>
-                                <td>0192452</td>
-                                <td>Computer Science</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> --}}
 
 
 
