@@ -6,6 +6,7 @@ use App\Http\Requests\AddGraduationProjectRequest;
 use App\Models\Department;
 use App\Models\GraduationProject;
 use App\Models\Student;
+use App\Models\Supervisor;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -84,6 +85,7 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
+        // $this->setToNull(1);
         $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         if(!$isInGp)
             return redirect()->route('graduation-project.create');
@@ -132,7 +134,7 @@ class GraduationProjectController extends Controller
     {
         $alreay = " already registered in other team.";
         $notStudent = " is not a student.";
-        $lessThan90 = " isn't exceeds 90 hour.";
+        $isNotInGp = " isn't registered in graduation project.";
 
 
 
@@ -175,7 +177,7 @@ class GraduationProjectController extends Controller
                     }
                 }
                 else {
-                    array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $lessThan90);
+                    array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $isNotInGp);
                     $count++;
                 }
             }
@@ -200,9 +202,29 @@ class GraduationProjectController extends Controller
 
 
 
-    private function checkSupervisor($request)
+    private function checkSupervisor($request, $rejectedSupervisors)
     {
-        //
+        for ($i=1; $i <= 2; $i++) { 
+            if(!is_null($request['supervisor_'. $i]) && !is_null($request['email_'. $i])){
+                $supervisor = User::firstWhere('email', $request['email_'. $i]);
+                if(!$supervisor){
+                    $rejectedSupervisors = [
+                        $request['supervisor_'. $i] . " is not a supervisor."
+                    ];
+                }
+                else {
+                    
+                }
+            }
+        }
+    }
+
+
+
+    public function setToNull($pk){
+        $gp = Student::find($pk);
+        $gp->graduation_project_id = null;
+        $gp->save();
     }
 
 }

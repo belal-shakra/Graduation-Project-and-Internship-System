@@ -129,7 +129,6 @@
 
 
 
-
                 <div class="container px-2 py-5" id="project-info">
                     <h2>Project Info</h2>
 
@@ -137,13 +136,15 @@
                         <span class="fw-bold">Project Type : </span>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border border-1 border-primary"
-                            type="radio" name="type" id="app" value="Application">
+                            type="radio" name="type" id="app" value="Application"
+                            @checked($gp->type == "Application")>
                             <label class="form-check-label" for="app">Application</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border border-1 border-primary"
-                            type="radio" name="type" id="re" value="Research">
+                            type="radio" name="type" id="re" value="Research"
+                            @checked($gp->type == "Research")>
                             <label class="form-check-label" for="re">Research</label>
                         </div>
                         @error('type')

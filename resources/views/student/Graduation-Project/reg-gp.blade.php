@@ -60,6 +60,14 @@
                     <h2>Students Info</h2>
 
 
+                    <ul>
+                        @foreach ($rejected as $rej)
+                            <li class="text-danger">
+                                {{ $rej }}
+                            </li>
+                        @endforeach
+                    </ul>
+
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
                             <th style="width: 0%;">#</th>
@@ -217,8 +225,11 @@
 
             </form>
         </div>
-
     </section>
+
+
+
+    {{ Request::session()->forget('rejectedStudents') }}
 </main>
 
 @endsection

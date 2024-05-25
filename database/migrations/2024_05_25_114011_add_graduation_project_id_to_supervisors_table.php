@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->bigInteger('user_type_id')->after('password');
-            $table->foreign('user_type_id')->references('id')->on('user_types');
+        Schema::table('supervisors', function (Blueprint $table) {
+            $table->bigInteger('graduation_project_id')->nullable()->after('user_id');
+            $table->foreign('graduation_project_id')->references('id')->on('graduation_projects');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('supervisors', function (Blueprint $table) {
             //
         });
     }
