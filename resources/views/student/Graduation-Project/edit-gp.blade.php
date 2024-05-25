@@ -23,9 +23,12 @@
                     <div class="col-sm-12 col-md-10 col-lg-4 mb-2">
                         <div class="input-group mx-3 border-a rounded">
                             <select class="form-select form-select" name="department_id">
-                                <option selected value="">Department</option>
                                 @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @if($department->name == $gp->department->name)
+                                        <option selected value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @else
+                                        <option selected value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -38,11 +41,15 @@
                     <!-- Semester -->
                     <div class="col-sm-12 col-md-10 col-lg-4 mb-2">
                         <div class="input-group mx-3 border-a rounded">
+                            @php $semesters = ["first", "second", "summer"] @endphp
                             <select class="form-select form-select" name="semester">
-                                <option selected value="">Semester</option>
-                                <option value="first">First</option>
-                                <option value="second">Second</option>
-                                <option value="summer">Summer</option>
+                                @foreach ($semesters as $semester)
+                                    @if ($semester == $gp->semester)
+                                        <option selected value="{{ $gp->semester }}">{{ ucfirst($gp->semester) }}</option>
+                                    @else
+                                        <option selected value="{{ $semester }}">{{ ucfirst($semester) }}</option>
+                                    @endif
+                                @endforeach
                             </select>
                         </div>
                         @error('semester')
@@ -57,14 +64,13 @@
                     <h2>Students Info</h2>
 
 
-                    {{-- <div class="text-danger">ERROR</div>
-                    <div class="text-danger">
-                    Soso Fofo is already in another team
-                    </div>
-
-                    <div class="text-danger">
-                        Toto Momo doesn't register in Graduation Project Course.
-                    </div> --}}
+                    <ul>
+                        @foreach ($rejected as $rej)
+                            <li class="text-danger">
+                                {{ $rej }}
+                            </li>
+                        @endforeach
+                    </ul>
 
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
@@ -98,7 +104,6 @@
 
 
 
-
                 <div>
                     <table class="table table-bordered table-striped mx-auto my-5" style="width: 98%;">
                         <thead class="bg-primary">
@@ -109,12 +114,14 @@
                         </thead>
 
                         <tbody class="table-group-divider">
-                            <tr>
-                                <th>1</th>
-                                <td>Belal Shakra</td>
-                                <td>0192452</td>
-                                <td>Computer Science</td>
-                            </tr>
+                            @foreach ($gp->students as $student)
+                                <tr>
+                                    <th>{{ $loop->iteration }}</th>
+                                    <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                    <td>{{ $student->user->university_id }}</td>
+                                    <td>{{ $student->user->department->name }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -195,7 +202,7 @@
                         <div class="mb-3">
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Project Name</span>
-                                <input type="text" class="form-control" value="{{ old('name') }}" name="name">
+                                <input type="text" class="form-control" value="{{ $gp->name }}" name="name">
                             </div>
                             @error('name')
                                 <div class="text-danger ps-2">{{ $message }}</div>
@@ -206,7 +213,7 @@
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Project Idea</span>
                                 <textarea name="idea" class="form-control"
-                                style="height: 7rem">{{ old('idea') }}</textarea>
+                                style="height: 7rem">{{ $gp->idea }}</textarea>
                             </div>
                             @error('idea')
                                 <div class="text-danger ps-2">{{ $message }}</div>
@@ -217,7 +224,7 @@
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Project Goal</span>
                                 <textarea name="goal" class="form-control"
-                                style="height: 7rem">{{ old('goal') }}</textarea>
+                                style="height: 7rem">{{ $gp->goal }}</textarea>
                             </div>
                             @error('goal')
                                 <div class="text-danger ps-2">{{ $message }}</div>
@@ -228,7 +235,7 @@
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Technologies</span>
                                 <textarea name="technologies" class="form-control"
-                                style="height: 7rem">{{ old('technologies') }}</textarea>
+                                style="height: 7rem">{{ $gp->technologies }}</textarea>
                             </div>
                             @error('technologies')
                                 <div class="text-danger ps-2">{{ $message }}</div>
@@ -246,6 +253,8 @@
         </div>
 
     </section>
+
+    {{ Request::session()->forget('rejectedStudents') }}
 </main>
 
 @endsection

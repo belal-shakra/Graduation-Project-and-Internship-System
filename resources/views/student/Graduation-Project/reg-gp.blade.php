@@ -60,13 +60,6 @@
                     <h2>Students Info</h2>
 
 
-                    @dump($rej_stus)
-                    <ul>
-                        @foreach ($rej_stus as $rej_stu)
-                            <li class="text-danger">{{ $rej_stu }}</li>
-                        @endforeach
-                    </ul>
-
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
                             <th style="width: 0%;">#</th>
