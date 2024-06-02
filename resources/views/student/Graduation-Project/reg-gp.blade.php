@@ -61,9 +61,9 @@
 
 
                     <ul>
-                        @foreach ($rejected as $rej)
+                        @foreach ($rejectedStudents as $rejStudent)
                             <li class="text-danger">
-                                {{ $rej }}
+                                {{ $rejStudent }}
                             </li>
                         @endforeach
                     </ul>
@@ -126,8 +126,8 @@
                     </div>
 
                     <div class="pb-3">
-                        <div class="row px-3">
-                            <div class="col-sm-12 col-lg-6 mb-3">
+                        <div class="row px-3 mb-3">
+                            <div class="col-sm-12 col-lg-6">
                                 <div class="input-group ms-0 border-a rounded">
                                     <span class="input-group-text fw-bold">Supervisor</span>
                                     <input type="text" class="form-control" value="{{ old('supervisor_1') }}" name="supervisor_1">
@@ -137,7 +137,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-sm-12 col-lg-6 mb-3">
+                            <div class="col-sm-12 col-lg-6">
                                 <div class="input-group ms-0 border-a rounded">
                                     <span class="input-group-text fw-bold">Email</span>
                                     <input type="text" class="form-control" value="{{ old('email_1') }}" name="email_1">
@@ -146,12 +146,16 @@
                                     <div class="text-danger ps-2">{{ $message }}</div>
                                 @enderror
                             </div>
+                            @if($rejectedSupervisors)
+                                <span class="text-danger">{{ $rejectedSupervisors[0] }}</span>
+                            @endif
                         </div>
+
                     </div>
 
 
-                    <div class="row px-3">
-                        <div class="col-sm-12 col-lg-6 mb-3">
+                    <div class="row px-3 mb-3">
+                        <div class="col-sm-12 col-lg-6">
                             <div class="input-group ms-0 border-a rounded">
                                 <span class="input-group-text fw-bold">Supervisor</span>
                                 <input type="text" class="form-control" value="{{ old('supervisor_2') }}" name="supervisor_2">
@@ -161,7 +165,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-sm-12 col-lg-6 mb-3">
+                        <div class="col-sm-12 col-lg-6">
                             <div class="input-group ms-0 border-a rounded">
                                 <span class="input-group-text fw-bold">Email</span>
                                 <input type="text" class="form-control" value="{{ old('email_2') }}" name="email_2">
@@ -170,6 +174,10 @@
                                 <div class="text-danger ps-2">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        @if($rejectedSupervisors)
+                            <span class="text-danger">{{ $rejectedSupervisors[1] }}</span>
+                        @endif
                     </div>
 
                     <div class="px-3">
@@ -230,6 +238,7 @@
 
 
     {{ Request::session()->forget('rejectedStudents') }}
+    {{ Request::session()->forget('rejectedSupervisors') }}
 </main>
 
 @endsection

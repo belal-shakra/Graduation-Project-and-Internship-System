@@ -16,10 +16,6 @@ class GraduationProject extends Model
         'semester',
         'type',
 
-        'email_1',
-
-        'email_2',
-
         'name',
         'idea',
         'goal',

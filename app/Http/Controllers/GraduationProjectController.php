@@ -33,22 +33,23 @@ class GraduationProjectController extends Controller
 
 
 
-        $rejected = session('rejectedStudents', []);
         $gp = GraduationProject::find(Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id);
         if($gp){
             return redirect()->route('graduation-project.edit');
         }
         else {
+            $rejectedStudents = session('rejectedStudents', []);
+            $rejectedSupervisors = session('rejectedSupervisors', []);
             $departments = Department::get(['id', 'name'])->all();
             $student_no = Department::find(Auth::user()->department_id)->no_team_member;
-            return view('student.Graduation-Project.reg-gp', compact(['departments', 'student_no', 'rejected']));
+            return view('student.Graduation-Project.reg-gp', compact(['departments', 'student_no', 'rejectedStudents', 'rejectedSupervisors']));
         }
     }
 
 
 
 
-    /**
+    /**f
      * Store a newly created resource in storage.
      */
     public function store(AddGraduationProjectRequest $request)
@@ -57,8 +58,12 @@ class GraduationProjectController extends Controller
         
         $acceptedStudents = [];
         $rejectedStudents = [];
-        if (!$this->checkStudents($request, $acceptedStudents, $rejectedStudents)) {
+        $rejectedSupervisors = [];
+        if (!$this->checkStudents($request, $acceptedStudents, $rejectedStudents)){
             session(['rejectedStudents' => $rejectedStudents]);
+
+            if(!$this->checkSupervisor($request, $rejectedSupervisors))
+                session(['rejectedSupervisors' => $rejectedSupervisors]);
             return redirect()->route('graduation-project.create');
         }
         
@@ -85,7 +90,7 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
-        // $this->setToNull(1);
+        // $this->setToNull(2);
         $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         if(!$isInGp)
             return redirect()->route('graduation-project.create');
@@ -125,16 +130,12 @@ class GraduationProjectController extends Controller
 
 
 
-
-
-
-
-
     private function checkStudents($request, &$acceptedStudents, &$rejectedStudents)
     {
         $alreay = " already registered in other team.";
         $notStudent = " is not a student.";
         $isNotInGp = " isn't registered in graduation project.";
+        $wrongDepartment = " isn't from ". Auth::user()->department->name . " department.";
 
 
 
@@ -150,6 +151,7 @@ class GraduationProjectController extends Controller
 
 
             if (count($acceptedStudents) == $stu_num) break;
+            if (Auth::user()->university_id == $request['stu_id'.$i]) continue;
 
 
             // check if is_null.
@@ -167,12 +169,18 @@ class GraduationProjectController extends Controller
 
 
                 if($isStudent->in_graduation_project){
+
+                    if($stu_user->department->name != Auth::user()->department->name){
+                        array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $wrongDepartment);
+                        $count++;
+                        continue;
+                    }
+
                     if ($isStudent->graduation_project_id){
                         array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $alreay);
                         $count++;
                     }
                     else {
-                        if (Auth::user()->university_id == $request['stu_id'.$i]) continue;
                         array_push($acceptedStudents, $isStudent);
                     }
                 }
@@ -189,12 +197,8 @@ class GraduationProjectController extends Controller
 
 
 
-        // dump($acceptedStudents);
-        // dd($rejectedStudents);
 
-
-
-        if($count == $stu_num || count($acceptedStudents) == 0)
+        if($count == $stu_num || count($acceptedStudents) == 0) // does the $acceptedStudent count can be 0?
             return false;
         return true;
     }
@@ -202,29 +206,53 @@ class GraduationProjectController extends Controller
 
 
 
-    private function checkSupervisor($request, $rejectedSupervisors)
+    private function checkSupervisor($request, &$rejectedSupervisors)
     {
+        $isNotSupervisor = "is not a supervisor.";
+        $notSameDept = "is not from " . Auth::user()->department->name . " department.";
+
+
+        // dd("out the loop");
         for ($i=1; $i <= 2; $i++) { 
-            if(!is_null($request['supervisor_'. $i]) && !is_null($request['email_'. $i])){
-                $supervisor = User::firstWhere('email', $request['email_'. $i]);
-                if(!$supervisor){
-                    $rejectedSupervisors = [
-                        $request['supervisor_'. $i] . " is not a supervisor."
-                    ];
-                }
-                else {
-                    
-                }
+            $isUser = User::firstWhere("email", $request['email_'.$i]);
+            
+            if($isUser == null){
+                array_push($rejectedSupervisors, "(".$request['supervisor_'.$i].
+                " -- ".$request['email_'.$i] .") " . $isNotSupervisor);
+                continue;
+            }
+            $isSupervisor = Supervisor::firstWhere("user_id", $isUser->id);
+
+
+            if($isUser == null || $isSupervisor == null){
+                array_push($rejectedSupervisors, "(".$request['supervisor_'.$i] ." ". " $isUser->last_name ".
+                " -- ".$request['email_'.$i] .") " . $$isNotSupervisor);
+                continue;
+            }
+
+
+            if($isUser->department->name != Auth::user()->department->name){
+                array_push($rejectedSupervisors, "(".$isUser->first_name ." ". " $isUser->last_name ".
+                " -- ".$isUser->email .") " . $notSameDept);
+                continue;
             }
         }
+
+
+        if(count($rejectedSupervisors))
+            return false;
+        return true;
     }
 
 
 
-    public function setToNull($pk){
-        $gp = Student::find($pk);
-        $gp->graduation_project_id = null;
-        $gp->save();
-    }
+
+
+
+    // public function setToNull($pk){
+    //     $gp = Student::find($pk);
+    //     $gp->graduation_project_id = null;
+    //     $gp->save();
+    // }
 
 }

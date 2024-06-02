@@ -29,8 +29,8 @@ class AddGraduationProjectRequest extends FormRequest
             'supervisor_1' => 'required|string',
             'email_1' => 'required|email',
 
-            'supervisor_2' => 'nullable',
-            'email_2' => 'nullable|email',
+            'supervisor_2' => 'required',
+            'email_2' => 'required|email',
 
             'name' => 'required|max:255',
             'idea' => 'required|max:255',
