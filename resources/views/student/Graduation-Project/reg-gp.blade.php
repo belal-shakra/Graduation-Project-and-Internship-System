@@ -125,6 +125,13 @@
                         @enderror
                     </div>
 
+
+
+                    <ul>
+                        @foreach ($rejectedSupervisors as $supervisors)
+                            <li class="text-danger">{{ $supervisors }}</li>
+                        @endforeach
+                    </ul>
                     <div class="pb-3">
                         <div class="row px-3 mb-3">
                             <div class="col-sm-12 col-lg-6">
@@ -146,13 +153,9 @@
                                     <div class="text-danger ps-2">{{ $message }}</div>
                                 @enderror
                             </div>
-                            @if($rejectedSupervisors)
-                                <span class="text-danger">{{ $rejectedSupervisors[0] }}</span>
-                            @endif
                         </div>
 
                     </div>
-
 
                     <div class="row px-3 mb-3">
                         <div class="col-sm-12 col-lg-6">
@@ -174,10 +177,6 @@
                                 <div class="text-danger ps-2">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        @if($rejectedSupervisors)
-                            <span class="text-danger">{{ $rejectedSupervisors[1] }}</span>
-                        @endif
                     </div>
 
                     <div class="px-3">
@@ -237,8 +236,7 @@
 
 
 
-    {{ Request::session()->forget('rejectedStudents') }}
-    {{ Request::session()->forget('rejectedSupervisors') }}
+    {{ Request::session()->forget(['rejectedStudents', 'rejectedSupervisors']) }}
 </main>
 
 @endsection
