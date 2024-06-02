@@ -3,19 +3,29 @@
 @section('tab-title', 'Graduation Project Form')
 
 @section('content')
+
+
 <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
+
     <section id="grad-project" class="container p-3">
         <h1 id="title">Graduation Project</h1>
 
 
+
         <div class="container py-2">
+
 
             @session('GpFilledSuccessfully')
                 <div class="alert alert-success">{{ session('GpFilledSuccessfully') }}</div>
             @endsession
 
+            @session('GpUpdateSuccessfully')
+                <div class="alert alert-success">{{ session('GpUpdateSuccessfully') }}</div>
+            @endsession
 
-            <form action="{{ route('graduation-project.store') }}" method="post">
+
+            <form action="{{ route('graduation-project.update', $gp) }}" method="post">
+                @method('patch')
                 @csrf
 
                 <div class="row mt-3 mb-5">
@@ -23,13 +33,7 @@
                     <div class="col-sm-12 col-md-10 col-lg-4 mb-2">
                         <div class="input-group mx-3 border-a rounded">
                             <select class="form-select form-select" name="department_id">
-                                @foreach ($departments as $department)
-                                    @if($department->name == $gp->department->name)
-                                        <option selected value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @else
-                                        <option selected value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @endif
-                                @endforeach
+                                <option value="{{ Auth::user()->department_id }}">{{ Auth::user()->department->name }}</option>
                             </select>
                         </div>
                         @error('department_id')
@@ -65,11 +69,18 @@
 
 
                     <ul>
-                        @foreach ($rejected as $rej)
+                        @foreach ($rejectedStudents as $rejStudent)
                             <li class="text-danger">
-                                {{ $rej }}
+                                {{ $rejStudent }}
                             </li>
                         @endforeach
+
+
+                        @session('acceptedStudents')
+                            @if (count($acceptedStudents) < 2)
+                                <div class="text-danger">You must add at least two students.</div>
+                            @endif
+                        @endsession
                     </ul>
 
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
@@ -90,7 +101,7 @@
                                     </td>
                                     <td>
                                         <input type="text" value="{{ old('id'.$i) }}"
-                                        class="form-control" name="id{{ $i }}" placeholder="Make sure you write it correctly">
+                                        class="form-control" name="stu_id{{ $i }}" placeholder="Make sure you write it correctly">
                                     </td>
                                     <td>
                                         <input type="text" value="{{ old('major'.$i) }}"
@@ -152,52 +163,46 @@
                         @enderror
                     </div>
 
-                    <div class="pb-3">
-                        <div class="row px-3">
-                            <div class="col-sm-12 col-lg-6 mb-3">
-                                <div class="input-group ms-0 border-a rounded">
-                                    <span class="input-group-text fw-bold">Supervisor</span>
-                                    <input type="text" class="form-control" value="{{ old('supervisor_1') }}" name="supervisor_1">
+
+
+
+                    <ul>
+                        @foreach ($rejectedSupervisors as $supervisors)
+                            <li class="text-danger">{{ $supervisors }}</li>
+                        @endforeach
+                    </ul>
+                    @foreach ($gp->supervisors as $supervisor)
+                        
+                        <div class="pb-3">
+                            <div class="row px-3 mb-3">
+                                <div class="col-sm-12 col-lg-6">
+                                    <div class="input-group ms-0 border-a rounded">
+                                        <span class="input-group-text fw-bold">Supervisor</span>
+                                        <input type="text" class="form-control"
+                                        value="{{ $supervisor->user->first_name }} {{ $supervisor->user->last_name }}"
+                                        name="supervisor_{{ $loop->iteration }}">
+                                    </div>
+                                    @error('supervisor_'.$loop->iteration)
+                                        <div class="text-danger ps-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('supervisor_1')
-                                    <div class="text-danger ps-2">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <div class="col-sm-12 col-lg-6 mb-3">
-                                <div class="input-group ms-0 border-a rounded">
-                                    <span class="input-group-text fw-bold">Email</span>
-                                    <input type="text" class="form-control" value="{{ old('email_1') }}" name="email_1">
+                                <div class="col-sm-12 col-lg-6">
+                                    <div class="input-group ms-0 border-a rounded">
+                                        <span class="input-group-text fw-bold">Email</span>
+                                        <input type="text" class="form-control" value="{{ $supervisor->user->email }}"
+                                        name="email_{{ $loop->iteration }}">
+                                    </div>
+                                    @error('email_'.$loop->iteration)
+                                        <div class="text-danger ps-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('email_1')
-                                    <div class="text-danger ps-2">{{ $message }}</div>
-                                @enderror
                             </div>
+
                         </div>
-                    </div>
+                    @endforeach
 
 
-                    <div class="row px-3">
-                        <div class="col-sm-12 col-lg-6 mb-3">
-                            <div class="input-group ms-0 border-a rounded">
-                                <span class="input-group-text fw-bold">Supervisor</span>
-                                <input type="text" class="form-control" value="{{ old('supervisor_2') }}" name="supervisor_2">
-                            </div>
-                            @error('supervisor_2')
-                                <div class="text-danger ps-2">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-sm-12 col-lg-6 mb-3">
-                            <div class="input-group ms-0 border-a rounded">
-                                <span class="input-group-text fw-bold">Email</span>
-                                <input type="text" class="form-control" value="{{ old('email_2') }}" name="email_2">
-                            </div>
-                            @error('email_2')
-                                <div class="text-danger ps-2">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
 
                     <div class="px-3">
                         <div class="mb-3">
@@ -252,10 +257,11 @@
 
             </form>
         </div>
-
     </section>
 
-    {{ Request::session()->forget('rejectedStudents') }}
+
+
+    {{ Request::session()->forget(['rejectedStudents', 'rejectedSupervisors', 'acceptedStudents']) }}
 </main>
 
 @endsection

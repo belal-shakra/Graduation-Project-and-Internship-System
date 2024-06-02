@@ -29,6 +29,11 @@ class GraduationProject extends Model
     }
 
 
+    public function supervisors(){
+        return $this->hasMany(Supervisor::class);
+    }
+
+
     public function department(){
         return $this->belongsTo(Department::class);
     }

@@ -18,6 +18,8 @@
             @endsession
 
 
+            @dump($errors)
+
             <form action="{{ route('graduation-project.store') }}" method="post">
                 @csrf
 
@@ -26,10 +28,7 @@
                     <div class="col-sm-12 col-md-10 col-lg-4 mb-2">
                         <div class="input-group mx-3 border-a rounded">
                             <select class="form-select form-select" name="department_id">
-                                <option selected value="">Department</option>
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                @endforeach
+                                <option value="{{ Auth::user()->department_id }}">{{ Auth::user()->department->name }}</option>
                             </select>
                         </div>
                         @error('department_id')
@@ -132,12 +131,13 @@
                             <li class="text-danger">{{ $supervisors }}</li>
                         @endforeach
                     </ul>
+
                     <div class="pb-3">
                         <div class="row px-3 mb-3">
                             <div class="col-sm-12 col-lg-6">
                                 <div class="input-group ms-0 border-a rounded">
                                     <span class="input-group-text fw-bold">Supervisor</span>
-                                    <input type="text" class="form-control" value="{{ old('supervisor_1') }}" name="supervisor_1">
+                                    <input type="text" class="form-control" value="{{ old('supervisor_1') }}sadas" name="supervisor_1">
                                 </div>
                                 @error('supervisor_1')
                                     <div class="text-danger ps-2">{{ $message }}</div>
@@ -147,7 +147,8 @@
                             <div class="col-sm-12 col-lg-6">
                                 <div class="input-group ms-0 border-a rounded">
                                     <span class="input-group-text fw-bold">Email</span>
-                                    <input type="text" class="form-control" value="{{ old('email_1') }}" name="email_1">
+                                    {{-- <input type="text" class="form-control" value="{{ old('email_1') }}" name="email_1"> --}}
+                                    <input type="text" class="form-control" value="dor53190@ju.edu.jo" name="email_1">
                                 </div>
                                 @error('email_1')
                                     <div class="text-danger ps-2">{{ $message }}</div>
@@ -161,7 +162,7 @@
                         <div class="col-sm-12 col-lg-6">
                             <div class="input-group ms-0 border-a rounded">
                                 <span class="input-group-text fw-bold">Supervisor</span>
-                                <input type="text" class="form-control" value="{{ old('supervisor_2') }}" name="supervisor_2">
+                                <input type="text" class="form-control" value="{{ old('supervisor_2') }}asd" name="supervisor_2">
                             </div>
                             @error('supervisor_2')
                                 <div class="text-danger ps-2">{{ $message }}</div>
@@ -171,13 +172,15 @@
                         <div class="col-sm-12 col-lg-6">
                             <div class="input-group ms-0 border-a rounded">
                                 <span class="input-group-text fw-bold">Email</span>
-                                <input type="text" class="form-control" value="{{ old('email_2') }}" name="email_2">
+                                <input type="text" class="form-control" value="zoe46142@ju.edu.jo" name="email_2">
                             </div>
                             @error('email_2')
                                 <div class="text-danger ps-2">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
+
+
 
                     <div class="px-3">
                         <div class="mb-3">

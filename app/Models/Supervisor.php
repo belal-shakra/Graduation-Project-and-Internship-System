@@ -17,4 +17,10 @@ class Supervisor extends Model
     public function students(){
         return $this->belongsTo(Student::class);
     }
+
+    public function graduation_project(){
+        return $this->belongsTo(GraduationProject::class);
+    }
+
+
 }

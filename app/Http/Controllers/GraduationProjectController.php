@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddGraduationProjectRequest;
+use App\Http\Requests\UpdateGraduationProjectRequest;
 use App\Models\Department;
 use App\Models\GraduationProject;
 use App\Models\Student;
@@ -17,7 +18,6 @@ use function PHPUnit\Framework\isNull;
 
 class GraduationProjectController extends Controller
 {
-
 
     /**
      * Show the form for creating a new resource.
@@ -40,9 +40,8 @@ class GraduationProjectController extends Controller
         else {
             $rejectedStudents = session('rejectedStudents', []);
             $rejectedSupervisors = session('rejectedSupervisors', []);
-            $departments = Department::get(['id', 'name'])->all();
             $student_no = Department::find(Auth::user()->department_id)->no_team_member;
-            return view('student.Graduation-Project.reg-gp', compact(['departments', 'student_no', 'rejectedStudents', 'rejectedSupervisors']));
+            return view('student.Graduation-Project.reg-gp', compact(['student_no', 'rejectedStudents', 'rejectedSupervisors']));
         }
     }
 
@@ -55,26 +54,17 @@ class GraduationProjectController extends Controller
     public function store(AddGraduationProjectRequest $request)
     {
         $gp_form = $request->validated();
+        // dd($gp_form);
         
         $acceptedStudents = [];
-        $rejectedStudents = [];
-        $rejectedSupervisors = [];
-        if (!$this->checkStudents($request, $acceptedStudents, $rejectedStudents)){
-            session(['rejectedStudents' => $rejectedStudents]);
-
-            if(!$this->checkSupervisor($request, $rejectedSupervisors))
-                session(['rejectedSupervisors' => $rejectedSupervisors]);
-            return redirect()->route('graduation-project.create');
+        if(!$this->checkUser($request)){
+            return redirect()->route("graduation-project.create");
         }
         
-        
-        
-        session(['rejectedStudents' => $rejectedStudents]);
         $gpModel = GraduationProject::create($gp_form);
-        foreach($acceptedStudents as $student){
-            $student->graduation_project_id = $gpModel->id;
-            $student->save();
-        }
+        
+        $this->addStudents($gpModel);
+        $this->addSupervisors($gpModel, $gp_form);
 
 
 
@@ -90,17 +80,20 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
-        // $this->setToNull(2);
+
         $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         if(!$isInGp)
             return redirect()->route('graduation-project.create');
 
 
         $gp = GraduationProject::find($isInGp);
-        $rejected = session('rejectedStudents', []);
-        $departments = Department::get(['id', 'name'])->all();
+        $acceptedStudents = session('acceptedStudents', []);
+        $rejectedStudents = session('rejectedStudents', []);
+        $rejectedSupervisors = session('rejectedSupervisors', []);
+
+
         $student_no = Department::find(Auth::user()->department_id)->no_team_member;
-        return view('student.Graduation-Project.edit-gp', compact(['departments', 'student_no', 'gp', 'rejected']));
+        return view('student.Graduation-Project.edit-gp', compact(['student_no', 'gp', 'rejectedStudents', 'rejectedSupervisors', 'acceptedStudents']));
     }
 
 
@@ -110,9 +103,23 @@ class GraduationProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, GraduationProject $graduation_project)
+    public function update(UpdateGraduationProjectRequest $request, GraduationProject $graduation_project)
     {
-        //
+        $updatedForm = $request->validated();
+
+
+        $acceptedStudents = [];
+        $this->removeStudents($graduation_project);
+        if(!$this->checkUser($request)){
+            return redirect()->route("graduation-project.edit");
+        }
+
+
+        $graduation_project->update($updatedForm);
+        $this->addStudents($graduation_project);
+        $this->addSupervisors($graduation_project, $updatedForm);
+
+        return redirect()->route('graduation-project.edit')->with('GpUpdateSuccessfully', 'The Form has been updated successfully.');
     }
 
 
@@ -125,6 +132,36 @@ class GraduationProjectController extends Controller
     public function destroy(GraduationProject $graduation_project)
     {
         //
+    }
+
+
+
+
+
+    private function checkUser($request){
+
+
+        $acceptedStudents = [];
+        $rejectedStudents = [];
+        $rejectedSupervisors = [];
+
+        $flag = true;
+        if (!$this->checkStudents($request, $acceptedStudents, $rejectedStudents)){
+            session(['rejectedStudents' => $rejectedStudents]);
+            $flag = false;
+        }
+        session(['acceptedStudents' => $acceptedStudents]);
+
+
+        if(!$this->checkSupervisor($request, $rejectedSupervisors)){
+            session(['rejectedSupervisors' => $rejectedSupervisors]);
+            $flag = false;
+        }
+
+
+        if($flag)
+            return true;
+        return false;
     }
 
 
@@ -196,9 +233,7 @@ class GraduationProjectController extends Controller
         }
 
 
-
-
-        if($count == $stu_num || count($acceptedStudents) == 0) // does the $acceptedStudent count can be 0?
+        if($count == $stu_num || count($acceptedStudents) == 1) // does the $acceptedStudent count can be 0?
             return false;
         return true;
     }
@@ -247,12 +282,60 @@ class GraduationProjectController extends Controller
 
 
 
+    private function addStudents($project) {
+        $acceptedStudents = session('acceptedStudents', []);
+        $this->removeStudents($project);
+
+        foreach($acceptedStudents as $student){
+            $student->graduation_project_id = $project->id;
+            $student->save();
+        }
+    }
+    
+    private function addSupervisors($project, $project_form){
+        $this->removeSupervisor($project);
+        for ($i=1; $i <= 2; $i++) {
+            $user = User::firstWhere("email", $project_form['email_'.$i]);
+            $supervisor = Supervisor::firstWhere("user_id", $user->id);
+            $supervisor->graduation_project_id = $project->id;
+            $supervisor->save();
+        }
+    }
+
+    private function removeStudents($project){
+        $in_project = Student::where("graduation_project_id", $project->id)->get();
+        foreach($in_project as $student){
+            $student->graduation_project_id = null;
+            $student->save();
+        }
+    }
+
+    private function removeSupervisor($project){
+        $in_project = Supervisor::where("graduation_project_id", $project->id)->get();
+        foreach($in_project as $supervisor){
+            $supervisor->graduation_project_id = null;
+            $supervisor->save();
+        }
+    }
 
 
-    // public function setToNull($pk){
-    //     $gp = Student::find($pk);
-    //     $gp->graduation_project_id = null;
-    //     $gp->save();
-    // }
+
+
+
+
+
+
+    public function setToNull($pk){
+        $gp = Student::find($pk);
+        $gp->graduation_project_id = null;
+        $gp->save();
+    }
+
+
+    public function setToNulls($pk){
+        $gp = Supervisor::find($pk);
+        $gp->graduation_project_id = null;
+        $gp->save();
+    }
 
 }
