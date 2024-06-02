@@ -10,5 +10,5 @@
 
 ### Graduation Project
 
-The remainders are :
-- Add validations to check if the supervisors info true or not.
+The rest are :
+- At edit page, add registered students in the table's form to avoid Remove Form Bug.
