@@ -3,7 +3,9 @@
 use App\Http\Controllers\GraduationProjectController;
 use App\Http\Controllers\InternshipCompanyController;
 use App\Http\Controllers\InternshipCourseController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TimelineController;
 use App\Models\GraduationProject;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +60,22 @@ Route::middleware(['auth','in.gp'])->group(function(){
     Route::get('/graduation-project/edit', [GraduationProjectController::class, 'edit'])->name('graduation-project.edit');
     Route::resource('graduation-project', GraduationProjectController::class)->except(['index', 'show', 'edit']);
 });
+
+
+// Timeline's Route
+Route::get('graduation-project/timeline',[TimelineController::class, 'index'])->name('timeline')->middleware(['auth','in.gp']);
+
+
+// Graduation Project Post's Routes
+Route::middleware(['auth','in.gp'])->group(function(){
+    // 
+    Route::resource('post', PostController::class)->except(['index', 'create', 'show']);
+});
+
+
+
+
+
 
 
 

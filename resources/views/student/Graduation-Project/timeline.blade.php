@@ -6,98 +6,100 @@
 <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
 
     <h1 class="ps-5">Timeline</h1>
-    <div class="alert alert-success">
-        Success Alert
-    </div>
 
 
     <section class="container m-3">
         <div class="p-3 my-5 rounded bg-white shadow-lg">
             <h2 class="fw-light">Create Post</h2>
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+
                 <div id="label" class="my-3">
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="important">
                         <label class="btn btn-outline-danger py-0 px-1" for="important">important</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="doc">
                         <label class="btn btn-outline-primary py-0 px-1" for="doc">documentation</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="new_release">
                         <label class="btn btn-outline-info py-0 px-1" for="new_release">new release</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="final_release">
                         <label class="btn btn-outline-success py-0 px-1" for="final_release">final release</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="programming">
                         <label class="btn btn-outline-warning py-0 px-1" for="programming">programming</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="research">
                         <label class="btn btn-outline-dark py-0 px-1" for="research">research</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="update">
                         <label class="btn btn-outline-secondary py-0 px-1" for="update">update</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="web">
                         <label class="btn btn-outline-success py-0 px-1" for="web">web</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="mobile">
                         <label class="btn btn-outline-dark py-0 px-1" for="mobile">mobile</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="network">
                         <label class="btn btn-outline-primary py-0 px-1" for="network">network</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="cyber_security">
                         <label class="btn btn-outline-warning py-0 px-1" for="cyber_security">cyber security</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="ai">
                         <label class="btn btn-outline-info py-0 px-1" for="ai">ai</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="machine_learning">
                         <label class="btn btn-outline-secondary py-0 px-1" for="machine_learning">machine learning</label>
                     </div>
 
                     <div class="d-inline-block">
-                        <input type="checkbox">
+                        <input type="checkbox" class="btn-check" id="problem">
                         <label class="btn btn-outline-danger py-0 px-1" for="problem">problem</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="mb-3 col-md-12 col-lg-6">
-                        <label for="file" class="form-labe"></label>
-                        <input type="file">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="input-group border-a rounded mb-3">
+                            <label for="file" class="input-group-text fw-bold">Upload Files</label>
+                            <input class="form-control" type="file" id="file" name="file" multiple>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-3 shadow">
+                    <textarea class="form-control post" id="post" placeholder=""
+                    style="height: 10rem"></textarea>
                     <label for="post">Post</label>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
                 </div>
 
                 <div>

@@ -108,8 +108,8 @@ class GraduationProjectController extends Controller
         $updatedForm = $request->validated();
 
 
-        $acceptedStudents = [];
-        $this->removeStudents($graduation_project);
+        // $acceptedStudents = [];
+        // $this->removeStudents($graduation_project);
         if(!$this->checkUser($request)){
             return redirect()->route("graduation-project.edit");
         }
@@ -151,7 +151,6 @@ class GraduationProjectController extends Controller
             $flag = false;
         }
         session(['acceptedStudents' => $acceptedStudents]);
-
 
         if(!$this->checkSupervisor($request, $rejectedSupervisors)){
             session(['rejectedSupervisors' => $rejectedSupervisors]);
@@ -213,7 +212,7 @@ class GraduationProjectController extends Controller
                         continue;
                     }
 
-                    if ($isStudent->graduation_project_id){
+                    if ($isStudent->graduation_project_id ){
                         array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $alreay);
                         $count++;
                     }
@@ -291,7 +290,7 @@ class GraduationProjectController extends Controller
             $student->save();
         }
     }
-    
+
     private function addSupervisors($project, $project_form){
         $this->removeSupervisor($project);
         for ($i=1; $i <= 2; $i++) {

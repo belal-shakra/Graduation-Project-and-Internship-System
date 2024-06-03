@@ -7,10 +7,11 @@
 
 <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
 
+
+
+
     <section id="grad-project" class="container p-3">
         <h1 id="title">Graduation Project</h1>
-
-
 
         <div class="container py-2">
 
@@ -77,7 +78,7 @@
 
 
                         @session('acceptedStudents')
-                            @if (count($acceptedStudents) < 2)
+                            @if (count($gp->students) < 2)
                                 <div class="text-danger">You must add at least two students.</div>
                             @endif
                         @endsession
@@ -92,50 +93,48 @@
                         </thead>
 
                         <tbody class="table-group-divider">
-                            @for ($i = 1; $i <= $student_no; $i++)
-                                <tr>
-                                    <th>{{ $i }}</th>
-                                    <td>
-                                        <input type="text" value="{{ old('name'.$i) }}"
-                                        class="form-control" name="name{{ $i }}" placeholder="Write Here">
-                                    </td>
-                                    <td>
-                                        <input type="text" value="{{ old('id'.$i) }}"
-                                        class="form-control" name="stu_id{{ $i }}" placeholder="Make sure you write it correctly">
-                                    </td>
-                                    <td>
-                                        <input type="text" value="{{ old('major'.$i) }}"
-                                        class="form-control" name="major{{ $i }}" placeholder="Write Here">
-                                    </td>
-                                </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-
-
-
-                <div>
-                    <table class="table table-bordered table-striped mx-auto my-5" style="width: 98%;">
-                        <thead class="bg-primary">
-                            <th style="width: 0%;">#</th>
-                            <th>Full Name</th>
-                            <th>Student ID</th>
-                            <th>Major</th>
-                        </thead>
-
-                        <tbody class="table-group-divider">
                             @foreach ($gp->students as $student)
                                 <tr>
                                     <th>{{ $loop->iteration }}</th>
-                                    <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
-                                    <td>{{ $student->user->university_id }}</td>
-                                    <td>{{ $student->user->department->name }}</td>
+                                    <td>
+                                        <input type="text" value="{{ $student->user->first_name }} {{ $student->user->last_name }}"
+                                        class="form-control" name="name{{ $loop->iteration }}" placeholder="Write Here">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ $student->user->university_id }}"
+                                        class="form-control" name="stu_id{{ $loop->iteration }}" placeholder="Make sure you write it correctly">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ $student->user->department->name }}"
+                                        class="form-control" name="major{{ $loop->iteration }}" placeholder="Write Here">
+                                    </td>
                                 </tr>
                             @endforeach
+
+                            @if (count($gp->students) != $student_no)
+                                @for ($i=count($gp->students); $i < $student_no; ++$i)
+                                    <tr>
+                                        <th>{{ $i+1 }}</th>
+                                        <td>
+                                            <input type="text" value="{{ old('name'.$i) }}"
+                                            class="form-control" name="name{{ $i }}" placeholder="Write Here">
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{ old('id'.$i) }}"
+                                            class="form-control" name="stu_id{{ $i }}" placeholder="Make sure you write it correctly">
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{ old('major'.$i) }}"
+                                            class="form-control" name="major{{ $i }}" placeholder="Write Here">
+                                        </td>
+                                    </tr>
+                                @endfor
+                            @endif
+
                         </tbody>
                     </table>
                 </div>
+
 
 
 
