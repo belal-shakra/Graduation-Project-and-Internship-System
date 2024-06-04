@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\PostLabel;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +16,10 @@ class TimelineController extends Controller
         if(!$student->graduation_project_id)
             return back();
 
-        
 
+        $labels = PostLabel::all();
+        $posts = Post::where('graduation_project_id', $student->graduation_project_id)->get()->sortDesc();
 
-        return view('student.Graduation-Project.timeline');
+        return view('student.Graduation-Project.timeline', compact(['labels', 'posts']));
     }
 }

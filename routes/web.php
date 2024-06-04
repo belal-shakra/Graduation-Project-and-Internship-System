@@ -68,7 +68,6 @@ Route::get('graduation-project/timeline',[TimelineController::class, 'index'])->
 
 // Graduation Project Post's Routes
 Route::middleware(['auth','in.gp'])->group(function(){
-    // 
     Route::resource('post', PostController::class)->except(['index', 'create', 'show']);
 });
 

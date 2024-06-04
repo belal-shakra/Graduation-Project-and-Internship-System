@@ -17,8 +17,8 @@
                     </span>
                 </li>
                 <ul class="nav collapse mx-2 mt-1 alert alert-secondary px-0 py-1 show" id="drop-grad">
-                    <a class="nav-link link-dark" href="{{ route('student.home') }}"><li class="nav-ite">Register Form</li></a>
-                    <li class="nav-item"><a class="nav-link link-dark" href="{{ route('student.home') }}">Recommended Projects</a></li>
+                    <a class="nav-link link-dark" href="{{ route('graduation-project.create') }}"><li class="nav-ite">Register Form</li></a>
+                    <li class="nav-item"><a class="nav-link link-dark" href="">Recommended Projects</a></li>
                     <li class="nav-item"><a class="nav-link link-dark" href="{{ route('timeline') }}">Timeline</a></li>
                 </ul>
 
@@ -43,7 +43,7 @@
             <div class="dropdown ms-2">
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle px-2 fs-4"></i>
-                    <strong>bla0192452</strong>
+                    <strong>{{ Auth::user()->username }}</strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow">
                     <li>

@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->text("post");
+
+            $table->bigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->bigInteger('graduation_project_id');
+            $table->foreign('graduation_project_id')->references('id')->on('graduation_projects');
+
+            $table->string("label_pattern");
             $table->timestamps();
         });
     }
