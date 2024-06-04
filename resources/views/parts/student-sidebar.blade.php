@@ -43,7 +43,7 @@
             <div class="dropdown ms-2">
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle px-2 fs-4"></i>
-                    <strong>{{ Auth::user()->username }}</strong>
+                    <strong></strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow">
                     <li>

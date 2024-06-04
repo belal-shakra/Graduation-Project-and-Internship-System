@@ -5,8 +5,10 @@ use App\Http\Controllers\InternshipCompanyController;
 use App\Http\Controllers\InternshipCourseController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\TimelineController;
 use App\Models\GraduationProject;
+use App\Models\Supervisor;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +33,7 @@ require __DIR__.'/auth.php';
 ###########################################################
 
 
-// Main Routes
+// Main Student Routes
 Route::controller(StudentController::class)->name('student.')->group(function(){
     Route::get('/login', 'create')->name('login');
     Route::get('/', 'home')->name('home')->middleware('is.student');
@@ -77,7 +79,16 @@ Route::middleware(['auth','in.gp'])->group(function(){
 
 
 
+###########################################################
+####################### Supervisor ########################
+###########################################################
 
+
+
+Route::controller(SupervisorController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
+    Route::get('/login', 'create')->name('login');
+    Route::get('/', 'home')->name('home')->middleware('is.supervisor');
+})->middleware('auth');
 
 
 

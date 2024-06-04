@@ -1,5 +1,5 @@
 @php
-    $uris = ['/', 'login', ''];
+    $uris = ['student.home', 'student.login', 'supervisor.login', 'supervisor.home'];
 @endphp
 
 <!DOCTYPE html>
@@ -26,7 +26,7 @@
 <body class="row">
 
 
-    @if (in_array(Request::path(), $uris) )
+    @if (in_array(\Request::route()->getName(), $uris) )
         @include('parts.simple-header')
     @else
         @include('parts.header')

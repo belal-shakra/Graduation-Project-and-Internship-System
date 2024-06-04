@@ -44,9 +44,6 @@
                                 {{ session('denied_permission') }}
                             @endsession
 
-
-
-                            {{--<span>valid_error</span> --}}
                         </div>
 
                         <div class="text-center">

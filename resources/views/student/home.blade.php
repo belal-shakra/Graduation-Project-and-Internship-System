@@ -16,7 +16,7 @@
                             <li class="nav-item px-3">
                                 <a type="button" class="nav-link text-white" >
                                     <i class="bi bi-person-circle"></i>
-                                    <span class="px-2">{{ $student_username }}</span>
+                                    <span class="px-2">{{ Auth::user()->username }}</span>
                                 </a>
                             </li>
 

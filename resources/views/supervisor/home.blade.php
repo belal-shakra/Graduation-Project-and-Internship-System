@@ -16,18 +16,18 @@
                         <li class="nav-item px-3">
                             <a href="" class="nav-link text-white">
                             <i class="bi bi-person-circle"></i>
-                            <span class="pe-1">bla0192452</span>
+                            <span class="pe-1">{{ Auth::user()->username }}</span>
                             </a>
                         </li>
 
                         <li class="nav-item px-3" data-bs-toggle="dropdown">
                             <a href="" class="nav-link text-white">
 
-                                <span class=" position-relative">
+                                {{-- <span class=" position-relative">
                                     <i class="bi bi-bell-fill text-white"></i>
                                     <span class="position-absolute top-25 start-0 translate-middle p-2 bg-danger border border-light rounded-circle">
                                     </span>
-                                </span>
+                                </span> --}}
                                 <i class="bi bi-bell-fill text-white"></i>
                                 <span class="px-2">Notification</span>
                             </a>
@@ -36,10 +36,15 @@
                         </ul>
 
                         <li class="nav-item px-3">
-                            <a href="" class="nav-link text-white">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span class="px-2">Logout</span>
-                            </a>
+                            <form action="{{ route('logout') }}" method="post" id="logout">
+                                @csrf
+                                <a type="button"
+                                onclick="document.getElementById('logout').submit();"
+                                class="nav-link text-white">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span class="px-2">Logout</span>
+                                </a>
+                            </form>
                         </li>
 
                     </ul>
@@ -47,25 +52,24 @@
             </nav>
         </div>
     </div>
-</div>
 
 
 
     <main>
-    <!-- Main Buttons -->
-    <section class="container pt-5 mt-5">
-        <div class="row p-3 d-flex justify-content-center">
-            <a href=""
-            type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
-                <p class="display-5 fw-bold">Internship</p>
-            </a>
+        <section class="container pt-5 mt-5">
+            <div class="row p-3 d-flex justify-content-center">
+                <a href=""
+                type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
+                    <p class="display-5 fw-bold">Internship</p>
+                </a>
 
-            <a href=""
-            type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
-                <p class="display-5 fw-bold">Graduation Project</p>
-            </a>
-        </div>
-    </section>
+                <a href=""
+                type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
+                    <p class="display-5 fw-bold">Graduation Project</p>
+                </a>
+            </div>
+        </section>
     </main>
+
 
 @endsection
