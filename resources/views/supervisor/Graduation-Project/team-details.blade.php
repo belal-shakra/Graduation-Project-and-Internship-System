@@ -11,10 +11,10 @@
             <div class="py-2 pb-5 table-responsive">
                 <table class="table-bordered bg-white">
                     <thead>
-                        <th class="px-3 py-2">project_name</th>
-                        <th class="px-3 py-2">project_type</th>
-                        <th class="px-3 py-2">semester</th>
-                        <th class="px-3 py-2">department</th>
+                        <th class="px-3 py-2">{{ $project->name }}</th>
+                        <th class="px-3 py-2">{{ $project->type }}</th>
+                        <th class="px-3 py-2">{{ $project->semester }}</th>
+                        <th class="px-3 py-2">{{ $project->department->name }}</th>
                     </thead>
                 </table>
             </div>
@@ -32,12 +32,14 @@
                             <th>Major</th>
                         </thead>
                         <tbody class="table-group-divider">
-                            <tr>
-                                <th style="width: 0%;">1</th>
-                                <td>Belal Shakra</td>
-                                <td>0192452</td>
-                                <td>Computer Science</td>
-                            </tr>
+                            @foreach ($students as $student)
+                                <tr>
+                                    <th style="width: 0%;">{{ $loop->iteration }}</th>
+                                    <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                    <td>{{ $student->user->university_id }}</td>
+                                    <td>{{ $student->user->department->name }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -54,7 +56,7 @@
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td class="p-3">project_idea</td>
+                            <td class="p-3">{{ $project->idea }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -68,7 +70,7 @@
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td class="p-3">project_goal</td>
+                            <td class="p-3">{{ $project->goal }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,7 +84,7 @@
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td class="p-3">team.technologies</td>
+                            <td class="p-3">{{ $project->technologies }}</td>
                         </tr>
                     </tbody>
                 </table>

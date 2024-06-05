@@ -6,6 +6,7 @@ use App\Http\Controllers\InternshipCourseController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\SupervisorGraduationProjectController;
 use App\Http\Controllers\TimelineController;
 use App\Models\GraduationProject;
 use App\Models\Supervisor;
@@ -92,6 +93,20 @@ Route::controller(SupervisorController::class)->prefix('supervisor')->name('supe
 
 
 
+
+Route::controller(SupervisorGraduationProjectController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
+    Route::get('/graduation-project-teams', 'all_teams')->name('teams');
+    Route::get('/graduation-project-team-details', 'show')->name('show');
+});
+
+
+
+
+
+
+// Route::get('/gp/test/', function(){
+//     return view('supervisor.Graduation-Project.teams');
+// });
 
 
 Route::fallback(fn() => view('404'));

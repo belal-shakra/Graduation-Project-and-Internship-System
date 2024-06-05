@@ -16,16 +16,18 @@
                         <div class="card-body text-primary p-1 pb-0">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <td>Belal Shakrra</td>
-                                        <td>0192452</td>
-                                    </tr>
+                                    @foreach ($students as $student)
+                                        <tr>
+                                            <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                            <td>{{ $student->user->university_id }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center border-3 border-primary">
-                            <span class="fw-semibold text-truncate">project_name</span>
-                            <a class="btn btn-primary btn-sm" href="" role="button">Details</a>
+                            <span class="fw-semibold text-truncate">{{ $project->name }}</span>
+                            <a href="{{ route('supervisor.show') }}" class="btn btn-primary btn-sm">Details</a>
                         </div>
                     </div>
                 </div>

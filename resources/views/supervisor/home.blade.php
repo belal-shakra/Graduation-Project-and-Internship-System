@@ -63,7 +63,7 @@
                     <p class="display-5 fw-bold">Internship</p>
                 </a>
 
-                <a href=""
+                <a href="{{ route('supervisor.teams') }}"
                 type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
                     <p class="display-5 fw-bold">Graduation Project</p>
                 </a>
