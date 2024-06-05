@@ -28,6 +28,9 @@
 
     @if (in_array(\Request::route()->getName(), $uris) )
         @include('parts.simple-header')
+    @elseif (\Request::route()->action['prefix'] == '/supervisor' && !in_array(\Request::route()->getName(), $uris))
+        @include('parts.header')
+        @include('parts.supervisor-sidebar')
     @else
         @include('parts.header')
         @include('parts.student-sidebar')

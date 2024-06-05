@@ -3,6 +3,7 @@
 @section('tab-title', 'Team Details')
 @section('content')
 
+
     <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
         <h1 class="ps-3 py-4 fw-light">Team Details</h1>
 
