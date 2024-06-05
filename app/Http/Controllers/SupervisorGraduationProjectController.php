@@ -31,7 +31,7 @@ class SupervisorGraduationProjectController extends Controller
     }
 
 
-    public function all_teams(){
+    public function index(){
         $project = $this->project;
         $students = $this->students;
 
@@ -46,4 +46,8 @@ class SupervisorGraduationProjectController extends Controller
 
         return view('supervisor.Graduation-Project.team-details', compact(['project', 'students']));
     }
+
+
+
+
 }

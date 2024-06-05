@@ -95,7 +95,7 @@ Route::controller(SupervisorController::class)->prefix('supervisor')->name('supe
 
 
 Route::controller(SupervisorGraduationProjectController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
-    Route::get('/graduation-project-teams', 'all_teams')->name('teams');
+    Route::get('/graduation-project-teams', 'index')->name('teams');
     Route::get('/graduation-project-team-details', 'show')->name('show');
 });
 
@@ -104,7 +104,7 @@ Route::controller(SupervisorGraduationProjectController::class)->prefix('supervi
 
 
 
-// Route::get('/gp/test/', function(){
+// Route::get('/test/', function(){
 //     return view('supervisor.Graduation-Project.teams');
 // });
 
