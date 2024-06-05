@@ -5,7 +5,7 @@
 
     <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
         <div class="ps-3 py-4">
-            <h1 class="fw-light">Students in Internship</h1>
+            <h1 class="fw-light">In Internship Students</h1>
             <p class="lead ps-2"></p>
         </div>
 
@@ -51,7 +51,8 @@
 
 
         <section class="container mx-auto row">
-            <form action="" method="post">
+            <form action="{{ route('department.store_in_int') }}" method="post">
+                @csrf
 
                 <div class="table-responsive p-3">
                     <table class="table table-hover table-bordered shadow">
@@ -60,25 +61,31 @@
                                 <th>#</th>
                                 <th style="min-width: 8rem;">Name</th>
                                 <th>Email</th>
-                                <th colspan="2">Supervisor</th>
+                                <th>Supervisor</th>
                                 <th>Report</th>
                             </tr>
                         </thead>
 
                         <tbody class="table-group-divider">
-                            <tr>
-                                <th>1</th>
-                                <td>Belal Shakra</td>
-                                <td>bla0192452@ju.edu.jo</td>
-                                <td class="bg-secondary-subtle ps-3">Doctor's full name</td>
-                                <td class="bg-secondary-subtle">
-                                    <select class="form-select" name="stu">
-                                    <option selected value="None">Select Supervisor</option>
-                                        <option value="doc.doc">Doctor's full name</option>
-                                    </select>
-                                </td>
-                                <td><a href="">view report</a></td>
-                            </tr>
+                            @foreach ($in_int_students as $student)
+                                <tr>
+                                    <th>{{ $loop->iteration }}</th>
+                                    <td>{{ $student->first_name }} {{  $student->last_name }}</td>
+                                    <td>{{  $student->email }}</td>
+                                    <td class="bg-secondary-subtle">
+                                        <select class="form-select" name="supervisor_{{ $loop->iteration }}">
+                                            <option selected>Select Supervisor</option>
+                                            @foreach ($department_supervisors as $supervisor)
+                                                <option value="{{ $supervisor->id }}">
+                                                    {{ $supervisor->first_name }} {{ $supervisor->last_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td><a href="{{ route('department.show', $student) }}">view report</a></td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
