@@ -9,7 +9,7 @@ class Department extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'no_team_member', 'start', 'end', 'internship_week'];
+    protected $fillable = ['name', 'no_team_member', 'start', 'end', 'week'];
 
 
 

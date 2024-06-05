@@ -114,9 +114,10 @@ Route::controller(SupervisorGraduationProjectController::class)->prefix('supervi
 
 
 Route::controller(DepartmentController::class)->prefix('department')->name('department.')->group(function(){
+    Route::get('/', 'home')->name('home');
     Route::get('/login', 'create')->name('login');
-    Route::get('/', 'home')->name('home')->middleware('is.head');
-})->middleware('auth');
+    Route::post('/store/{department}', 'store')->name('store');
+})->middleware(['auth', 'is.head']);
 
 
 
