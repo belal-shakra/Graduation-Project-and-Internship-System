@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\GraduationProjectController;
 use App\Http\Controllers\InternshipCompanyController;
 use App\Http\Controllers\InternshipCourseController;
@@ -97,9 +98,25 @@ Route::controller(SupervisorController::class)->prefix('supervisor')->name('supe
 Route::controller(SupervisorGraduationProjectController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
     Route::get('/graduation-project-teams', 'index')->name('teams');
     Route::get('/graduation-project-team-details', 'show')->name('show');
-});
+})->middleware('is.supervisor');
 
 
+
+
+
+
+
+
+###########################################################
+####################### Department ########################
+###########################################################
+
+
+
+Route::controller(DepartmentController::class)->prefix('department')->name('department.')->group(function(){
+    Route::get('/login', 'create')->name('login');
+    Route::get('/', 'home')->name('home')->middleware('is.head');
+})->middleware('auth');
 
 
 

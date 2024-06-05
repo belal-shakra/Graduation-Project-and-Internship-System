@@ -4,12 +4,13 @@ namespace App\Http\Middleware;
 
 use App\Models\Supervisor;
 use App\Models\User;
+use App\Models\UserType;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckIsSupervisor
+class CheckIsHead
 {
     /**
      * Handle an incoming request.
@@ -18,8 +19,9 @@ class CheckIsSupervisor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $supervisor = Supervisor::firstWhere('user_id', User::firstWhere('email', $request->user()?->email)?->id);
-        if($supervisor){
+        $supervisor_type_id = User::firstWhere('email', $request->user()?->email)?->user_type_id;
+        $supervisor_type = UserType::find($supervisor_type_id)->name;
+        if($supervisor_type == 'supervisor&head'){
             return $next($request);
         }
         else{

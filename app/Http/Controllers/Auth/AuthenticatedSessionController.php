@@ -37,10 +37,13 @@ class AuthenticatedSessionController extends Controller
 
         if($route == 'student.login')
             return to_route('student.home');
-        else
+        elseif($route == 'supervisor.login')
             return to_route('supervisor.home');
+        else
+            return to_route('department.home');
 
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -59,5 +62,7 @@ class AuthenticatedSessionController extends Controller
             return redirect('/');
         elseif ($route_prefix == '/supervisor')
             return redirect('/supervisor/login');
+        else
+            return redirect('/department/login');
     }
 }

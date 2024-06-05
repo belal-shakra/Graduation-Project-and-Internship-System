@@ -31,6 +31,7 @@ class SupervisorGraduationProjectController extends Controller
     }
 
 
+
     public function index(){
         $project = $this->project;
         $students = $this->students;
