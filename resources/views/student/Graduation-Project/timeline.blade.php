@@ -61,77 +61,150 @@
 
     <section class="container m-3">
         @foreach ($posts as $post)
-            <div class="p-3 my-5 rounded bg-white shadow-lg" >
-                <div class="d-flex align-items-center justify-content-between">
-                    <div id="head" class="fw-bold">
-                        @if ($post->label_pattern[0] == 1 || $post->label_pattern[13] == 1 )
-                            <div class="spinner-grow text-danger" style="height: 20px; width: 20px;"></div>
-                        @else
-                            <i class="bi bi-circle-fill text-primary"></i>
-                        @endif
-                        <span class="ps-3 pe-2">{{ $post->created_at->format('D, j-n-Y') }}</span>
-                    </div>
-
-                    @if ($post->user_id == Auth::user()->id)
-                        <div>
-                            <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
-                            <ul class="dropdown-menu shadow">
-                                <li>
-                                    <form action="{{ route('post.destroy', $post) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
-                                    </form>
-                                </li>
-                            </ul>
+            <div class="shadow-lg rounded my-5 bg-white">
+                <div class="p-3 border-bottom border-1 border-secondary" >
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div id="head" class="fw-bold">
+                            @if ($post->label_pattern[0] == 1 || $post->label_pattern[13] == 1 )
+                                <div class="spinner-grow text-danger" style="height: 20px; width: 20px;"></div>
+                            @else
+                                <i class="bi bi-circle-fill text-primary"></i>
+                            @endif
+                            <span class="ps-3 pe-2">{{ $post->created_at->format('D, j-n-Y') }}</span>
                         </div>
-                    @endif
-                </div>
-
-                
-                <div id="label" class="my-3">
-                    @foreach ($labels as $label)
-                        @if ($post->label_pattern[$loop->iteration-1])
-                            <span class="badge text-bg-{{ $label->class }}">{{ $label->name }}</span>
+    
+                        @if ($post->user_id == Auth::user()->id)
+                            <div>
+                                <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu shadow">
+                                    <li>
+                                        <form action="{{ route('post.destroy', $post) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         @endif
-                    @endforeach
-                </div>
-
-
-                <div id="body" class="px-3 py-">
-                    <p class="lead">{{ $post->post }}</p>
-                </div>
-
-
-
-                <div id="att" class="px-3 mb-2">
-                    <div class="">
-                        <span class="d-inline-block">
-                            <img src="{{ asset('assets/img/all/zip.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/exe.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/html.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/css.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/js.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/docx.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/ppt.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/xls.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/pdf.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/mp4.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/img.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            <img src="{{ asset('assets/img/all/file.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                        </span>
-                        <span class="d-inline-block text-truncate" style="max-width: 70%;">
-                            <a href=""></a>
+                    </div>
+    
+                    
+                    <div id="label" class="my-3">
+                        @foreach ($labels as $label)
+                            @if ($post->label_pattern[$loop->iteration-1])
+                                <span class="badge text-bg-{{ $label->class }}">{{ $label->name }}</span>
+                            @endif
+                        @endforeach
+                    </div>
+    
+                    <div id="body" class="px-3 py-">
+                        <p class="lead">{{ $post->post }}</p>
+                    </div>
+    
+                    <div id="att" class="px-3 mb-2">
+                        <div class="">
+                            <span class="d-inline-block">
+                                <img src="{{ asset('assets/img/all/zip.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/exe.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/html.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/css.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/js.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/docx.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/ppt.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/xls.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/pdf.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/mp4.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/img.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                                <img src="{{ asset('assets/img/all/file.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
+                            </span>
+                            <span class="d-inline-block text-truncate" style="max-width: 70%;">
+                                <a href=""></a>
+                            </span>
+                        </div>
+                    </div>
+    
+                    <div id="footer" class="my-2 mt-3 px-3">
+                        <span>
+                            by <b>{{ $post->user->first_name }} {{ $post->user->last_name }}</b>
+                            at {{ $post->created_at->format('H:i') }}
                         </span>
                     </div>
                 </div>
 
 
-                <div id="footer" class="my-2 mt-3 px-3">
-                    <span>
-                        by <b>{{ $post->user->first_name }} {{ $post->user->last_name }}</b>
-                        at {{ $post->created_at->format('H:i') }}
-                    </span>
+                {{-- Comments --}}
+                <div class="accordion accordion-flush" id="comment-section">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#comment{{ $loop->iteration }}">
+                                Comments
+                            </button>
+                        </h2>
+                        <div id="comment{{ $loop->iteration }}" class="accordion-collapse collapse p-2" data-bs-parent="#comment-section">
+                            <div class="py-3">
+                                <form action="" method="post">
+                                    <div class="input-group">
+                                        <textarea class="form-control border border-1 border-secondary comment"></textarea>
+                                        <input type="submit" class="btn btn-outline-primary" value="comment">
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="accordion">
+                                <div class="accordion-item">
+                                    <div class="pb-3 px-3">
+                                        <a href="" data-bs-toggle="collapse" data-bs-target="#all_comments" class="text-decoration-none">
+                                            all comments
+                                        </a>
+                                    </div>
+                                    <div id="all_comments" class="accordion-collapse collapse all_comments">
+                                        <div class="accordion-body">
+                                            <div class="py-1 d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <i class="bi bi-person-circle fs-4"></i>
+                                                    <strong class="ps-2 pe-1">Belal shakra</strong>
+                                                    <span class="text-secondary fst-italic">3h ago</span>
+                                                </div>
+
+                                                <div>
+                                                    <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
+                                                    <ul class="dropdown-menu shadow">
+                                                        <li>
+                                                            <form action="" method="post">
+                                                                @csrf
+                                                                @method('patch')
+                                                                <input type="submit" value="Update" class="dropdown-item">
+                                                            </form>
+                                                        </li>
+                                                        <li>
+                                                            <form action="" method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-3">
+                                                This is the first item's accordion body. It is shown by default,
+                                                until the collapse plugin adds the appropriate classes that we use to style each element.
+                                                These classes control the overall appearance, as well as the showing and hiding via CSS transitions.
+                                                You can modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                                                that just about any HTML can go within the
+                                                <code>.accordion-body</code>, though the transition does limit overflow.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         @endforeach

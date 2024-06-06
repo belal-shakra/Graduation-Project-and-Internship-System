@@ -36,6 +36,17 @@ body {
 }
 
 
+.comment {
+  -webkit-box-shadow: inset 1px 2px 12px 4px rgba(0,0,0,0.10);
+  -moz-box-shadow: inset 1px 2px 12px 4px rgba(0,0,0,0.10);
+  box-shadow: inset 1px 2px 12px 4px rgba(0,0,0,0.10);
+}
+
+
+.all_comments {
+  background-color: #EFF4F8;
+}
+
 
 table td {
   position: relative;

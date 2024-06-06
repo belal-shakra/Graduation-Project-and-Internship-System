@@ -21,7 +21,6 @@ class PostController extends Controller
     public function store(AddPostRequest $request)
     {
         $post = $request->validated();
-        dd($request);
 
         $labels_count = PostLabel::all()->count();
         $pattern = '';
