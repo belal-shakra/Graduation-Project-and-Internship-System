@@ -116,7 +116,7 @@ Route::controller(SupervisorGraduationProjectController::class)->prefix('supervi
 // Department's Main Route
 Route::controller(DepartmentController::class)->prefix('department')->name('department.')->group(function(){
     Route::get('/', 'home')->name('home');
-    Route::get('/login', 'create')->name('login');
+    Route::get('/login', 'create')->name('login')->middleware('guest');
     Route::post('/store/{department}', 'store')->name('store');
 })->middleware(['auth', 'is.head']);
 
@@ -126,7 +126,7 @@ Route::controller(DepartmentController::class)->prefix('department')->name('depa
 Route::controller(DepartmentInternshipController::class)->prefix('department')->name('department.')->group(function(){
     Route::get('/in-internship-students', 'index')->name('in_int');
     Route::post('/store', 'store')->name('store_in_int');
-    Route::get('/student-report/{student_user}', 'show')->name('show');
+    Route::get('/student-report/{user}', 'show')->name('show');
 })->middleware(['auth', 'is.head']);
 
 

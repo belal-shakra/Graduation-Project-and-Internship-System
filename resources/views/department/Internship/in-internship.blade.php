@@ -5,7 +5,7 @@
 
     <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
         <div class="ps-3 py-4">
-            <h1 class="fw-light">In Internship Students</h1>
+            <h1 class="fw-light">Internship Students</h1>
             <p class="lead ps-2"></p>
         </div>
 

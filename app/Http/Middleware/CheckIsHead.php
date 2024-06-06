@@ -26,7 +26,7 @@ class CheckIsHead
         }
         else{
             Auth::logout();
-            return to_route('supervisor.login')->with('denied_permission', 'You haven\'t permission to login.');
+            return to_route('department.login')->with('denied_permission', 'You haven\'t permission to login.');
         }
     }
 }

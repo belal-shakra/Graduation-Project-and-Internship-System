@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InternshipCompany;
+use App\Models\InternshipCourse;
 use App\Models\Student;
+use App\Models\Supervisor;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Http\Request;
@@ -47,9 +50,25 @@ class DepartmentInternshipController extends Controller
 
 
 
-    public function show(User $student_user){
+    public function show(User $user){
+        $student_user = $user;
+
+        if($student_user->department_id == Auth::user()->department_id){
+            $student = Student::find($student_user->id);
+
+            if($student->in_internship){
+                $supervisor = Supervisor::find($student->supervisor_id);
+                $company = InternshipCompany::firstWhere('student_id', $student->id);
+                $courses = InternshipCourse::Where('student_id', $student->id)->get();
+
+            }
+            else
+                return to_route('department.in_int');
+        }
+        else
+            return to_route('department.in_int');
 
 
-        return view('department.Internship.report');
+        return view('department.Internship.report', compact(['student_user', 'supervisor', 'company', 'courses']));
     }
 }
