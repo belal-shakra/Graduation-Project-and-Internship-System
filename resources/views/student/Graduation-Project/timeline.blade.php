@@ -161,11 +161,11 @@
                             <div class="accordion">
                                 <div class="accordion-item">
                                     <div class="pb-3 px-3">
-                                        <a href="" data-bs-toggle="collapse" data-bs-target="#all_comments" class="text-decoration-none">
+                                        <a href="" data-bs-toggle="collapse" data-bs-target="#all_comments{{ $loop->iteration }}" class="text-decoration-none">
                                             all comments ({{ count($post->comments) }})
                                         </a>
                                     </div>
-                                    <div id="all_comments" class="accordion-collapse collapse all_comments">
+                                    <div id="all_comments{{ $loop->iteration }}" class="accordion-collapse collapse all_comments">
                                         @foreach ($post->comments as $comment)
                                             <div class="accordion-body">
                                                 <div class="py-1 d-flex align-items-center justify-content-between">
@@ -181,14 +181,7 @@
                                                         <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
                                                         <ul class="dropdown-menu shadow">
                                                             <li>
-                                                                <form action="" method="post">
-                                                                    @csrf
-                                                                    @method('patch')
-                                                                    <input type="submit" value="Update" class="dropdown-item">
-                                                                </form>
-                                                            </li>
-                                                            <li>
-                                                                <form action="" method="post">
+                                                                <form action="{{ route('comment.destroy', $comment) }}" method="post">
                                                                     @csrf
                                                                     @method('delete')
                                                                     <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">

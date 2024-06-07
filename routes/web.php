@@ -80,7 +80,7 @@ Route::middleware(['auth','in.gp'])->group(function(){
 
 // Post's Comment Route
 Route::post('/store/{post}', [CommentController::class, 'store'])->middleware(['auth'])->name('comment.store');
-Route::resource('comment', CommentController::class)->except(['index', 'create', 'store'])->middleware(['auth']);
+Route::resource('comment', CommentController::class)->only(['destroy'])->middleware(['auth']);
 
 
 
