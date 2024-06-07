@@ -61,7 +61,7 @@
 
     <section class="container m-3">
         @foreach ($posts as $post)
-            <div class="shadow-lg rounded my-5 bg-white">
+            <div class="shadow-lg rounded my-5 bg-white" id="{{ $post->user->university_id }}">
                 <div class="p-3 border-bottom border-1 border-secondary" >
                     <div class="d-flex align-items-center justify-content-between">
                         <div id="head" class="fw-bold">
@@ -99,7 +99,7 @@
                     </div>
     
                     <div id="body" class="px-3 py-">
-                        <p class="lead">{{ $post->post }}</p>
+                        <p class="lead">{!! nl2br($post->post) !!}</p>
                     </div>
     
                     <div id="att" class="px-3 mb-2">
@@ -137,18 +137,23 @@
                 <div class="accordion accordion-flush" id="comment-section">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
                             data-bs-target="#comment{{ $loop->iteration }}">
-                                Comments
+                                {{ count($post->comments) }} Comments
                             </button>
                         </h2>
-                        <div id="comment{{ $loop->iteration }}" class="accordion-collapse collapse p-2" data-bs-parent="#comment-section">
+                        <div id="comment{{ $loop->iteration }}" class="accordion-collapse collapse show p-2" data-bs-parent="#comment-section">
                             <div class="py-3">
-                                <form action="" method="post">
+                                <form action="{{ route('comment.store', $post) }}" method="post">
+                                    @csrf
                                     <div class="input-group">
-                                        <textarea class="form-control border border-1 border-secondary comment"></textarea>
+                                        <textarea class="form-control border border-1 border-secondary comment"
+                                        name="comment">{{ old('comment') }}</textarea>
                                         <input type="submit" class="btn btn-outline-primary" value="comment">
                                     </div>
+                                    @error('comment')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </form>
                             </div>
 
@@ -157,48 +162,45 @@
                                 <div class="accordion-item">
                                     <div class="pb-3 px-3">
                                         <a href="" data-bs-toggle="collapse" data-bs-target="#all_comments" class="text-decoration-none">
-                                            all comments
+                                            all comments ({{ count($post->comments) }})
                                         </a>
                                     </div>
                                     <div id="all_comments" class="accordion-collapse collapse all_comments">
-                                        <div class="accordion-body">
-                                            <div class="py-1 d-flex align-items-center justify-content-between">
-                                                <div>
-                                                    <i class="bi bi-person-circle fs-4"></i>
-                                                    <strong class="ps-2 pe-1">Belal shakra</strong>
-                                                    <span class="text-secondary fst-italic">3h ago</span>
+                                        @foreach ($post->comments as $comment)
+                                            <div class="accordion-body">
+                                                <div class="py-1 d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        <i class="bi bi-person-circle fs-4"></i>
+                                                        <strong class="ps-2 pe-1">
+                                                            {{ $comment->user->first_name }} {{ $comment->user->last_name }}
+                                                        </strong>
+                                                        <span class="text-secondary fst-italic">3h ago</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
+                                                        <ul class="dropdown-menu shadow">
+                                                            <li>
+                                                                <form action="" method="post">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                    <input type="submit" value="Update" class="dropdown-item">
+                                                                </form>
+                                                            </li>
+                                                            <li>
+                                                                <form action="" method="post">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
 
-                                                <div>
-                                                    <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
-                                                    <ul class="dropdown-menu shadow">
-                                                        <li>
-                                                            <form action="" method="post">
-                                                                @csrf
-                                                                @method('patch')
-                                                                <input type="submit" value="Update" class="dropdown-item">
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <form action="" method="post">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
-                                                            </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                <div class="px-3">{!! nl2br($comment->comment) !!}</div>
                                             </div>
-
-                                            <div class="px-3">
-                                                This is the first item's accordion body. It is shown by default,
-                                                until the collapse plugin adds the appropriate classes that we use to style each element.
-                                                These classes control the overall appearance, as well as the showing and hiding via CSS transitions.
-                                                You can modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                                                that just about any HTML can go within the
-                                                <code>.accordion-body</code>, though the transition does limit overflow.
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

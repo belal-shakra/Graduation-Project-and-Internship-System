@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->bigInteger('id')->autoIncrement();
-            $table->text("post");
+            $table->text('comment');
 
             $table->bigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->bigInteger('graduation_project_id');
-            $table->foreign('graduation_project_id')->references('id')->on('graduation_projects');
+            $table->bigInteger('post_id');
+            $table->foreign('post_id')->references('id')->on('posts');
 
-            $table->string("label_pattern");
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('comments');
     }
 };

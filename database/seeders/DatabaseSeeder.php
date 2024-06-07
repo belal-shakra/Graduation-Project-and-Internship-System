@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             // AddUserSeeder::class,
             // AddStudentSeeder::class,
             // AddSupervisorSeeder::class,
-            // PostLabelSeeder::class,
+            PostLabelSeeder::class,
         ]);
     }
 }

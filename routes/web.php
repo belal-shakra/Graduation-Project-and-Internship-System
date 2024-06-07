@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentInternshipController;
 use App\Http\Controllers\GraduationProjectController;
@@ -77,6 +78,9 @@ Route::middleware(['auth','in.gp'])->group(function(){
 });
 
 
+// Post's Comment Route
+Route::post('/store/{post}', [CommentController::class, 'store'])->middleware(['auth'])->name('comment.store');
+Route::resource('comment', CommentController::class)->except(['index', 'create', 'store'])->middleware(['auth']);
 
 
 
