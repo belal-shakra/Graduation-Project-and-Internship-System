@@ -30,7 +30,10 @@
         @include('parts.simple-header')
     @elseif (\Request::route()->action['prefix'] == '/supervisor' && !in_array(\Request::route()->getName(), $uris))
         @include('parts.header')
-        @include('parts.supervisor-sidebar')}
+        @include('parts.supervisor-sidebar')
+    @elseif (\Request::route()->action['prefix'] == '/department' && !in_array(\Request::route()->getName(), $uris))
+        @include('parts.header')
+        @include('parts.department-sidebar')
     @else
         @include('parts.header')
         @include('parts.student-sidebar')
