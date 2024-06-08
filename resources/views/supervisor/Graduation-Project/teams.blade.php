@@ -16,7 +16,7 @@
                         <div class="card-body text-primary p-1 pb-0">
                             <table class="table">
                                 <tbody>
-                                    @foreach ($students as $student)
+                                    @foreach ($project->students as $student)
                                         <tr>
                                             <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
                                             <td>{{ $student->user->university_id }}</td>

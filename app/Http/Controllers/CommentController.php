@@ -16,13 +16,12 @@ class CommentController extends Controller
      */
     public function store(Post $post, AddCommentRequest $request)
     {
-
         $comment = $request->validated();
         $comment['user_id'] = Auth::user()->id;
         $comment['post_id'] = $post->id;
 
         Comment::create($comment);
-        return redirect('/graduation-project/timeline#'.$post->created_at->format('si'));
+        return redirect(url()->previous().'#'.$post->created_at->format('si'));
     }
 
     /**
