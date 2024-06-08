@@ -22,7 +22,7 @@ class CommentController extends Controller
         $comment['post_id'] = $post->id;
 
         Comment::create($comment);
-        return redirect('/graduation-project/timeline#'.$post->user->university_id);
+        return redirect('/graduation-project/timeline#'.$post->created_at->format('si'));
     }
 
     /**

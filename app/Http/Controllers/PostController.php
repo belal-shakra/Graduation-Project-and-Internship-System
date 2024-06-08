@@ -25,8 +25,6 @@ class PostController extends Controller
         // request validation.
         $post = $request->validated();
 
-
-
         // Post's label handling.
         $labels_count = PostLabel::all()->count();
         $pattern = '';
@@ -80,6 +78,7 @@ class PostController extends Controller
         //
     }
 
+
     /**
      * Update the specified resource in storage.
      */
@@ -88,21 +87,28 @@ class PostController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Post $post)
     {
+        foreach(File::where('post_id', $post->id)->get() as $file){
+            $file->delete();
+        }
+
+        foreach(Comment::where('post_id', $post->id)->get() as $comment){
+        $comment->delete();
+        }
+
         $post->delete();
         return back();
     }
 
 
-
-
     public function file_proccessing($file, $post_id)
     {
-        $new_name = time() .'-'. $file->getClientOriginalName();
+        $new_name =  time().'-'.$file->getClientOriginalName();
         $file->storeAs('files/Graduation-Project/'. $post_id, $new_name, 'public');
 
         return $new_name;

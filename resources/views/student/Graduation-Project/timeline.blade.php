@@ -61,7 +61,7 @@
 
     <section class="container m-3">
         @foreach ($posts as $post)
-            <div class="shadow-lg rounded my-5 bg-white" id="{{ $post->user->university_id }}">
+            <div class="shadow-lg rounded my-5 bg-white" id="{{ $post->created_at->format('si') }}">
                 <div class="p-3 border-bottom border-1 border-secondary" >
                     <div class="d-flex align-items-center justify-content-between">
                         <div id="head" class="fw-bold">
@@ -119,21 +119,6 @@
                                     </div>
                                     
                                 @endforeach
-                            </span>
-
-                            <span class="d-inline-block">
-                                <img src="{{ asset('assets/img/all/zip.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/exe.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/html.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/css.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/js.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/docx.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/ppt.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/xls.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/pdf.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/mp4.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/img.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                                <img src="{{ asset('assets/img/all/file.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
                             </span>
                         </div>
                     </div>
