@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddPostRequest;
+use App\Models\Comment;
+use App\Models\File;
 use App\Models\GraduationProject;
 use App\Models\Post;
 use App\Models\PostLabel;
@@ -20,8 +22,12 @@ class PostController extends Controller
      */
     public function store(AddPostRequest $request)
     {
+        // request validation.
         $post = $request->validated();
 
+
+
+        // Post's label handling.
         $labels_count = PostLabel::all()->count();
         $pattern = '';
         $post['user_id'] = Auth::user()->id;
@@ -33,10 +39,11 @@ class PostController extends Controller
                 $pattern.='0';
         }
         $post['label_pattern'] = $pattern;
-        
 
 
 
+
+        // get the graduation project id.
         try {
             $gp_id = Supervisor::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         } catch (\Throwable $th) {
@@ -46,7 +53,21 @@ class PostController extends Controller
 
 
 
-        Post::create($post);
+        // create a post record
+        $post_rec = Post::create($post);
+
+
+        // create a file record/s
+        if($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                File::create([
+                    'post_id' => $post_rec->id,
+                    'file' => $this->file_proccessing($file, $post_rec->id),
+                    'extension' => explode("/", $file->getMimeType())[1],
+                ]);
+            }
+        }
+
         return back();
     }
 
@@ -74,5 +95,16 @@ class PostController extends Controller
     {
         $post->delete();
         return back();
+    }
+
+
+
+
+    public function file_proccessing($file, $post_id)
+    {
+        $new_name = time() .'-'. $file->getClientOriginalName();
+        $file->storeAs('files/Graduation-Project/'. $post_id, $new_name, 'public');
+
+        return $new_name;
     }
 }

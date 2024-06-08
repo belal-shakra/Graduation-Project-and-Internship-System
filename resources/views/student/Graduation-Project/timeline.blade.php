@@ -31,9 +31,9 @@
                     <div class="col-md-12 col-lg-6">
                         <div class="input-group border-a rounded mb-3">
                             <label for="file" class="input-group-text fw-bold">Upload Files</label>
-                            <input class="form-control" type="file" id="file" name="file" multiple>
+                            <input class="form-control" type="file" id="files" name="files[]" multiple>
                         </div>
-                        @error('file')
+                        @error('files[]')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -104,6 +104,23 @@
     
                     <div id="att" class="px-3 mb-2">
                         <div class="">
+
+                            <span class="d-inline-block text-truncate" style="max-width: 70%;">
+                                @foreach ($post->files as $file)
+                                    <div>
+                                        @if (in_array($file->extension, ['jpeg','png', 'gif', 'webp', 'bmp']))
+                                            <img src="{{ asset('assets/img/all/img.png') }}" alt="img" style="width:3%;">
+                                        @elseif (in_array($file->extension, ['exe', 'xls', 'zip', 'txt', 'html', 'css', 'js', 'docx', 'ppt', 'pdf' ,'mp4']))
+                                            <img src="{{ asset('assets/img/all/'.$file->extension .'.png') }}" alt="img" style="width:3%;">
+                                        @else
+                                            <img src="{{ asset('assets/img/all/txt.png') }}" alt="img" style="width:3%;">
+                                        @endif
+                                        <a href="">{{ $file->file }}</a>
+                                    </div>
+                                    
+                                @endforeach
+                            </span>
+
                             <span class="d-inline-block">
                                 <img src="{{ asset('assets/img/all/zip.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
                                 <img src="{{ asset('assets/img/all/exe.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
@@ -117,9 +134,6 @@
                                 <img src="{{ asset('assets/img/all/mp4.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
                                 <img src="{{ asset('assets/img/all/img.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
                                 <img src="{{ asset('assets/img/all/file.png') }}" alt="file-img" class="img-fluid" style="width: 22px;">
-                            </span>
-                            <span class="d-inline-block text-truncate" style="max-width: 70%;">
-                                <a href=""></a>
                             </span>
                         </div>
                     </div>

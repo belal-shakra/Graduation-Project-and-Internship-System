@@ -23,7 +23,7 @@ class AddPostRequest extends FormRequest
     {
         return [
             'post' => 'required|max:1000',
-            'file' => 'nullable|file',
+            'files.*' => 'nullable|max:2048',
         ];
     }
 }

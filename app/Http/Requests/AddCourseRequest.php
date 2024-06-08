@@ -23,7 +23,7 @@ class AddCourseRequest extends FormRequest
     {
         return [
             'name' => 'required|',
-            'hour' => 'required|integer',
+            'hour' => 'required|integer|min:10',
             'provider' => 'required|',
             'certificate' => 'file|mimes:png,jpg,jpeg,pdf,ppt',
         ];

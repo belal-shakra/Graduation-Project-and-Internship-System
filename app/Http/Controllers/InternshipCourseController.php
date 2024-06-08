@@ -38,7 +38,7 @@ class InternshipCourseController extends Controller
         $course['student_id'] = Student::firstWhere('user_id', Auth::user()->id)->id;
 
         if(isset($course['certificate']))
-            $course['certificate'] = $this->image_proccessing($request->certificate);
+            $course['certificate'] = $this->file_proccessing($request->certificate);
 
         InternshipCourse::create($course);
         return back()->with('course_added', 'The course has been added successfully.');
@@ -58,7 +58,7 @@ class InternshipCourseController extends Controller
             $updated_course['provider'] = $u_course['u_provider'];
 
             if($request->hasFile('u_certificate')){
-                $updated_course['certificate'] = $this->image_proccessing($request->certificate);
+                $updated_course['certificate'] = $this->file_proccessing($request->u_certificate);
             }
 
             $course->update($updated_course);
@@ -81,7 +81,7 @@ class InternshipCourseController extends Controller
 
 
 
-    public function image_proccessing($image)
+    public function file_proccessing($image)
     {
         $student_id = Student::firstWhere('user_id', Auth::user()->id)->id;
         $new_name = time() .'-'. $image->getClientOriginalName();
