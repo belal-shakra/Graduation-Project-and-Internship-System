@@ -9,7 +9,7 @@ class File extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['file', 'post_id', 'extension'];
+    protected $fillable = ['file', 'post_id', 'extension', 'path'];
 
 
 

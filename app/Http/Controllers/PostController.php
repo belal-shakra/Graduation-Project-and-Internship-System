@@ -58,10 +58,13 @@ class PostController extends Controller
         // create a file record/s
         if($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
+                $path = $this->file_proccessing($file, $post_rec->id);
+
                 File::create([
                     'post_id' => $post_rec->id,
-                    'file' => $this->file_proccessing($file, $post_rec->id),
+                    'file' => substr($path, strrpos($path, "/")+1),
                     'extension' => explode("/", $file->getMimeType())[1],
+                    'path' => substr($path, 0,strrpos($path, "/")),
                 ]);
             }
         }
@@ -109,8 +112,8 @@ class PostController extends Controller
     public function file_proccessing($file, $post_id)
     {
         $new_name =  time().'-'.$file->getClientOriginalName();
-        $file->storeAs('files/Graduation-Project/'. $post_id, $new_name, 'public');
+        $file_path = $file->storeAs('files/Graduation-Project/'. $post_id, $new_name, 'public');
 
-        return $new_name;
+        return $file_path;
     }
 }

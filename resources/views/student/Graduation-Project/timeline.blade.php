@@ -115,9 +115,10 @@
                                         @else
                                             <img src="{{ asset('assets/img/all/txt.png') }}" alt="img" style="width:3%;">
                                         @endif
-                                        <a href="">{{ $file->file }}</a>
+                                        <a href="{{ asset('storage') }}/{{ $file->path }}/{{ $file->file }}" target="_blank">
+                                            {{ $file->file }}
+                                        </a>
                                     </div>
-                                    
                                 @endforeach
                             </span>
                         </div>
