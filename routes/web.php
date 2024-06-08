@@ -116,7 +116,6 @@ Route::controller(SupervisorGraduationProjectController::class)->prefix('supervi
 ####################### Department ########################
 ###########################################################
 
-
 // Department's Main Route
 Route::controller(DepartmentController::class)->prefix('department')->name('department.')->group(function(){
     Route::get('/', 'home')->name('home');

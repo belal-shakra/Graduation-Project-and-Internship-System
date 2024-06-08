@@ -21,6 +21,6 @@ class TimelineController extends Controller
         $labels = PostLabel::all();
         $posts = Post::where('graduation_project_id', $student->graduation_project_id)->get()->sortDesc();
 
-        return view('student.Graduation-Project.timeline', compact(['labels', 'posts']));
+        return view('student.Graduation-Project.Timeline.timeline', compact(['labels', 'posts']));
     }
 }

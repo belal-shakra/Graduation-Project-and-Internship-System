@@ -46,7 +46,9 @@ class InternshipCompanyController extends Controller
     public function edit()
     {
         $company = InternshipCompany::firstWhere('student_id', Student::firstWhere('user_id', Auth::user()->id)->id);
-        return view('student.Internship.edit-company', compact('company'));
+
+        $name = "soso";
+        return view('student.Internship.edit-company', compact(['company', 'name']));
     }
 
 
