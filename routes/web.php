@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartmentGraduationProjectController;
 use App\Http\Controllers\DepartmentInternshipController;
 use App\Http\Controllers\GraduationProjectController;
 use App\Http\Controllers\InternshipCompanyController;
@@ -133,6 +134,12 @@ Route::controller(DepartmentInternshipController::class)->prefix('department')->
 })->middleware(['auth', 'is.head']);
 
 
+// Department's Graduation Project Route
+Route::controller(DepartmentGraduationProjectController::class)->prefix('department')->name('department.')->group(function(){
+    Route::get('/Graduation-Project/exceed-90-hours', 'exceed90')->name('exceed90');
+    Route::get('/Graduation-Project/teams', 'teams')->name('teams');
+    Route::get('/Graduation-Project/team-details/{graduation_project}', 'team_details')->name('team-details');
+});
 
 
 

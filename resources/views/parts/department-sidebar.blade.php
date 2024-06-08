@@ -15,8 +15,8 @@
           </span>
         </li>
         <ul class="nav collapse show mx-2 mb-1 px-0 py-1 bg-secondary-subtle rounded" id="drop-grad">
-          <li class="nav-item"><a class="nav-link link-dark" href="">Students Exceed 90 Hour</a></li>
-          <li class="nav-item"><a class="nav-link link-dark" href="">Graduation Projects Teams</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{{ route('department.exceed90') }}">Students that Exceed 90 Hours</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{{ route('department.teams') }}">Graduation Projects Teams</a></li>
         </ul>
 
 

@@ -16,11 +16,11 @@
         <div class="pe-xl-5 me-3">
             <ul class="nav pe-xl-" style="position: relative; top: 5px">
                 <li class="nav-lin dropstart">
-                    <span class=" position-relative" data-bs-toggle="dropdown">
+                    {{-- <span class=" position-relative" data-bs-toggle="dropdown">
                         <i class="bi bi-bell-fill text-white fs-4"></i>
                         <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                         </span>
-                    </span>
+                    </span> --}}
                     <i class="bi bi-bell-fill text-white fs-4" data-bs-toggle="dropdown"></i>
                     <ul class="dropdown-menu mt-5 p-0">
                     </ul>

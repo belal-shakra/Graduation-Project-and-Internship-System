@@ -11,10 +11,10 @@
             <div class="py-2 pb-5 table-responsive">
                 <table class="table-bordered bg-white">
                     <thead>
-                        <th class="px-3 py-2">project_name</th>
-                        <th class="px-3 py-2">project_type</th>
-                        <th class="px-3 py-2">semester</th>
-                        <th class="px-3 py-2">department</th>
+                        <th class="px-3 py-2">{{ $gp->name }}</th>
+                        <th class="px-3 py-2">{{ $gp->type }}</th>
+                        <th class="px-3 py-2">{{ $gp->semester }}</th>
+                        <th class="px-3 py-2">{{ $gp->department->name }}</th>
                     </thead>
                 </table>
             </div>
@@ -24,7 +24,7 @@
         <section class="container mt-4">
             <div class="row">
                 <div class="col-sm-12 col-lg-8">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead class="table-primary">
                             <th>#</th>
                             <th>Student Name</th>
@@ -32,12 +32,14 @@
                             <th>Major</th>
                         </thead>
                         <tbody class="table-group-divider">
-                            <tr>
-                            <th style="width: 0%;">1</th>
-                            <td>Belal Shakra</td>
-                            <td>0192452</td>
-                            <td>Computer Science</td>
-                            </tr>
+                            @foreach ($gp->students as $student)
+                                <tr>
+                                    <th style="width: 0%;">1</th>
+                                    <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                    <td>{{ $student->user->university_id }}</td>
+                                    <td>{{ $student->user->department->name }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -49,23 +51,20 @@
         <section class="container mt-4">
             <div class="row">
                 <div class="col-sm-12 col-lg-8">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead class="table-primary">
                             <th>#</th>
                             <th>Supervisor</th>
                             <th>Email</th>
                         </thead>
                         <tbody class="table-group-divider">
-                            <tr>
-                                <th style="width: 0%;">1</th>
-                                <td>superviser_1</td>
-                                <td>email_1</td>
-                            </tr>
-                            <tr>
-                                <th style="width: 0%;">2</th>
-                                <td>team.superviser_2</td>
-                                <td>email_2</td>
-                            </tr>
+                            @foreach ($gp->supervisors as $supervisor)
+                                <tr>
+                                    <th style="width: 0%;">{{ $loop->iteration }}</th>
+                                    <td>{{ $supervisor->user->first_name }} {{ $supervisor->user->last_name }}</td>
+                                    <td>{{ $supervisor->user->email }}</td>
+                                </tr> 
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -75,13 +74,13 @@
 
         <section class="container mt-4">
             <div class="table-responsive my-4">
-                <table class="table table-striped">
+                <table class="table">
                     <thead class="table-primary">
                         <th>Project Overview</th>
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td>project_idea</td>
+                            <td>{{ $gp->idea }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,13 +88,13 @@
 
 
             <div class="table-responsive my-4">
-                <table class="table table-striped">
+                <table class="table">
                     <thead class="table-primary">
                         <th>Project Goals</th>
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td>project_goal</td>
+                            <td>{{ $gp->goal }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -103,13 +102,13 @@
 
 
             <div class="table-responsive my-4">
-                <table class="table table-striped">
+                <table class="table">
                     <thead class="table-primary">
                         <th>Project Technologies</th>
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td>technologies</td>
+                            <td>{{ $gp->technologies }}</td>
                         </tr>
                     </tbody>
                 </table>

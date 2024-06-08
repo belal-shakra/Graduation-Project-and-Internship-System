@@ -6,7 +6,7 @@
     <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
         <div class="ps-3 py-4">
             <h1 class="fw-light">Students That Exceed 90 Hour</h1>
-            <p class="lead ps-2">Students that exceed 90 hour in department, and their status with internship and a graduation project.</p>
+            <p class="lead ps-2">Students that exceed 90 hours in the department, and their status with the internship and the graduation project.</p>
         </div>
 
 
@@ -25,20 +25,28 @@
                     </thead>
 
                     <tbody class="table-group-divider">
-                        <tr>
-                            <th>1</th>
-                            <td>Belal Shakra</td>
-                            <td>0192452</td>
-                            <td>bla0192452@ju.edu.jo</td>
-                            <td>
-                                <i class="bi bi-check-square-fill text-success fs-5">
-                                <i class="bi bi-x-square-fill text-danger fs-5"></i>
-                            </td>
-                            <td>
-                                <i class="bi bi-check-square-fill text-success fs-5">
-                                <i class="bi bi-x-square-fill text-danger fs-5"></i>
-                            </td>
-                        </tr>
+                        @foreach ($students as $student)
+                            <tr>
+                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                <td>{{ $student->user->university_id }}</td>
+                                <td>{{ $student->user->email }}</td>
+                                <td>
+                                    @if ($student->in_internship)
+                                        <i class="bi bi-check-square-fill text-success fs-5">
+                                    @else
+                                        <i class="bi bi-x-square-fill text-danger fs-5"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($student->in_graduation_project)
+                                        <i class="bi bi-check-square-fill text-success fs-5">
+                                    @else
+                                        <i class="bi bi-x-square-fill text-danger fs-5"></i>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
