@@ -60,18 +60,25 @@
                                 </tr>
 
 
-                                <!-- Supervisor Note -->
-                                <div class="modal fade" id="notenote{{ $loop->iteration }}">
+                                <div class="modal fade" id="note{{ $loop->iteration }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">'course name' Note</h1>
+                                                <h2 class="modal-title fs-5" id="exampleModalLabel">{{ $course->name }}</h2>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <h3>Accepted</h3>
-                                                    <h3>Rejected</h3>
-                                                <div class="py-3 px-2">supervisor note</div>
+                                                @if ($course->supervisor_note)
+                                                    @if ($course->acceptance)
+                                                        <h3>Accepted</h3>
+                                                        <p>{{ $course->supervisor_note }}</p>
+                                                    @else
+                                                        <h3>Rejected</h3>
+                                                        <p>{{ $course->supervisor_note }}</p>
+                                                    @endif
+                                                @else
+                                                    There is no notes yet.
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
