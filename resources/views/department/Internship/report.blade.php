@@ -47,7 +47,10 @@
                                     <td>{{ $course->hour }}</td>
                                     <td>{{ $course->provider }}</td>
                                     <td class="p-2" style="width: 30rem;">
-                                        <a href="" class="d-inline-block text-truncate" style="max-width: 30rem;">course certificate</a>
+                                        <a href="{{ asset('storage/Internship/courses/'.$student->id) }}/{{ $course->certificate }}"
+                                            class="d-inline-block text-truncate" style="max-width: 30rem;" target="_blank">
+                                            {{ @explode('-' , $course->certificate, 2)[1] }}
+                                        </a>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#note{{ $loop->iteration }}">
