@@ -130,7 +130,7 @@ Route::controller(DepartmentController::class)->prefix('department')->name('depa
 Route::controller(DepartmentInternshipController::class)->prefix('department')->name('department.')->group(function(){
     Route::get('/in-internship-students', 'index')->name('in_int');
     Route::post('/store', 'store')->name('store_in_int');
-    Route::get('/student-report/{user}', 'show')->name('show');
+    Route::get('/student-report/{student_rec}', 'show')->name('show');
 })->middleware(['auth', 'is.head']);
 
 

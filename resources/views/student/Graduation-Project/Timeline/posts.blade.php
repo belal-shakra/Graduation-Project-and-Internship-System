@@ -54,6 +54,7 @@
                                     @else
                                         <img src="{{ asset('assets/img/all/txt.png') }}" alt="img" style="width:3%;">
                                     @endif
+                                    
                                     <a href="{{ asset('storage') }}/{{ $file->path }}/{{ $file->file }}" target="_blank">
                                         {{ $file->file }}
                                     </a>

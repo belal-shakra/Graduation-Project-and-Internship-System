@@ -24,12 +24,17 @@ class Student extends Model
     }
 
     public function supervisor(){
-        return $this->hasOne(Supervisor::class);
+        return $this->belongsTo(Supervisor::class);
     }
 
 
     public function internship_company(){
         return $this->hasOne(InternshipCompany::class);
+    }
+
+
+    public function internship_courses(){
+        return $this->hasMany(InternshipCourse::class);
     }
 
     public function graduation_project(){

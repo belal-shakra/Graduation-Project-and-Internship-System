@@ -15,7 +15,7 @@ class Supervisor extends Model
     }
 
     public function students(){
-        return $this->belongsTo(Student::class);
+        return $this->hasMany(Student::class);
     }
 
     public function graduation_project(){

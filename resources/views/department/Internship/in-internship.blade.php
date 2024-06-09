@@ -67,18 +67,26 @@
                         </thead>
 
                         <tbody class="table-group-divider">
-                            @foreach ($in_int_students as $student)
+                            @foreach ($students as $student)
                                 <tr>
                                     <th>{{ $loop->iteration }}</th>
-                                    <td>{{ $student->first_name }} {{  $student->last_name }}</td>
-                                    <td>{{  $student->email }}</td>
+                                    <td>{{ $student->user->first_name }} {{  $student->user->last_name }}</td>
+                                    <td>{{  $student->user->email }}</td>
                                     <td class="bg-secondary-subtle">
-                                        <select class="form-select" name="supervisor_{{ $loop->iteration }}">
-                                            <option selected>Select Supervisor</option>
-                                            @foreach ($department_supervisors as $supervisor)
-                                                <option value="{{ $supervisor->id }}">
-                                                    {{ $supervisor->first_name }} {{ $supervisor->last_name }}
-                                                </option>
+                                        <select class="form-select" name="{{ $student->user->university_id }}">
+                                            <option selected>
+                                                Select Supervisor
+                                            </option>
+                                            @foreach ($supervisors as $supervisor)
+                                                @if ($supervisor->id == $student->supervisor_id)
+                                                    <option selected value="{{ $supervisor->user->university_id }}">
+                                                        {{ $supervisor->user->first_name }} {{ $supervisor->user->last_name }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $supervisor->user->university_id }}">
+                                                        {{ $supervisor->user->first_name }} {{ $supervisor->user->last_name }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </td>

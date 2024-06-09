@@ -15,11 +15,11 @@
             <div class="table-responsive py-2 mb-5">
                 <table class="table-bordered bg-white">
                 <thead>
-                    <th class="px-3 py-2">{{ $student_user->first_name }} {{ $student_user->last_name }}</th>
-                    <th class="px-3 py-2">{{ $student_user->university_id }}</th>
-                    <th class="px-3 py-2">{{ $student_user->email }}</th>
+                    <th class="px-3 py-2">{{ $student->user->first_name }} {{ $student->user->last_name }}</th>
+                    <th class="px-3 py-2">{{ $student->user->university_id }}</th>
+                    <th class="px-3 py-2">{{ $student->user->email }}</th>
                     <th class="px-3 py-2">
-                        {{ $supervisor->user->first_name }} {{ $supervisor->user->last_name }}
+                        {{ $student->supervisor->user->first_name }} {{ $student->supervisor->user->last_name }}
                     </th>
                 </thead>
                 </table>
@@ -28,7 +28,7 @@
 
 
 
-        @if (count($courses))
+        @if (count($student->internship_courses))
             <section class="container mx-auto py-3">
                 <h2 class="fw-light">Courses</h2>
                 <div class="py-2 table-responsive">
@@ -41,7 +41,7 @@
                         <th class="px-3 py-2" style="width: 0%;">Note</th>
                         </thead>
                         <tbody class="table-group-divider">
-                            @foreach ($courses as $course)
+                            @foreach ($student->internship_courses as $course)
                                 <tr>
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->hour }}</td>
@@ -84,7 +84,7 @@
 
 
 
-        @if ($company)
+        @if ($student->internship_company)
             <section class="container mx-auto py-3">
                 <div>
                     <h2 class="fw-light">Company</h2>
@@ -98,10 +98,10 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <tr>
-                                    <td>{{ $company->company_name }}</td>
-                                    <td>{{ $company->address }}</td>
-                                    <td>{{ $company->starting_date }}</td>
-                                    <td>{{ $company->ending_date }}</td>
+                                    <td>{{ $student->internship_company->company_name }}</td>
+                                    <td>{{ $student->internship_company->address }}</td>
+                                    <td>{{ $student->internship_company->starting_date }}</td>
+                                    <td>{{ $student->internship_company->ending_date }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -112,14 +112,14 @@
                         <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Superviser</span>
-                                <input type="text" class="form-control bg-white" disabled value="{{ $company->supervisor_name }}">
+                                <input type="text" class="form-control bg-white" disabled value="{{ $student->internship_company->supervisor_name }}">
                             </div>
                         </div>
 
                         <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Email</span>
-                                <input type="text" class="form-control bg-white" disabled value="{{ $company->supervisor_email }}">
+                                <input type="text" class="form-control bg-white" disabled value="{{ $student->internship_company->supervisor_email }}">
                             </div>
                         </div>
                     </div>
@@ -134,8 +134,8 @@
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <tr>
-                                        <td>{{ $company->description }}</td>
-                                        <td>{{ $company->technologies }}</td>
+                                        <td>{{ $student->internship_company->description }}</td>
+                                        <td>{{ $student->internship_company->technologies }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -148,7 +148,7 @@
                             <div class="col-lg-6 col-sm-12">
                                 <div class="input-group border border-1 border-dark rounded" style="height: 8rem;">
                                     <span class="input-group-text bg-primary-subtle fw-bold">Supervisor Notes</span>
-                                    <textarea class="form-control bg-white" disabled>{{ $company->supervisor_note }}</textarea>
+                                    <textarea class="form-control bg-white" disabled>{{ $student->internship_company->supervisor_note }}</textarea>
                                 </div>
                             </div>
                         </div>
