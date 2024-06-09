@@ -103,7 +103,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        @foreach ($courses as $course)
+                        @foreach ($student->internship_courses as $course)
                             <tr>
                                 <form action="{{ route('course.update', $course) }}" method="post" enctype="multipart/form-data">
                                     @csrf
@@ -134,6 +134,28 @@
                             </tr>
 
 
+                            <div class="modal fade" id="note_{{ $loop->iteration }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ $course->name }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @if ($course->acceptance)
+                                                <h4>Accepted</h4>
+                                                <p>{{ $course->supervisor_note }}</p>
+                                            @elseif ($course->acceptance == 0 && $course->supervisor_note)
+                                                <h3>Rejected</h3>
+                                                <p>{{ $course->supervisor_note }}</p>
+                                            @else
+                                                <p>There is no note yet.</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="modal fade" id="delete_{{ $loop->iteration }}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -155,23 +177,6 @@
                                 </div>
                             </div>
 
-
-                            <!-- Supervisor Note -->
-                            <div class="modal fade" id="note_{{ $loop->iteration }}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Note</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h3>Accepted</h3>
-                                            <h3>Rejected</h3>
-                                            <div class="py-3 px-2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         @endforeach
                     </tbody>
                 </table>

@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class InternshipCourseController extends Controller
 {
-    private static $student;
-    private $user;
-
-
 
 
     /**
@@ -23,10 +19,9 @@ class InternshipCourseController extends Controller
      */
     public function create()
     {
-        $courses = InternshipCourse::where('student_id', Student::firstWhere('user_id',Auth::user()->id)->id)->get();
+        $student = Student::firstWhere('user_id',Auth::user()->id);
 
-        // dd($courses);
-        return view('student.Internship.courses', compact('courses'));
+        return view('student.Internship.courses', compact('student'));
     }
 
     /**
