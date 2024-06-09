@@ -11,9 +11,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\SupervisorGraduationProjectController;
+use App\Http\Controllers\SupervisorInternshipController;
 use App\Http\Controllers\TimelineController;
-use App\Models\GraduationProject;
-use App\Models\Supervisor;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,7 +104,17 @@ Route::controller(SupervisorController::class)->prefix('supervisor')->name('supe
 Route::controller(SupervisorGraduationProjectController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
     Route::get('/graduation-project-teams', 'index')->name('teams');
     Route::get('/graduation-project-team-details', 'show')->name('show');
-})->middleware('is.supervisor');
+})->middleware(['auth','is.supervisor']);
+
+
+
+// Supervisor's Internship Route
+Route::controller(SupervisorInternshipController::class)->prefix('supervisor')->name('supervisor.')->group(function(){
+    Route::get('/internship/student-list', 'index')->name('student-list');
+    Route::get('/internship/report/{user}', 'show')->name('report');
+    Route::post('/internship/report/store-course-note/{course}/{status}', 'storeCourseNote')->name('storeCourseNote');
+    Route::post('/internship/report/store-company-note/{company}/{status}', 'storeCompanyNote')->name('storeCompanyNote');
+})->middleware(['auth','is.supervisor']);
 
 
 

@@ -58,7 +58,7 @@
     <main>
         <section class="container pt-5 mt-5">
             <div class="row p-3 d-flex justify-content-center">
-                <a href=""
+                <a href="{{ route('supervisor.student-list') }}"
                 type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
                     <p class="display-5 fw-bold">Internship</p>
                 </a>

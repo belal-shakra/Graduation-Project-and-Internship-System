@@ -24,13 +24,15 @@
                     </thead>
 
                     <tbody class="table-group-divider">
-                        <tr>
-                        <th>1</th>
-                        <td>Belal Shakra</td>
-                        <td>0192452</td>
-                        <td>bla0192452@ju.edu.jo</td>
-                        <td><a href="">view report</a></td>
-                        </tr>
+                        @foreach ($students as $student)
+                            <tr>
+                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                                <td>{{ $student->university_id }}</td>
+                                <td>{{ $student->email }}</td>
+                                <td><a href="{{ route('supervisor.report', $student) }}">view report</a></td>
+                            </tr>
+                        @endforeach
 
                     </tbody>
                 </table>

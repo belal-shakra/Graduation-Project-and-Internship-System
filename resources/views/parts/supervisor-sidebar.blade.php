@@ -34,8 +34,7 @@
                     </span>
                 </li>
                 <ul class="nav collapse mx-2 mb-1 px-0 py-1 show bg-secondary-subtle rounded" id="drop-intern">
-                    <li class="nav-item"><a class="nav-link link-dark" href="../Internship/students-list.html">Students List</a></li>
-                    <!-- <li class="nav-item"><a class="nav-link link-dark" href="#"></a></li> -->
+                    <li class="nav-item"><a class="nav-link link-dark" href="{{ route('supervisor.student-list') }}">Students List</a></li>
                 </ul>
             </ul>
 
