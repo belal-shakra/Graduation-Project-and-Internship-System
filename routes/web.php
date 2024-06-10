@@ -14,7 +14,6 @@ use App\Http\Controllers\SupervisorGraduationProjectController;
 use App\Http\Controllers\SupervisorInternshipController;
 use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\WeeklyFollowingFormController;
-use App\Http\Controllers\WeeklyFormController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -154,7 +153,6 @@ Route::controller(WeeklyFollowingFormController::class)->name('weekly.')->group(
 
 
 
-
 // Department's Graduation Project Route
 Route::controller(DepartmentGraduationProjectController::class)->prefix('department')->name('department.')->group(function(){
     Route::get('/Graduation-Project/exceed-90-hours', 'exceed90')->name('exceed90');
@@ -164,9 +162,6 @@ Route::controller(DepartmentGraduationProjectController::class)->prefix('departm
 
 
 
-// Route::get('/test/', function(){
-//     return view('supervisor.Graduation-Project.teams');
-// });
 
 
 Route::fallback(fn() => view('404'))->name('404');

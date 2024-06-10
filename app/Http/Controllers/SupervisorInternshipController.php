@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddInternshipNoteRequest;
 use App\Models\InternshipCompany;
 use App\Models\InternshipCourse;
+use App\Models\Notification;
 use App\Models\Supervisor;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,6 +43,20 @@ class SupervisorInternshipController extends Controller
         $course->acceptance = $status;
         $course->save();
 
+        if($status)
+            $review = 'acceppt';
+        else
+            $review = 'reject';
+
+        Notification::create([
+            'title'   => 'Internhip - Courses',
+            'message' => 'Your Supervisor '. $review .' your Internship course.',
+            'type'    => 'student',
+            'is_read' => false,
+            'user_id' => $course->student->user->id,
+        ]);
+
+
         return back();
     }
 
@@ -52,6 +67,21 @@ class SupervisorInternshipController extends Controller
         $company->supervisor_note = $note['supervisor_note'];
         $company->acceptance = $status;
         $company->save();
+
+
+        if($status)
+            $review = 'acceppt';
+        else
+            $review = 'reject';
+
+
+        Notification::create([
+            'title'   => 'Internhip - Company',
+            'message' => 'Your Supervisor '. $review .' your Company Internship.',
+            'type'    => 'student',
+            'is_read' => false,
+            'user_id' => $company->student->user->id,
+        ]);
 
         return back();
     }
