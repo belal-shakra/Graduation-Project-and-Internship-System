@@ -24,7 +24,9 @@ class DepartmentInternshipController extends Controller
             $query->where('department_id', Auth::user()->department_id);
         })->get();
 
-        return view('department.Internship.in-internship', compact(['students', 'supervisors']));
+        $week = Auth::user()->department->week;
+
+        return view('department.Internship.in-internship', compact(['students', 'supervisors', 'week']));
     }
 
 

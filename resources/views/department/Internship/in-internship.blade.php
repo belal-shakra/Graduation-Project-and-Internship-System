@@ -26,22 +26,34 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Send Supervisor Emails</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <span class="text-danger">You already send six weekly following form.</span>
-                            </div>
-                            <div class="modal-footer">
-                                <form action="{% url 'send_email' dept.dept_name week %}" method="post">
-                                    <input type="submit" value="Send Emails" class="btn btn-primary" disabled>
-                                </form>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure to send First weekly following form to companies supervisors ?
-                            </div>
-                            <div class="modal-footer">
-                                <form action="" method="post">
-                                    <input type="submit" value="Send Emails" class="btn btn-primary">
-                                </form>
-                            </div>
+
+
+                            @if ($week <= 6)
+                                <div>
+                                    <div class="modal-body">
+                                        Are you sure to send First weekly following form to companies supervisors ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{{ route('weekly.mail') }}" method="post">
+                                            @csrf
+                                            <input type="submit" value="Send Emails" class="btn btn-primary">
+                                        </form>
+                                    </div>
+                                </div>
+                            @else
+                                <div>
+                                    <div class="modal-body">
+                                        <span class="text-danger">You already send six weekly following form.</span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'send_email' dept.dept_name week %}" method="post">
+                                            <input type="submit" value="Send Emails" class="btn btn-primary" disabled>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+
+
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,7 @@
 
 
     <section class="container py-5">
-      <h2>First Week</h2>
+      <h2>{{ $week }} Week</h2>
 
       <form action="{{ route('weekly.store') }}" method="post">
         @csrf
@@ -29,7 +29,9 @@
           <div class="row">
             <div class=" col-sm-12 col-lg-3">
               <select class="form-select mt-4 mb-2 border border-1 border-dark" name="student">
-                  <option selected value="bla0192452">Belal Shakra</option>
+                  <option selected value="{{ $student->user->username }}">
+                    {{ $student->user->first_name }} {{ $student->user->last_name }}
+                  </option>
               </select>
             </div>
           </div>

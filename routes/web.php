@@ -149,6 +149,7 @@ Route::controller(DepartmentInternshipController::class)->prefix('department')->
 Route::controller(WeeklyFollowingFormController::class)->name('weekly.')->group(function(){
     Route::get('weekly-following-form/{username}', 'weeklyFollowing')->name('following-form');
     Route::post('weekly-following-form/store/', 'store')->name('store');
+    Route::post('weekly-following/mail', 'mails')->name('mail');
 });
 
 
@@ -168,6 +169,6 @@ Route::controller(DepartmentGraduationProjectController::class)->prefix('departm
 // });
 
 
-Route::fallback(fn() => view('404'));
+Route::fallback(fn() => view('404'))->name('404');
 
 
