@@ -1,7 +1,8 @@
 @extends('base')
 
-
 @section('tab-title', 'Internship | Courses')
+
+
 @section('content')
 
 

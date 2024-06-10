@@ -1,5 +1,5 @@
 @php
-    $uris = ['student.home', 'student.login', 'supervisor.login', 'supervisor.home', 'department.login'];
+    $uris = ['student.home', 'student.login', 'supervisor.login', 'supervisor.home', 'department.login', 'weekly.following-form'];
 @endphp
 
 <!DOCTYPE html>

@@ -13,7 +13,8 @@ use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\SupervisorGraduationProjectController;
 use App\Http\Controllers\SupervisorInternshipController;
 use App\Http\Controllers\TimelineController;
-
+use App\Http\Controllers\WeeklyFollowingFormController;
+use App\Http\Controllers\WeeklyFormController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -142,6 +143,15 @@ Route::controller(DepartmentInternshipController::class)->prefix('department')->
     Route::post('/store', 'store')->name('store_in_int');
     Route::get('/student-report/{student_rec}', 'show')->name('show');
 })->middleware(['auth', 'is.head']);
+
+
+// Weekly Following Form
+Route::controller(WeeklyFollowingFormController::class)->name('weekly.')->group(function(){
+    Route::get('weekly-following-form/{username}', 'weeklyFollowing')->name('following-form');
+    Route::post('weekly-following-form/store/', 'store')->name('store');
+});
+
+
 
 
 // Department's Graduation Project Route

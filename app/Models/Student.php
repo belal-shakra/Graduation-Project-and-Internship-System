@@ -33,6 +33,11 @@ class Student extends Model
     }
 
 
+    public function weekly_followings(){
+        return $this->hasMany(WeeklyFollowing::class);
+    }
+
+
     public function internship_courses(){
         return $this->hasMany(InternshipCourse::class);
     }
