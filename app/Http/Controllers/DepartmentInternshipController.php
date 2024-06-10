@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InternshipCompany;
 use App\Models\InternshipCourse;
+use App\Models\Notification;
 use App\Models\Student;
 use App\Models\Supervisor;
 use App\Models\User;
@@ -47,6 +48,27 @@ class DepartmentInternshipController extends Controller
                     $supervisor = Supervisor::firstWhere('user_id', $user->id);
                     $student->supervisor_id = $supervisor->id;
                     $student->save();
+
+
+
+                    $supervisor_name = $supervisor->user->first_name .' '. $supervisor->user->last_name;
+                    $student_name = $student->user->first_name .' '. $student->user->last_name;
+                    Notification::create([
+                        'title'   => 'Internship Supervision',
+                        'message' => 'Your Internship Supervisor is '.$supervisor_name,
+                        'type' => 'student',
+                        'is_read' => false,
+                        'user_id' => $student->user->id,
+                    ]);
+
+                    Notification::create([
+                        'title'   => 'Internship Supervision',
+                        'message' => 'You are Internship Supervisor for '.$student_name,
+                        'type' => 'supervisor',
+                        'is_read' => false,
+                        'user_id' => $supervisor->user->id,
+                    ]);
+
                 }
                 else
                     continue;

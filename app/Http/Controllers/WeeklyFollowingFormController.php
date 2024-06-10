@@ -6,6 +6,7 @@ use App\Http\Requests\WeeklyFormRequest;
 use App\Mail\WeeklyFollowingMail;
 use App\Models\Department;
 use App\Models\InternshipCompany;
+use App\Models\Notification;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\WeeklyFollowing;
@@ -78,6 +79,16 @@ class WeeklyFollowingFormController extends Controller
             ];
 
             $this->send($internship->supervisor_email, $details);
+
+
+
+            Notification::create([
+                'title'   => 'Weekly Following Form',
+                'message' => 'The form for '.$this->weeks[$week-1].' week was sent.',
+                'type'    => 'student',
+                'is_read' => false,
+                'user_id' => $internship->student->user->id,
+            ]);
         }
 
         $department = Department::find(Auth::user()->department_id);
