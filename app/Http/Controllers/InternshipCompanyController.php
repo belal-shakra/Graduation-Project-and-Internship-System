@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateInternshipCompanyRequest;
 use App\Http\Requests\UpdateInternshipCompanyRequest;
 use App\Models\InternshipCompany;
+use App\Models\Notification;
 use App\Models\Student;
+use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,6 +39,8 @@ class InternshipCompanyController extends Controller
         $form['student_id'] = Student::firstWhere('user_id', Auth::user()->id)->id;
         $company = InternshipCompany::create($form);
 
+        $this->send_notification($company, 'fill');
+
         return to_route('company.edit')->with('companyFormFilledSuccessfully', 'The Form has been filled successfully.');
     }
 
@@ -65,6 +70,8 @@ class InternshipCompanyController extends Controller
             return back()->with('updatedSuccessfully', 'The form has been updated successfully.');
         }
 
+        $this->send_notification($company, 'update');
+
         return back();
     }
 
@@ -80,5 +87,30 @@ class InternshipCompanyController extends Controller
         }
 
         return back();
+    }
+
+
+
+    private function send_notification($company, $msg){
+        $student_name = $company->student->user->first_name .' '. $company->student->user->last;
+        Notification::create([
+            'title'   => 'Internship | Company',
+            'message' => $student_name . ' '. $msg . ' the company internship form.',
+            'type'    => 'supervisor',
+            'is_read' => false,
+            'user_id' => $company->student->supervisor_id,
+        ]);
+
+
+
+        $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
+        $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;
+        Notification::create([
+            'title'   => 'Internship | Company',
+            'message' => $student_name . ' '. $msg .' the company internship form.',
+            'type'    => 'department',
+            'is_read' => false,
+            'user_id' => $head_id,
+        ]);
     }
 }

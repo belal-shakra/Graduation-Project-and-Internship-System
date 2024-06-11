@@ -6,9 +6,11 @@ use App\Http\Requests\AddGraduationProjectRequest;
 use App\Http\Requests\UpdateGraduationProjectRequest;
 use App\Models\Department;
 use App\Models\GraduationProject;
+use App\Models\Notification;
 use App\Models\Student;
 use App\Models\Supervisor;
 use App\Models\User;
+use App\Models\UserType;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -335,6 +337,32 @@ class GraduationProjectController extends Controller
         $gp = Supervisor::find($pk);
         $gp->graduation_project_id = null;
         $gp->save();
+    }
+
+
+
+
+    private function send_notification($course, $msg){
+        $student_name = $course->student->user->first_name .' '. $course->student->user->last;
+        Notification::create([
+            'title'   => 'Internship | Company',
+            'message' => $student_name . ' '. $msg . ' a course of internship - courses.',
+            'type'    => 'supervisor',
+            'is_read' => false,
+            'user_id' => $course->student->supervisor_id,
+        ]);
+
+
+
+        $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
+        $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;
+        Notification::create([
+            'title'   => 'Internship | Company',
+            'message' => $student_name . ' '. $msg .' a course of internship - courses.',
+            'type'    => 'department',
+            'is_read' => false,
+            'user_id' => $head_id,
+        ]);
     }
 
 }
