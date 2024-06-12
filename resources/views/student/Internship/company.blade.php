@@ -17,7 +17,7 @@
             </div>
 
 
-            <form action="{{ route('company.store') }}" method="post">
+            <form action="{{ route('student.company.store') }}" method="post">
                 @csrf
 
                 <div class="my-4">

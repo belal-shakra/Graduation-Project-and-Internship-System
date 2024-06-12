@@ -41,7 +41,7 @@ class InternshipCompanyController extends Controller
 
         $this->send_notification($company, 'fill');
 
-        return to_route('company.edit')->with('companyFormFilledSuccessfully', 'The Form has been filled successfully.');
+        return to_route('student.company.edit')->with('companyFormFilledSuccessfully', 'The Form has been filled successfully.');
     }
 
 

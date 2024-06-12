@@ -37,7 +37,7 @@ class GraduationProjectController extends Controller
 
         $gp = GraduationProject::find(Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id);
         if($gp){
-            return redirect()->route('graduation-project.edit');
+            return redirect()->route('student.graduation-project.edit');
         }
         else {
             $rejectedStudents = session('rejectedStudents', []);
@@ -60,7 +60,7 @@ class GraduationProjectController extends Controller
         
         $acceptedStudents = [];
         if(!$this->checkUser($request)){
-            return redirect()->route("graduation-project.create");
+            return redirect()->route("student.graduation-project.create");
         }
         
         $gpModel = GraduationProject::create($gp_form);
@@ -70,7 +70,7 @@ class GraduationProjectController extends Controller
 
 
 
-        return redirect()->route('graduation-project.edit')->with('GpFilledSuccessfully', 'The Form has been filled successfully.');
+        return redirect()->route('student.graduation-project.edit')->with('GpFilledSuccessfully', 'The Form has been filled successfully.');
     }
 
 

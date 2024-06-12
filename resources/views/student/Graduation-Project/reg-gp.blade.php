@@ -20,7 +20,7 @@
 
             @dump($errors)
 
-            <form action="{{ route('graduation-project.store') }}" method="post">
+            <form action="{{ route('student.graduation-project.store') }}" method="post">
                 @csrf
 
                 <div class="row mt-3 mb-5">

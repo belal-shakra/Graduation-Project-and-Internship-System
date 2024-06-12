@@ -25,7 +25,7 @@
             @endsession
 
 
-            <form action="{{ route('graduation-project.update', $gp) }}" method="post">
+            <form action="{{ route('student.graduation-project.update', $gp) }}" method="post">
                 @method('patch')
                 @csrf
 

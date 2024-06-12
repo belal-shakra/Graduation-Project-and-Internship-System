@@ -21,7 +21,7 @@
             </div>
 
 
-            <form action="{{ route('company.update', $student->internship_company) }}" method="post">
+            <form action="{{ route('student.company.update', $student->internship_company) }}" method="post">
                 @csrf
                 @method('patch')
 
@@ -154,7 +154,7 @@
                             <p>Are you sure to delete this Form ?</p>
                         </div>
                         <div class="modal-footer">
-                            <form action="{{ route('company.destroy', $student->internship_company) }}" method="post">
+                            <form action="{{ route('student.company.destroy', $student->internship_company) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" value="Delete Form" class="btn btn-danger">

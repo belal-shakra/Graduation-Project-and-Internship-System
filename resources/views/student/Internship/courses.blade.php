@@ -18,7 +18,7 @@
                     <div class="alert alert-success">{{ session('course_added') }}</div>
                 @endsession
 
-                <form action="{{ route('course.store') }}" method="post" enctype="multipart/form-data" >
+                <form action="{{ route('student.course.store') }}" method="post" enctype="multipart/form-data" >
                     @csrf
 
                     <div id="course-form">
@@ -106,7 +106,7 @@
                     <tbody class="table-group-divider">
                         @foreach ($student->internship_courses as $course)
                             <tr>
-                                <form action="{{ route('course.update', $course) }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('student.course.update', $course) }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     @method('patch')
 
@@ -168,7 +168,7 @@
                                             <p>Are you sure to delete this course ?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('course.destroy', $course) }}" method="post">
+                                            <form action="{{ route('student.course.destroy', $course) }}" method="post">
                                                 @csrf
                                                 @method('delete')
                                                 <input type="submit" value="Delete" class="btn btn-danger">
