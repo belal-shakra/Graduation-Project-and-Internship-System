@@ -28,7 +28,7 @@ class CheckIsStudent
         }
         else{
             Auth::logout();
-            return to_route('student.login');
+            return to_route('student.login')->with('denied_permission', 'You haven\'t permission to login.');
         }
     }
 

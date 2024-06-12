@@ -21,10 +21,32 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+
+                return redirect($this->get_correct_redirect($request));
             }
         }
 
         return $next($request);
+    }
+
+
+    private function get_correct_redirect($request){
+
+        switch (Auth::user()->user_type->name) {
+            case 'student':
+                return '/';
+            
+            case 'supervisor':
+                return '/supervisor';
+            
+            case 'supervisor&head':
+                $url = url()->previous();
+                $route_prefix = app('router')->getRoutes($url)->match(app('request')->create($url))->action['prefix'];
+                if($route_prefix == '/supervisor'){
+                    return '/supervisor';
+                }
+                else
+                    return '/department';
+        }
     }
 }
