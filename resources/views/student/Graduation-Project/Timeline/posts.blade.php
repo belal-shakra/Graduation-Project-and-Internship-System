@@ -56,7 +56,7 @@
                                     @endif
                                     
                                     <a href="{{ asset('storage') }}/{{ $file->path }}/{{ $file->file }}" target="_blank">
-                                        {{ $file->file }}
+                                        {{ explode('-', $file->file, 2)[1] }}
                                     </a>
                                 </div>
                             @endforeach

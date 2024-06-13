@@ -16,23 +16,6 @@ class SupervisorGraduationProjectController extends Controller
     private $students;
 
 
-    // /**
-    //  * Create a new controller instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct()
-    // {
-    //     $this->middleware(function ($request, $next) {
-    //         $supervisor_gp_id = Supervisor::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
-    //         $this->project = GraduationProject::find($supervisor_gp_id);
-    //         $this->students = Student::where('graduation_project_id', $supervisor_gp_id)->get();
-
-    //         return $next($request);
-    //     });
-    // }
-
-
 
     public function index(){
         $gp_id = Supervisor::firstWhere('user_id', Auth::user()->id)->graduation_project_id;

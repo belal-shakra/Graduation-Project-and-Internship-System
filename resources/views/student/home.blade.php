@@ -22,16 +22,20 @@
 
                         <li class="nav-item px-3" data-bs-toggle="dropdown">
                             <a href="" class="nav-link text-white">
-                                {{-- <span class=" position-relative">
-                                    <i class="bi bi-bell-fill text-white"></i>
-                                    <span class="position-absolute top-25 start-0 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                @if ($there_is)
+                                    <span class=" position-relative" data-bs-toggle="dropdown">
+                                        <i class="bi bi-bell-fill text-white fs-4"></i>
+                                        <span class="position-absolute top-0 start-50 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                        </span>
                                     </span>
-                                </span> --}}
-                                <i class="bi bi-bell-fill text-white"></i>
+                                @else
+                                    <i class="bi bi-bell-fill text-white fs-4" data-bs-toggle="dropdown"></i>
+                                @endif
                                 <span class="px-2">Notification</span>
                             </a>
                         </li>
                         <ul class="dropdown-menu  p-0">
+                            @include('parts.notification')
                         </ul>
 
                         <li class="nav-item px-3">
