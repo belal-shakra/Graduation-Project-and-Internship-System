@@ -7,6 +7,7 @@ use App\Http\Controllers\DepartmentInternshipController;
 use App\Http\Controllers\GraduationProjectController;
 use App\Http\Controllers\InternshipCompanyController;
 use App\Http\Controllers\InternshipCourseController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SupervisorController;
@@ -44,6 +45,16 @@ Route::middleware('guest')->group(function(){
     Route::get('/department/login', [DepartmentController::class, 'create'])->name('department.login');
 });
 
+
+
+###########################################################
+########################## Login ##########################
+###########################################################
+
+Route::controller(NotificationController::class)->middleware('auth')->name('notification.')->group(function(){
+    Route::post('/notification/read-all', 'read_all')->name('read_all');
+    Route::get('/notification/read-one/{notification}', 'read_one')->name('read_one');
+});
 
 
 
@@ -134,10 +145,6 @@ Route::middleware(['auth', 'is.supervisor'])->prefix('supervisor')->name('superv
         Route::post('/internship/report/store-company-note/{company}/{status}', 'storeCompanyNote')->name('storeCompanyNote');
     });
 });
-
-
-
-
 
 
 

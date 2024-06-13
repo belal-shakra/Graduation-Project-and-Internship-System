@@ -26,18 +26,11 @@ class NoificationServiceProvider extends ServiceProvider
         
         View::composer('*', function ($view) {
             if (Auth::check()) {
-                $type = Auth::user()->user_type->name;
 
                 $url = url()->current();
-                $route_prefix = app('router')->getRoutes($url)->match(app('request')->create($url))->action['prefix'];
+                $route = app('router')->getRoutes($url)->match(app('request')->create($url))->action['as'];
+                $notifications = Notification::where('user_id', Auth::user()->id)->where('type', explode('.', $route,2)[0])->orderByDesc('created_at')->get();
 
-                if($route_prefix == '/department')
-                    $type = 'department';
-                elseif($route_prefix != '')
-                    $type = 'supervisor';
-                
-                
-                $notifications = Notification::where('user_id', Auth::user()->id)->where('type', $type)->orderByDesc('created_at')->get();
 
                 $there_is = false;
                 foreach($notifications as $notification)

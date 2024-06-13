@@ -15,7 +15,7 @@
 
         <div class="pe-xl-5 me-3">
             <ul class="nav pe-xl-" style="position: relative; top: 5px">
-                <li class="nav-lin dropstart">
+                <li class="nav-lin dropstart" role="button">
                     @if ($there_is)
                         <span class=" position-relative" data-bs-toggle="dropdown">
                             <i class="bi bi-bell-fill text-white fs-4"></i>
