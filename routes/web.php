@@ -48,7 +48,7 @@ Route::middleware('guest')->group(function(){
 
 
 ###########################################################
-########################## Login ##########################
+###################### Notification #######################
 ###########################################################
 
 Route::controller(NotificationController::class)->middleware('auth')->name('notification.')->group(function(){

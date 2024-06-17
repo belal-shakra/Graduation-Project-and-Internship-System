@@ -11,14 +11,13 @@
         <h1 id="title">Graduation Project</h1>
 
 
+
         <div class="container py-2">
 
             @session('GpFilledSuccessfully')
                 <div class="alert alert-success">{{ session('GpFilledSuccessfully') }}</div>
             @endsession
 
-
-            @dump($errors)
 
             <form action="{{ route('student.graduation-project.store') }}" method="post">
                 @csrf
@@ -59,13 +58,18 @@
                     <h2>Students Info</h2>
 
 
-                    <ul>
-                        @foreach ($rejectedStudents as $rejStudent)
-                            <li class="text-danger">
-                                {{ $rejStudent }}
-                            </li>
-                        @endforeach
-                    </ul>
+                    @session('rejectedStudents')
+                        @if (count(@session('rejectedStudents')) == 1)
+                            <li class="text-danger">The team must be consiste of al lest two students.</li>
+                        @endif
+                        <ul>
+                            @foreach (@session('rejectedStudents') as $rejStudent)
+                                <li class="text-danger">
+                                    {{ $rejStudent }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endsession
 
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
@@ -126,11 +130,14 @@
 
 
 
-                    <ul>
-                        @foreach ($rejectedSupervisors as $supervisors)
-                            <li class="text-danger">{{ $supervisors }}</li>
-                        @endforeach
-                    </ul>
+
+                    @session('rejectedSupervisors')
+                        <ul>
+                            @foreach (session('rejectedSupervisors') as $supervisors)
+                                <li class="text-danger">{{ $supervisors }}</li>
+                            @endforeach
+                        </ul>
+                    @endsession
 
                     <div class="pb-3">
                         <div class="row px-3 mb-3">

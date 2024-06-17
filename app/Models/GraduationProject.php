@@ -30,7 +30,7 @@ class GraduationProject extends Model
 
 
     public function supervisors(){
-        return $this->hasMany(Supervisor::class);
+        return $this->belongsToMany(Supervisor::class);
     }
 
 

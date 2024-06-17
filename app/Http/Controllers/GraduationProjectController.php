@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddGraduationProjectRequest;
-use App\Http\Requests\UpdateGraduationProjectRequest;
+use App\Http\Requests\StoreGraduationProjectRequest;
 use App\Models\Department;
 use App\Models\GraduationProject;
 use App\Models\Notification;
@@ -34,31 +33,28 @@ class GraduationProjectController extends Controller
          */
 
 
-
-        $gp = GraduationProject::find(Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id);
+        $student = Student::firstWhere('user_id', Auth::user()->id);
+        $gp = GraduationProject::find($student->graduation_project_id);
         if($gp){
             return redirect()->route('student.graduation-project.edit');
         }
         else {
-            $rejectedStudents = session('rejectedStudents', []);
-            $rejectedSupervisors = session('rejectedSupervisors', []);
-            $student_no = Department::find(Auth::user()->department_id)->no_team_member;
-            return view('student.Graduation-Project.reg-gp', compact(['student_no', 'rejectedStudents', 'rejectedSupervisors']));
+            $student_no = $student->user->department->no_team_member;
+            return view('student.Graduation-Project.reg-gp', compact(['student_no']));
         }
     }
 
 
 
 
-    /**f
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(AddGraduationProjectRequest $request)
+    public function store(StoreGraduationProjectRequest $request)
     {
         $gp_form = $request->validated();
-        // dd($gp_form);
         
-        $acceptedStudents = [];
+        
         if(!$this->checkUser($request)){
             return redirect()->route("student.graduation-project.create");
         }
@@ -66,7 +62,7 @@ class GraduationProjectController extends Controller
         $gpModel = GraduationProject::create($gp_form);
         
         $this->addStudents($gpModel);
-        $this->addSupervisors($gpModel, $gp_form);
+        $this->addSupervisors($gpModel);
 
 
 
@@ -82,20 +78,18 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
-
         $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         if(!$isInGp)
-            return redirect()->route('graduation-project.create');
-
+            return redirect()->route('student.graduation-project.create');
 
         $gp = GraduationProject::find($isInGp);
-        $acceptedStudents = session('acceptedStudents', []);
-        $rejectedStudents = session('rejectedStudents', []);
-        $rejectedSupervisors = session('rejectedSupervisors', []);
+        // $acceptedStudents = session('acceptedStudents', []);
+        // $rejectedStudents = session('rejectedStudents', []);
+        // $rejectedSupervisors = session('rejectedSupervisors', []);
 
 
         $student_no = Department::find(Auth::user()->department_id)->no_team_member;
-        return view('student.Graduation-Project.edit-gp', compact(['student_no', 'gp', 'rejectedStudents', 'rejectedSupervisors', 'acceptedStudents']));
+        return view('student.Graduation-Project.edit-gp', compact(['student_no', 'gp',]));
     }
 
 
@@ -105,23 +99,20 @@ class GraduationProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGraduationProjectRequest $request, GraduationProject $graduation_project)
+    public function update(StoreGraduationProjectRequest $request, GraduationProject $graduation_project)
     {
         $updatedForm = $request->validated();
-
-
-        // $acceptedStudents = [];
-        // $this->removeStudents($graduation_project);
-        if(!$this->checkUser($request)){
-            return redirect()->route("graduation-project.edit");
+        
+        if(!$this->checkUser($request, $graduation_project->id)){
+            return redirect()->route("student.graduation-project.edit");
         }
 
 
         $graduation_project->update($updatedForm);
         $this->addStudents($graduation_project);
-        $this->addSupervisors($graduation_project, $updatedForm);
+        $this->addSupervisors($graduation_project);
 
-        return redirect()->route('graduation-project.edit')->with('GpUpdateSuccessfully', 'The Form has been updated successfully.');
+        return redirect()->route('student.graduation-project.edit')->with('GpUpdateSuccessfully', 'The Form has been updated successfully.');
     }
 
 
@@ -140,24 +131,146 @@ class GraduationProjectController extends Controller
 
 
 
-    private function checkUser($request){
+    private function checkUser($request, $graduation_project=PHP_INT_MAX){
 
+        $flag = true;
+        if (!$this->checkStudents($request, $graduation_project))
+            $flag = false;
+
+        if(!$this->checkSupervisor($request, $graduation_project))
+            $flag = false;
+
+
+        if($flag)
+            return true;
+        return false;
+    }
+
+
+
+    /**
+     * Check if the registered students can be added to the graduation project team.
+     * 
+     * @param Request $request the request that contains the graduation project form.
+     * @return boolean true, if the accepted students more than two, false otherwise.
+     */
+    private function checkStudents($request, $graduation_project=PHP_INT_MAX)
+    {
 
         $acceptedStudents = [];
         $rejectedStudents = [];
-        $rejectedSupervisors = [];
 
-        $flag = true;
-        if (!$this->checkStudents($request, $acceptedStudents, $rejectedStudents)){
-            session(['rejectedStudents' => $rejectedStudents]);
-            $flag = false;
+        $alreay = " already registered in other team.";
+        $notStudent = " is not a student.";
+        $isNotInGp = " isn't registered in graduation project.";
+        $wrongDepartment = " isn't from ". Auth::user()->department->name . " department.";
+
+
+
+        $acceptedStudents[Auth::user()->id] = Auth::user();
+
+        $rejected_count = 0;
+        for ($i=1; $i <= Auth::user()->department->no_team_member; $i++) {
+
+            // check if any field is empty (except spaces).
+            if(!$request['name'.$i] || !$request['stu_id'.$i] || !$request['major'.$i]){
+                $rejected_count++;
+                // dd($request['name'.$i]);
+                continue;
+            }
+
+            // check if the authenticated user register in the form.
+            if($request['stu_id'.$i] == Auth::user()->university_id)
+                continue;
+
+            /*
+                check about some info: is user and student, frome same department,
+                registered in graduation project, and if in other team.
+            */
+            $user = User::firstWhere('university_id', $request['stu_id'.$i]);
+            $full_name = $user?->first_name.' '.$user?->last_name;
+            if(!$user?->student){
+                array_push($rejectedStudents, '( '. $request['name'.$i]. '---' . $request['stu_id'.$i] . ' )' . $notStudent);
+                $rejected_count++;
+                continue;
+            }
+            elseif($user->student->graduation_project_id == $graduation_project){
+                array_push($acceptedStudents, $user);
+            }
+            elseif($user->department_id != Auth::user()->department_id){
+                array_push($rejectedStudents, '( '. $full_name .' --- ' . $user->university_id .' )'. $wrongDepartment);
+                $rejected_count++;
+                continue;
+            }
+            elseif(!$user->student->in_graduation_project){
+                array_push($rejectedStudents, '( '. $full_name.' --- ' . $user->university_id .' )'. $isNotInGp);
+                $rejected_count++;
+                continue;
+            }
+            elseif($user->student->graduation_project_id){
+                array_push($rejectedStudents, '( '. $full_name .' --- ' . $user->university_id .' )'. $alreay);
+                $rejected_count++;
+                continue;
+            }
+            else{
+                $acceptedStudents[$user->id] = $user;
+            }
+
+
+            // check if the number of accespted students equal to max number can be added.
+            if(count($acceptedStudents) == Auth::user()->department->no_team_member)
+                break;
         }
+
+
+        session(['rejectedStudents' => $rejectedStudents]);
         session(['acceptedStudents' => $acceptedStudents]);
 
-        if(!$this->checkSupervisor($request, $rejectedSupervisors)){
-            session(['rejectedSupervisors' => $rejectedSupervisors]);
-            $flag = false;
+
+        if($rejected_count == 4 || count($acceptedStudents) == 1)
+            return false;
+        return true;
+    }
+
+
+
+    /**
+     * Check if the registered supervisors can be supervise the graduation project team.
+     * 
+     * @param Request $request the request that contains the graduation project form.
+     * @return boolean true, if the two supervisors accepted, false otherwise.
+     */
+    private function checkSupervisor($request, $graduation_project=PHP_INT_MAX)
+    {
+        $acceptedSupervisor = [];
+        $rejectedSupervisor = [];
+        $isNotSupervisor = " is not a supervisor.";
+        $notSameDept = " is not from " . Auth::user()->department->name . " department.";
+
+
+        $flag = true;
+        for ($i=1; $i <= 2; $i++) {
+
+            $user = User::firstWhere('email', $request['email_'.$i]);
+            $full_name = $user?->first_name .' '. $user?->first_name;
+
+            if(!$user?->supervisor){
+                array_push($rejectedSupervisor, $request['supervisor_'.$i] . $isNotSupervisor);
+                $flag = false;
+            }
+            elseif($user->department_id != Auth::user()->department_id){
+                array_push($rejectedSupervisor, $full_name . $notSameDept);
+                $flag = false;
+            }
+            else{
+                array_push($acceptedSupervisor, $user);
+            }
         }
+
+
+
+        session(['acceptedSupervisors' => $acceptedSupervisor]);
+        session(['rejectedSupervisors' => $rejectedSupervisor]);
 
 
         if($flag)
@@ -168,154 +281,37 @@ class GraduationProjectController extends Controller
 
 
 
-    private function checkStudents($request, &$acceptedStudents, &$rejectedStudents)
-    {
-        $alreay = " already registered in other team.";
-        $notStudent = " is not a student.";
-        $isNotInGp = " isn't registered in graduation project.";
-        $wrongDepartment = " isn't from ". Auth::user()->department->name . " department.";
-
-
-
-
-        // add the authenticated user
-        $acceptedStudents = [Student::firstWhere('user_id', Auth::user()->id)];
-
-
-
-        $stu_num = Department::find(Auth::user()->department_id)->no_team_member;
-        $count = 0;
-        for ($i=1; $i <= $stu_num; $i++) {
-
-
-            if (count($acceptedStudents) == $stu_num) break;
-            if (Auth::user()->university_id == $request['stu_id'.$i]) continue;
-
-
-            // check if is_null.
-            if (is_null($request['name'.$i]) && is_null($request['stu_id'.$i]) && is_null($request['major'.$i])){
-                $count++;
-                continue;
-            }
-
-
-
-            try{
-                $stu_user = User::firstWhere('university_id', $request['stu_id'.$i]);
-                $isStudent = Student::firstWhere('user_id' , $stu_user->id);
-                ($isStudent == null)? throw new  Exception: null;
-
-
-                if($isStudent->in_graduation_project){
-
-                    if($stu_user->department->name != Auth::user()->department->name){
-                        array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $wrongDepartment);
-                        $count++;
-                        continue;
-                    }
-
-                    if ($isStudent->graduation_project_id ){
-                        array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $alreay);
-                        $count++;
-                    }
-                    else {
-                        array_push($acceptedStudents, $isStudent);
-                    }
-                }
-                else {
-                    array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $isNotInGp);
-                    $count++;
-                }
-            }
-            catch(Exception $e){
-                array_push($rejectedStudents, "(".$request['name'.$i]." -- ".$request['stu_id'.$i].")" . $notStudent);
-                $count++;
-            }
-        }
-
-
-        if($count == $stu_num || count($acceptedStudents) == 1) // does the $acceptedStudent count can be 0?
-            return false;
-        return true;
-    }
-
-
-
-
-    private function checkSupervisor($request, &$rejectedSupervisors)
-    {
-        $isNotSupervisor = "is not a supervisor.";
-        $notSameDept = "is not from " . Auth::user()->department->name . " department.";
-
-
-        // dd("out the loop");
-        for ($i=1; $i <= 2; $i++) { 
-            $isUser = User::firstWhere("email", $request['email_'.$i]);
-            
-            if($isUser == null){
-                array_push($rejectedSupervisors, "(".$request['supervisor_'.$i].
-                " -- ".$request['email_'.$i] .") " . $isNotSupervisor);
-                continue;
-            }
-            $isSupervisor = Supervisor::firstWhere("user_id", $isUser->id);
-
-
-            if($isUser == null || $isSupervisor == null){
-                array_push($rejectedSupervisors, "(".$request['supervisor_'.$i] ." ". " $isUser->last_name ".
-                " -- ".$request['email_'.$i] .") " . $$isNotSupervisor);
-                continue;
-            }
-
-
-            if($isUser->department->name != Auth::user()->department->name){
-                array_push($rejectedSupervisors, "(".$isUser->first_name ." ". " $isUser->last_name ".
-                " -- ".$isUser->email .") " . $notSameDept);
-                continue;
-            }
-        }
-
-
-        if(count($rejectedSupervisors))
-            return false;
-        return true;
-    }
-
-
-
-
     private function addStudents($project) {
-        $acceptedStudents = session('acceptedStudents', []);
+
         $this->removeStudents($project);
-
-        foreach($acceptedStudents as $student){
-            $student->graduation_project_id = $project->id;
-            $student->save();
+        foreach(session('acceptedStudents', []) as $user){
+            $user->student->graduation_project_id = $project->id;
+            $user->student->save();
         }
     }
 
-    private function addSupervisors($project, $project_form){
-        $this->removeSupervisor($project);
-        for ($i=1; $i <= 2; $i++) {
-            $user = User::firstWhere("email", $project_form['email_'.$i]);
-            $supervisor = Supervisor::firstWhere("user_id", $user->id);
-            $supervisor->graduation_project_id = $project->id;
-            $supervisor->save();
+    private function addSupervisors($project){
+
+        $this->removeSupervisors($project);
+        foreach(session('acceptedSupervisors', []) as $user){
+            $user->supervisor->graduation_projects()->attach($project->id);
         }
     }
+
 
     private function removeStudents($project){
-        $in_project = Student::where("graduation_project_id", $project->id)->get();
-        foreach($in_project as $student){
-            $student->graduation_project_id = null;
-            $student->save();
+
+        $accepted = session('acceptedStudents', []);
+        foreach($project->students as $student){
+            if(!array_key_exists($student->user_id, $accepted))
+                $student->graduation_project_id = null;
+                $student->save();
         }
     }
 
-    private function removeSupervisor($project){
-        $in_project = Supervisor::where("graduation_project_id", $project->id)->get();
-        foreach($in_project as $supervisor){
-            $supervisor->graduation_project_id = null;
-            $supervisor->save();
+    private function removeSupervisors($project){
+        foreach($project->supervisors as $supervisor){
+            $supervisor->graduation_projects()->detach($project->id);
         }
     }
 

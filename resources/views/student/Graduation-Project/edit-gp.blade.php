@@ -68,21 +68,18 @@
                 <div class="container px-2 py-2">
                     <h2>Students Info</h2>
 
-
-                    <ul>
-                        @foreach ($rejectedStudents as $rejStudent)
-                            <li class="text-danger">
-                                {{ $rejStudent }}
-                            </li>
-                        @endforeach
-
-
-                        @session('acceptedStudents')
-                            @if (count($gp->students) < 2)
-                                <div class="text-danger">You must add at least two students.</div>
-                            @endif
-                        @endsession
-                    </ul>
+                    @session('rejectedStudents')
+                        @if (count(@session('acceptedStudents')) == 1)
+                            <li class="text-danger">The team must be consiste of at lest two students.</li>
+                        @endif
+                        <ul>
+                            @foreach (@session('rejectedStudents') as $rejStudent)
+                                <li class="text-danger">
+                                    {{ $rejStudent }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endsession
 
                     <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
                         <thead class="table-primary">
@@ -111,21 +108,22 @@
                                 </tr>
                             @endforeach
 
+
                             @if (count($gp->students) != $student_no)
                                 @for ($i=count($gp->students); $i < $student_no; ++$i)
                                     <tr>
                                         <th>{{ $i+1 }}</th>
                                         <td>
-                                            <input type="text" value="{{ old('name'.$i) }}"
-                                            class="form-control" name="name{{ $i }}" placeholder="Write Here">
+                                            <input type="text" value="{{ old('name'.$i+1) }}"
+                                            class="form-control" name="name{{ $i+1 }}" placeholder="Write Here">
                                         </td>
                                         <td>
-                                            <input type="text" value="{{ old('id'.$i) }}"
-                                            class="form-control" name="stu_id{{ $i }}" placeholder="Make sure you write it correctly">
+                                            <input type="text" value="{{ old('id'.$i+1) }}"
+                                            class="form-control" name="stu_id{{ $i+1 }}" placeholder="Make sure you write it correctly">
                                         </td>
                                         <td>
-                                            <input type="text" value="{{ old('major'.$i) }}"
-                                            class="form-control" name="major{{ $i }}" placeholder="Write Here">
+                                            <input type="text" value="{{ old('major'.$i+1) }}"
+                                            class="form-control" name="major{{ $i+1 }}" placeholder="Write Here">
                                         </td>
                                     </tr>
                                 @endfor
@@ -164,14 +162,15 @@
 
 
 
+                    @session('rejectedSupervisors')
+                        <ul>
+                            @foreach (session('rejectedSupervisors') as $supervisors)
+                                <li class="text-danger">{{ $supervisors }}</li>
+                            @endforeach
+                        </ul>
+                    @endsession
 
-                    <ul>
-                        @foreach ($rejectedSupervisors as $supervisors)
-                            <li class="text-danger">{{ $supervisors }}</li>
-                        @endforeach
-                    </ul>
                     @foreach ($gp->supervisors as $supervisor)
-                        
                         <div class="pb-3">
                             <div class="row px-3 mb-3">
                                 <div class="col-sm-12 col-lg-6">
@@ -189,8 +188,8 @@
                                 <div class="col-sm-12 col-lg-6">
                                     <div class="input-group ms-0 border-a rounded">
                                         <span class="input-group-text fw-bold">Email</span>
-                                        <input type="text" class="form-control" value="{{ $supervisor->user->email }}"
-                                        name="email_{{ $loop->iteration }}">
+                                        <input type="text" class="form-control"
+                                        value="{{ $supervisor->user->email }}" name="email_{{ $loop->iteration }}">
                                     </div>
                                     @error('email_'.$loop->iteration)
                                         <div class="text-danger ps-2">{{ $message }}</div>
@@ -200,7 +199,6 @@
 
                         </div>
                     @endforeach
-
 
 
                     <div class="px-3">

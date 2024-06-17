@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddGraduationProjectRequest extends FormRequest
+class StoreGraduationProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

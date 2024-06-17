@@ -55,13 +55,13 @@ class User extends Authenticatable
     }
 
 
-    public function students(){
-        return $this->hasMany(Student::class);
+    public function student(){
+        return $this->hasOne(Student::class);
     }
 
 
-    public function supervisors(){
-        return $this->hasMany(Supervisor::class);
+    public function supervisor(){
+        return $this->hasOne(Supervisor::class);
     }
 
     public function department(){
