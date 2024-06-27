@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\User;
 use Closure;
@@ -35,9 +36,21 @@ class CheckIsStudent
 
 
     private function check(Student $student){
+
+        $now = Carbon::now();
+        $end = Carbon::parse(Auth::user()->department->end);
+        $start = Carbon::parse(Auth::user()->department->start);
+
+        $in_team = Auth::user()->student->graduation_project_id;
+        $in_int = (Auth::user()->student->internship_company || Auth::user()->student->internship_courses);
+
         if($student->hour < 90)
             return false;
         elseif(!$student->in_graduation_project && !$student->in_internship)
+            return false;
+        elseif(
+            ($now->lessThan($start) || ($now->greaterThan($end) && (!$in_team || !$in_int)))
+        )
             return false;
         else
             return true;

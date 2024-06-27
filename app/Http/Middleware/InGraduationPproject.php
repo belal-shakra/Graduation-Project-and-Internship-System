@@ -17,8 +17,7 @@ class InGraduationPproject
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $student = Student::firstWhere('user_id', Auth::user()->id);
-        if ($student->in_graduation_project)
+        if (Auth::user()->student->in_graduation_project)
             return $next($request);
         else
             return back();

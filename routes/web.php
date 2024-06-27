@@ -1,21 +1,34 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\DepartmentGraduationProjectController;
-use App\Http\Controllers\DepartmentInternshipController;
-use App\Http\Controllers\GraduationProjectController;
-use App\Http\Controllers\InternshipCompanyController;
-use App\Http\Controllers\InternshipCourseController;
+use App\Http\Controllers\Department\DepartmentController;
+use App\Http\Controllers\Department\DepartmentGraduationProjectController;
+use App\Http\Controllers\Department\DepartmentInternshipController;
+
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\SupervisorController;
-use App\Http\Controllers\SupervisorGraduationProjectController;
-use App\Http\Controllers\SupervisorInternshipController;
-use App\Http\Controllers\TimelineController;
+
+use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Student\GraduationProjectController;
+use App\Http\Controllers\Student\InternshipCompanyController;
+use App\Http\Controllers\Student\InternshipCourseController;
+
+use App\Http\Controllers\Supervisor\SupervisorController;
+use App\Http\Controllers\Supervisor\SupervisorGraduationProjectController;
+use App\Http\Controllers\Supervisor\SupervisorInternshipController;
+
+
+
+
+
+
+use App\Http\Controllers\Timeline\PostController;
+use App\Http\Controllers\Timeline\CommentController;
+use App\Http\Controllers\Timeline\TimelineController;
+
 use App\Http\Controllers\WeeklyFollowingFormController;
 use Illuminate\Support\Facades\Route;
+
+
+
 
 /*
 |--------------------------------------------------------------------------

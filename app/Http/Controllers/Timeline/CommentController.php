@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Timeline;
+
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AddCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Department;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDashboardRequest;
 use App\Models\Department;
 use App\Models\Student;

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Student;
+
+use App\Http\Controllers\Controller;
 
 use App\Http\Requests\CreateInternshipCompanyRequest;
 use App\Http\Requests\UpdateInternshipCompanyRequest;

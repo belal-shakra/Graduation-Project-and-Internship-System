@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Student;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGraduationProjectRequest;
 use App\Models\Department;
 use App\Models\GraduationProject;
@@ -65,6 +66,7 @@ class GraduationProjectController extends Controller
         $this->addSupervisors($gpModel);
 
 
+        $this->send_notification($gpModel, '');
 
         return redirect()->route('student.graduation-project.edit')->with('GpFilledSuccessfully', 'The Form has been filled successfully.');
     }
@@ -318,34 +320,14 @@ class GraduationProjectController extends Controller
 
 
 
-
-
-
-
-    public function setToNull($pk){
-        $gp = Student::find($pk);
-        $gp->graduation_project_id = null;
-        $gp->save();
-    }
-
-
-    public function setToNulls($pk){
-        $gp = Supervisor::find($pk);
-        $gp->graduation_project_id = null;
-        $gp->save();
-    }
-
-
-
-
-    private function send_notification($course, $msg){
-        $student_name = $course->student->user->first_name .' '. $course->student->user->last;
+    private function send_notification($gp, $msg){
+        $student_name = $gp->student->user->first_name .' '. $gp->student->user->last;
         Notification::create([
             'title'   => 'Internship | Company',
             'message' => $student_name . ' '. $msg . ' a course of internship - courses.',
             'type'    => 'supervisor',
             'is_read' => false,
-            'user_id' => $course->student->supervisor_id,
+            'user_id' => $gp->student->supervisor_id,
         ]);
 
 

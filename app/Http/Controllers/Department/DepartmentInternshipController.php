@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Department;
 
+use App\Http\Controllers\Controller;
 use App\Models\InternshipCompany;
 use App\Models\InternshipCourse;
 use App\Models\Notification;

@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Student;
 
-use App\Models\Student;
-use App\Models\Supervisor;
-use App\Models\User;
-use App\Models\UserType;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
