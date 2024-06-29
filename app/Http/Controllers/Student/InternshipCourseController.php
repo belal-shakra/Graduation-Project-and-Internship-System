@@ -2,31 +2,27 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\User;
+use App\Models\Student;
+use App\Models\UserType;
+use App\Models\Notification;
+use App\Models\InternshipCourse;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
 use App\Http\Requests\AddCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
-use App\Models\InternshipCourse;
-use App\Models\Notification;
-use App\Models\Student;
-use App\Models\User;
-use App\Models\UserType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class InternshipCourseController extends Controller
 {
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $student = Student::firstWhere('user_id',Auth::user()->id);
-
-        return view('student.Internship.courses', compact('student'));
+        return view('student.Internship.courses', ['student' => Auth::user()->student]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +30,7 @@ class InternshipCourseController extends Controller
     public function store(AddCourseRequest $request)
     {
         $course = $request->validated();
-        $course['student_id'] = Student::firstWhere('user_id', Auth::user()->id)->id;
+        $course['student_id'] = Auth::user()->student->id;
 
         if(isset($course['certificate']))
             $course['certificate'] = $this->file_proccessing($request->certificate);
@@ -52,23 +48,25 @@ class InternshipCourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, InternshipCourse $course)
     {
-        if($course->student_id == Student::firstWhere('user_id', Auth::user()->id)->id){
-            $u_course = $request->validated();
-
-            $updated_course['name'] = $u_course['u_name'];
-            $updated_course['hour'] = $u_course['u_hour'];
-            $updated_course['provider'] = $u_course['u_provider'];
-
-            if($request->hasFile('u_certificate')){
-                $updated_course['certificate'] = $this->file_proccessing($request->u_certificate);
-            }
-
-            $course->update($updated_course);
-            $course->save();
+        if($course->student_id != Auth::user()->student->id)
+            return back();
 
 
-            $this->send_notification($course, 'update');
+        
+        $u_course = $request->validated();
+        $updated_course['name'] = $u_course['u_name'];
+        $updated_course['hour'] = $u_course['u_hour'];
+        $updated_course['provider'] = $u_course['u_provider'];
+
+        if($request->hasFile('u_certificate')){
+            $updated_course['certificate'] = $this->file_proccessing($request->u_certificate);
         }
+
+        $course->update($updated_course);
+        $course->save();
+
+
+        $this->send_notification($course, 'update');
 
         return back();
     }
@@ -78,7 +76,7 @@ class InternshipCourseController extends Controller
      */
     public function destroy(InternshipCourse $course)
     {
-        if($course->student_id == Student::firstWhere('user_id', Auth::user()->id)->id){
+        if($course->student_id == Auth::user()->student->id){
             $course->delete();
         }
 
@@ -87,16 +85,20 @@ class InternshipCourseController extends Controller
     }
 
 
-
+    /**
+     * Get the uploaded file, change its name and store it.
+     */
     private function file_proccessing($image)
     {
-        $student_id = Student::firstWhere('user_id', Auth::user()->id)->id;
         $new_name = time() .'-'. $image->getClientOriginalName();
-        $image->storeAs('Internship/courses/'. $student_id, $new_name, 'public');
+        $image->storeAs('Internship/courses/'. Auth::user()->student->id, $new_name, 'public');
         return $new_name;
     }
 
 
+    /**
+     * Send notification to the supervisor and to the department.
+     */
     private function send_notification($course, $msg){
         $student_name = $course->student->user->first_name .' '. $course->student->user->last;
         Notification::create([

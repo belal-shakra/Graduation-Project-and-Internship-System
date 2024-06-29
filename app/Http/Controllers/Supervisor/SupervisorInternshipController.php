@@ -17,7 +17,7 @@ class SupervisorInternshipController extends Controller
 {
     public function index(){
 
-        $students = Student::where('supervisor_id', Auth::user()->supervisor->id)->get();
+        $students = Auth::user()->supervisor->students;
         return view('supervisor.Internship.students-list', compact('students'));
     }
 
@@ -27,8 +27,7 @@ class SupervisorInternshipController extends Controller
         if ($student->supervisor_id != Auth::user()->supervisor->id)
             return to_route('supervisor.student-list');
 
-        $student = $student;
-        return view('supervisor.Internship.report', compact('student'));
+        return view('supervisor.Internship.report', compact(['student'=>$student]));
     }
 
 
@@ -44,14 +43,8 @@ class SupervisorInternshipController extends Controller
         else
             $review = 'reject';
 
-        Notification::create([
-            'title'   => 'Internhip - Courses',
-            'message' => 'Your Supervisor '. $review .' your Internship course.',
-            'type'    => 'student',
-            'is_read' => false,
-            'route'   => route('student.course.create'),
-            'user_id' => $course->student->user->id,
-        ]);
+
+        $this->send_notification($review, $course);
 
 
         return back();
@@ -82,5 +75,18 @@ class SupervisorInternshipController extends Controller
         ]);
 
         return back();
+    }
+
+
+
+    public function send_notification($review, InternshipCourse $course){
+        Notification::create([
+            'title'   => 'Internhip - Courses',
+            'message' => 'Your Supervisor '. $review .' your Internship course.',
+            'type'    => 'student',
+            'is_read' => false,
+            'route'   => route('student.course.create'),
+            'user_id' => $course->student->user->id,
+        ]);
     }
 }

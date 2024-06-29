@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
-use App\Models\InternshipCompany;
-use App\Models\InternshipCourse;
 use App\Models\Notification;
 use App\Models\Student;
 use App\Models\Supervisor;
 use App\Models\User;
-use App\Models\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +20,10 @@ class DepartmentInternshipController extends Controller
         $this->weeks = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'];
     }
 
+
+    /**
+     * Display a form to set a supervisor for each student.
+     */
     public function index(){
 
         $students = Student::whereHas('user', function($query){
@@ -40,7 +41,9 @@ class DepartmentInternshipController extends Controller
     }
 
 
-
+    /**
+     * Store the supervisors for each student.
+     */
     public function store(Request $request){
 
 
@@ -91,13 +94,14 @@ class DepartmentInternshipController extends Controller
     }
 
 
-
-    public function show(Student $student_rec){
-        $student = $student_rec;
+    /**
+     * Show the report of specific student.
+     */
+    public function show(Student $student){
 
         if($student->user->department_id != Auth::user()->department_id || !$student->in_internship)
             return to_route('department.in_int');
 
-        return view('department.Internship.report', compact(['student']));
+        return view('department.Internship.report', ['student' => $student]);
     }
 }

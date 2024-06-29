@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\User;
+use App\Models\Department;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGraduationProjectRequest;
-use App\Models\Department;
 use App\Models\GraduationProject;
 use App\Models\Notification;
 use App\Models\Student;
-use App\Models\Supervisor;
-use App\Models\User;
 use App\Models\UserType;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Backtrace\Arguments\Reducers\StdClassArgumentReducer;
 
-use function PHPUnit\Framework\isNull;
 
 class GraduationProjectController extends Controller
 {
@@ -34,8 +30,7 @@ class GraduationProjectController extends Controller
          */
 
 
-        $gp = Auth::user()->student->graduation_project;
-        if($gp){
+        if(Auth::user()->student->graduation_project){
             return redirect()->route('student.graduation-project.edit');
         }
         else {
@@ -43,7 +38,6 @@ class GraduationProjectController extends Controller
             return view('student.Graduation-Project.reg-gp', compact(['student_no']));
         }
     }
-
 
 
 
@@ -80,17 +74,13 @@ class GraduationProjectController extends Controller
     public function edit(GraduationProject $graduation_project)
     {
 
-        $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
+        $isInGp =Auth::user()->student->graduation_project_id;
         if(!$isInGp)
             return redirect()->route('student.graduation-project.create');
-
-        $gp = GraduationProject::find($isInGp);
-        // $acceptedStudents = session('acceptedStudents', []);
-        // $rejectedStudents = session('rejectedStudents', []);
-        // $rejectedSupervisors = session('rejectedSupervisors', []);
-
-
-        $student_no = Department::find(Auth::user()->department_id)->no_team_member;
+        
+        
+        $gp = Auth::user()->student->graduation_project;
+        $student_no = Auth::user()->student->user->department->no_team_member;
         return view('student.Graduation-Project.edit-gp', compact(['student_no', 'gp',]));
     }
 
@@ -121,20 +111,9 @@ class GraduationProjectController extends Controller
 
 
 
-
-
     /**
-     * Remove the specified resource from storage.
+     * Check if the added students and supervisors.
      */
-    public function destroy(GraduationProject $graduation_project)
-    {
-        //
-    }
-
-
-
-
-
     private function checkUser($request, $graduation_project=PHP_INT_MAX){
 
         $flag = true;
@@ -149,7 +128,6 @@ class GraduationProjectController extends Controller
             return true;
         return false;
     }
-
 
 
     /**
@@ -237,7 +215,6 @@ class GraduationProjectController extends Controller
     }
 
 
-
     /**
      * Check if the registered supervisors can be supervise the graduation project team.
      * 
@@ -283,8 +260,9 @@ class GraduationProjectController extends Controller
     }
 
 
-
-
+    /**
+     * Add students to graduation project.
+     */
     private function addStudents($project) {
 
         $this->removeStudents($project);
@@ -294,6 +272,10 @@ class GraduationProjectController extends Controller
         }
     }
 
+
+    /**
+     * Add supervisor to graduation project.
+     */
     private function addSupervisors($project){
 
         $this->removeSupervisors($project);
@@ -304,6 +286,9 @@ class GraduationProjectController extends Controller
     }
 
 
+    /**
+     * Remove students from graduation project.
+     */
     private function removeStudents($project){
 
         $accepted = session('acceptedStudents', []);
@@ -314,6 +299,10 @@ class GraduationProjectController extends Controller
         }
     }
 
+
+    /**
+     * Remove students from graduation project.
+     */
     private function removeSupervisors($project){
         
         foreach($project->supervisors as $supervisor){
@@ -322,7 +311,9 @@ class GraduationProjectController extends Controller
     }
 
 
-
+    /**
+     * Send notification to supervisor.
+     */
     public function sned_to_supervisor($supervisor_id, GraduationProject $graduation_project, $message){
         Notification::create([
             'title'   => 'Graduation Project | Create',
@@ -335,6 +326,9 @@ class GraduationProjectController extends Controller
     }
 
 
+    /**
+     * Send notification to supervisor.
+     */
     private function send_to_department(GraduationProject $graduation_project, $message){
         $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
         $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;

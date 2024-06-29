@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -13,15 +11,20 @@ class StudentController extends Controller
     }
 
 
+    /**
+     * Display studnet's login form.
+     */
     public function create(){
 
         return view('student.login');
     }
 
 
-    public function home(Request $request){
+    /**
+     * Display Student's home page.
+     */
+    public function home(){
 
-        $student_username = Auth::user()->username;
-        return view('student.home', compact('student_username'));
+        return view('student.home');
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Supervisor;
 
-use App\Http\Controllers\Controller;
-use App\Models\Student;
-use App\Models\Supervisor;
-use Illuminate\Http\Request;
-use App\Models\GraduationProject;
 use App\Models\Post;
 use App\Models\PostLabel;
+use Illuminate\Http\Request;
+use App\Models\GraduationProject;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
 
 class SupervisorGraduationProjectController extends Controller
 {
@@ -28,7 +27,7 @@ class SupervisorGraduationProjectController extends Controller
 
     public function show(GraduationProject $graduation_project){
         
-        if(!($graduation_project->supervisors->contains(Auth::user()->supervisor)))
+        if(!$graduation_project->supervisors->contains(Auth::user()->supervisor))
             return to_route('supervisor.teams');
 
 

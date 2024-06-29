@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Http\Controllers\Controller;
 
+use App\Models\User;
+use App\Models\Student;
+use App\Models\UserType;
+use App\Models\Notification;
+use App\Models\InternshipCompany;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateInternshipCompanyRequest;
 use App\Http\Requests\UpdateInternshipCompanyRequest;
-use App\Models\InternshipCompany;
-use App\Models\Notification;
-use App\Models\Student;
-use App\Models\User;
-use App\Models\UserType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
+
+
 
 class InternshipCompanyController extends Controller
 {
-
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
 
-        $company = InternshipCompany::firstWhere('student_id', Student::firstWhere('user_id', Auth::user()->id)->id);
-        if($company){
-            return redirect('/company/edit')->withInput([$company]);
+        if(Auth::user()->student->internship_company){
+            return to_route('student.company.edit');
         }
         else
             return view('student.Internship.company');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -52,9 +52,7 @@ class InternshipCompanyController extends Controller
      */
     public function edit()
     {
-        $student = Student::firstWhere('user_id', Auth::user()->id);
-
-        return view('student.Internship.edit-company', compact(['student']));
+        return view('student.Internship.edit-company', ['company' => Auth::user()->student->internship_company]);
     }
 
 
@@ -63,7 +61,7 @@ class InternshipCompanyController extends Controller
      */
     public function update(InternshipCompany $company, UpdateInternshipCompanyRequest $request)
     {
-        if($company->student_id == Student::firstWhere('user_id', Auth::user()->id)->id){
+        if($company->student_id == Auth::user()->student->id){
             $updatedForm = $request->validated();
             $updatedForm['student_id'] = $company->student_id;
 
@@ -83,8 +81,8 @@ class InternshipCompanyController extends Controller
      */
     public function destroy(InternshipCompany $company)
     {
-        if($company->student_id == Student::firstWhere('user_id', Auth::user()->id)->id){
-            InternshipCompany::destroy($company->id);
+        if($company->student_id == Auth::user()->student->id){
+            $company->delete();
             return to_route('company.create');
         }
 
@@ -92,7 +90,9 @@ class InternshipCompanyController extends Controller
     }
 
 
-
+    /**
+     * Send notification to the supervisor and to the department.
+     */
     private function send_notification($company, $msg){
         $student_name = $company->student->user->first_name .' '. $company->student->user->last;
         Notification::create([

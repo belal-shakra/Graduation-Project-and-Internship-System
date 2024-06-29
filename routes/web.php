@@ -17,9 +17,6 @@ use App\Http\Controllers\Supervisor\SupervisorInternshipController;
 
 
 
-
-
-
 use App\Http\Controllers\Timeline\PostController;
 use App\Http\Controllers\Timeline\CommentController;
 use App\Http\Controllers\Timeline\TimelineController;
@@ -104,7 +101,7 @@ Route::middleware(['auth', 'is.student'])->name('student.')->group(function(){
     // Graduation Project's Routes
     Route::middleware(['in.gp'])->group(function(){
         Route::get('/graduation-project/edit', [GraduationProjectController::class, 'edit'])->name('graduation-project.edit');
-        Route::resource('graduation-project', GraduationProjectController::class)->except(['index', 'show', 'edit']);
+        Route::resource('graduation-project', GraduationProjectController::class)->except(['index', 'show', 'edit', 'destroy']);
 
         // Timeline's Route
         Route::get('graduation-project/timeline',[TimelineController::class, 'index'])->name('timeline');
@@ -181,7 +178,7 @@ Route::middleware(['auth', 'is.head'])->prefix('department')->name('department.'
     Route::controller(DepartmentInternshipController::class)->group(function(){
         Route::get('/in-internship-students', 'index')->name('in_int');
         Route::post('/store', 'store')->name('store_in_int');
-        Route::get('/student-report/{student_rec}', 'show')->name('show');
+        Route::get('/student-report/{student}', 'show')->name('show');
     });
     
     

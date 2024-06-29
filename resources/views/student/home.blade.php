@@ -64,7 +64,7 @@
         <section class="container">
             <div class="container text-center w-75 alert alert-primary">
                 <p class="lead fs-3 text-primary">
-                {{ $student_username }}, you have successfully completed 90 hours,
+                {{ Auth::user()->username }}, you have successfully completed 90 hours,
                 so you can register for the internship and graduation project.
                 </p>
             </div>

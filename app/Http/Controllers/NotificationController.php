@@ -37,11 +37,7 @@ class NotificationController extends Controller
             $notification->save();
         }
 
-
-
         return redirect($notification->route);
     }
-
-
 
 }

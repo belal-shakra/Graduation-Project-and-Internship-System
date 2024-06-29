@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDashboardRequest;
 use App\Models\Department;
 use App\Models\Student;
-use App\Models\User;
-use App\Models\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+
 
 class DepartmentController extends Controller
 {
@@ -33,7 +33,7 @@ class DepartmentController extends Controller
      */
     public function home(){
 
-            $department = Auth::user()->department;
+        $department = Auth::user()->department;
 
         $students = Student::whereHas('user', function($query){
             $query->where('department_id', Auth::user()->department->id);

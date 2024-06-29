@@ -29,6 +29,7 @@ class CommentController extends Controller
         return redirect(url()->previous().'#'.$post->created_at->format('si'));
     }
 
+
     /**
      * Remove the specified resource from storage.
      */

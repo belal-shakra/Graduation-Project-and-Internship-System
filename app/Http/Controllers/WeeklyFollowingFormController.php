@@ -8,7 +8,6 @@ use App\Models\Department;
 use App\Models\InternshipCompany;
 use App\Models\Notification;
 use App\Models\Student;
-use App\Models\User;
 use App\Models\WeeklyFollowing;
 use ErrorException;
 use Illuminate\Http\Request;

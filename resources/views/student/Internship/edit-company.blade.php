@@ -21,7 +21,7 @@
             </div>
 
 
-            <form action="{{ route('student.company.update', $student->internship_company) }}" method="post">
+            <form action="{{ route('student.company.update', $company) }}" method="post">
                 @csrf
                 @method('patch')
 
@@ -31,7 +31,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">Company</label>
-                                <input type="text" name="company_name" class="form-control" value="{{ $student->internship_company->company_name }}" autofocus>
+                                <input type="text" name="company_name" class="form-control" value="{{ $company->company_name }}" autofocus>
                             </div>
                             @error('company_name')
                                 <div class="text-danger">{{ $message }}</div>
@@ -41,7 +41,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ $student->internship_company->address }}">
+                                <input type="text" name="address" class="form-control" value="{{ $company->address }}">
                             </div>
                             @error('address')
                                 <div class="text-danger">{{ $message }}</div>
@@ -53,7 +53,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">Start</label>
-                                <input type="date" name="starting_date" class="form-control" value="{{ $student->internship_company->starting_date }}">
+                                <input type="date" name="starting_date" class="form-control" value="{{ $company->starting_date }}">
                             </div>
                             @error('starting_data')
                                 <div class="text-danger">{{ $message }}</div>
@@ -63,7 +63,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">End</label>
-                                <input type="date" name="ending_date" class="form-control" value="{{ $student->internship_company->ending_date }}">
+                                <input type="date" name="ending_date" class="form-control" value="{{ $company->ending_date }}">
                             </div>
                             @error('ending_data')
                                 <div class="text-danger">{{ $message }}</div>
@@ -81,7 +81,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">Full Name</label>
-                                <input type="text" name="supervisor_name" class="form-control" value="{{ $student->internship_company->supervisor_name }}">
+                                <input type="text" name="supervisor_name" class="form-control" value="{{ $company->supervisor_name }}">
                             </div>
                             @error('supervisor_name')
                                 <div class="text-danger">{{ $message }}</div>
@@ -91,7 +91,7 @@
                         <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
                             <div class="input-group mx-3 border-a rounded bg-white">
                                 <label class="input-group-text fw-bold">Email</label>
-                                <input type="email" name="supervisor_email" class="form-control" value="{{ $student->internship_company->supervisor_email }}">
+                                <input type="email" name="supervisor_email" class="form-control" value="{{ $company->supervisor_email }}">
                             </div>
                             @error('supervisor_email')
                                 <div class="text-danger">{{ $message }}</div>
@@ -110,7 +110,7 @@
                         <div class="mb-3">
                             <div class="input-group border-a rounded bg-white">
                                 <span class="input-group-text fw-bold">Description of Tasks</span>
-                                <textarea name="description" class="form-control" style="height: 7rem">{{ $student->internship_company->description }}</textarea>
+                                <textarea name="description" class="form-control" style="height: 7rem">{{ $company->description }}</textarea>
                             </div>
                             @error('description')
                                 <div class="text-danger">{{ $message }}</div>
@@ -120,7 +120,7 @@
                         <div class="mb-3">
                             <div class="input-group border-a rounded bg-white">
                                 <span class="input-group-text fw-bold">Technologies</span>
-                                <textarea name="technologies" class="form-control" style="height: 7rem">{{ $student->internship_company->technologies }}</textarea>
+                                <textarea name="technologies" class="form-control" style="height: 7rem">{{ $company->technologies }}</textarea>
                             </div>
                             @error('technologies')
                                 <div class="text-danger">{{ $message }}</div>
@@ -154,7 +154,7 @@
                             <p>Are you sure to delete this Form ?</p>
                         </div>
                         <div class="modal-footer">
-                            <form action="{{ route('student.company.destroy', $student->internship_company) }}" method="post">
+                            <form action="{{ route('student.company.destroy', $company) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" value="Delete Form" class="btn btn-danger">
@@ -175,12 +175,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            @if ($student->internship_company->acceptance)
+                            @if ($company->acceptance)
                                 <h4>Accepted</h4>
-                                <p>{{ $student->internship_company->supervisor_note }}</p>
-                            @elseif ($student->internship_company->acceptance == 0 && $student->internship_company->supervisor_note)
+                                <p>{{ $company->supervisor_note }}</p>
+                            @elseif ($company->acceptance == 0 && $company->supervisor_note)
                                 <h3>Rejected</h3>
-                                <p>{{ $student->internship_company->supervisor_note }}</p>
+                                <p>{{ $company->supervisor_note }}</p>
                             @else
                                 <p>There is no note yet.</p>
                             @endif

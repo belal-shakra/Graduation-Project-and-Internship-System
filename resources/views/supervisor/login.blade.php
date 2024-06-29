@@ -18,8 +18,7 @@
                         <div class="mb-3">
                             <div class="form-floating border border-1 border-dark rounded shadow">
                                 <input type="email" class="form-control" id="email" placeholder="" name="email"
-                                value="sha62134@ju.edu.jo"
-                                >
+                                value="dor53190@ju.edu.jo">
                                 <label for="email">Email</label>
                             </div>
                             @error('email')
