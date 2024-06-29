@@ -75,12 +75,10 @@ Route::controller(NotificationController::class)->middleware('auth')->name('noti
 
 Route::middleware(['auth', 'is.student'])->name('student.')->group(function(){
     
-    
     // Main Student Routes
     Route::controller(StudentController::class)->group(function(){
         Route::get('/', 'home')->name('home');
     });
-    
     
     
     
@@ -91,11 +89,9 @@ Route::middleware(['auth', 'is.student'])->name('student.')->group(function(){
     });
     
     
-    
     // Internship Course Routes
     Route::resource('course', InternshipCourseController::class)->middleware(['in.int'])
     ->except(['index', 'show', 'edit']);
-    
     
     
     // Graduation Project's Routes
@@ -112,7 +108,7 @@ Route::middleware(['auth', 'is.student'])->name('student.')->group(function(){
 Route::middleware('auth')->group(function(){
     
     // Graduation Project Post's Routes
-    Route::resource('post', PostController::class)->except(['index', 'create', 'show']);
+    Route::resource('post', PostController::class)->only(['store', 'destroy']);
     
     // Post's Comment Route
     Route::post('/store/{post}', [CommentController::class, 'store'])->name('comment.store');
