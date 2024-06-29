@@ -109,8 +109,6 @@ Route::middleware(['auth', 'is.student'])->name('student.')->group(function(){
         // Timeline's Route
         Route::get('graduation-project/timeline',[TimelineController::class, 'index'])->name('timeline');
     });
-
-
 });
 
 

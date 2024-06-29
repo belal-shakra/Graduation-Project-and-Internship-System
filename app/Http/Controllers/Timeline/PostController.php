@@ -72,6 +72,13 @@ class PostController extends Controller
             }
         }
 
+
+
+
+
+        $this->notify_students(Auth::user()->student->graduation_project);
+        $this->notify_supervisors(Auth::user()->student->graduation_project);
+
         return back();
     }
 
@@ -118,5 +125,43 @@ class PostController extends Controller
         $file_path = $file->storeAs('files/Graduation-Project/'. $post_id, $new_name, 'public');
 
         return $file_path;
+    }
+
+
+
+
+    public function notify_students(GraduationProject $graduation_project){
+
+        foreach($graduation_project->students as $student){
+
+            if($student->id == Auth::user()->student->id)
+                continue;
+
+
+            Notification::create([
+                'title'   => 'Graduation Project | Timeline',
+                'message' => 'Someone add new post to project timeline.',
+                'type' => 'student',
+                'is_read' => false,
+                'route' => route('student.timeline'),
+                'user_id' => $student->user->id,
+            ]);
+        }
+    }
+
+
+
+    public function notify_supervisors(GraduationProject $graduation_project){
+
+        foreach($graduation_project->supervisors as $supervisor){
+            Notification::create([
+                'title'   => 'Graduation Project | Timeline',
+                'message' => 'Someone add new post to project timeline.',
+                'type' => 'supervisor',
+                'is_read' => false,
+                'route' => route('supervisor.show', $graduation_project),
+                'user_id' => $supervisor->user->id,
+            ]);
+        }
     }
 }
