@@ -25,17 +25,16 @@
 
         <nav class="container">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link" id="nav-project-details-tab" data-bs-toggle="tab" data-bs-target="#nav-project-details"
+                <button class="nav-link active" id="nav-project-details-tab" data-bs-toggle="tab" data-bs-target="#nav-project-details"
                 type="button">Project Details</button>
 
-                <button class="nav-link active" id="nav-timeline-tab" data-bs-toggle="tab" data-bs-target="#nav-timeline"
+                <button class="nav-link" id="nav-timeline-tab" data-bs-toggle="tab" data-bs-target="#nav-timeline"
                 type="button">Timeline</button>
             </div>
         </nav>
 
         <div class="tab-content container" id="nav-tabContent">
-            <div class="tab-pane fade" id="nav-project-details" role="tabpanel">
-
+            <div class="tab-pane fade show active" id="nav-project-details" role="tabpanel">
                 <section class="mt-4">
                     <div class="row">
                         <div class="col-sm-12 col-lg-8">
@@ -49,7 +48,7 @@
                                 <tbody class="table-group-divider">
                                     @foreach ($project->students as $student)
                                         <tr>
-                                            <th style="width: 0%;">1</th>
+                                            <th style="width: 0%;">{{ $loop->iteration }}</th>
                                             <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
                                             <td>{{ $student->user->university_id }}</td>
                                             <td>{{ $student->user->department->name }}</td>
@@ -129,11 +128,10 @@
                         </table>
                     </div>
                 </section>
-
             </div>
 
 
-            <div class="tab-pane fade show active" id="nav-timeline" role="tabpanel">
+            <div class="tab-pane fade" id="nav-timeline" role="tabpanel">
                 @include('student.Graduation-Project.Timeline.create-post')
                 @include('student.Graduation-Project.Timeline.posts')
             </div>

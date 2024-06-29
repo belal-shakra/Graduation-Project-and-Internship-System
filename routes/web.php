@@ -145,7 +145,7 @@ Route::middleware(['auth', 'is.supervisor'])->prefix('supervisor')->name('superv
     // Supervisor's Graduation Project Route
     Route::controller(SupervisorGraduationProjectController::class)->group(function(){
         Route::get('/graduation-project-teams', 'index')->name('teams');
-        Route::get('/graduation-project-team-details', 'show')->name('show');
+        Route::get('/graduation-project-team-details/{graduation_project}', 'show')->name('show');
     });
     
     
@@ -153,7 +153,7 @@ Route::middleware(['auth', 'is.supervisor'])->prefix('supervisor')->name('superv
     // Supervisor's Internship Route
     Route::controller(SupervisorInternshipController::class)->group(function(){
         Route::get('/internship/student-list', 'index')->name('student-list');
-        Route::get('/internship/report/{user}', 'show')->name('report');
+        Route::get('/internship/report/{student}', 'show')->name('report');
         Route::post('/internship/report/store-course-note/{course}/{status}', 'storeCourseNote')->name('storeCourseNote');
         Route::post('/internship/report/store-company-note/{company}/{status}', 'storeCompanyNote')->name('storeCompanyNote');
     });

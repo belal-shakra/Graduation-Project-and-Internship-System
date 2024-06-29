@@ -7,6 +7,7 @@ use App\Http\Requests\AddInternshipNoteRequest;
 use App\Models\InternshipCompany;
 use App\Models\InternshipCourse;
 use App\Models\Notification;
+use App\Models\Student;
 use App\Models\Supervisor;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,23 +17,19 @@ class SupervisorInternshipController extends Controller
 {
     public function index(){
 
-        $students = User::whereHas('students', function($query){
-            $supervisor = Supervisor::firstWhere('user_id', Auth::user()->id);
-            $query->where('in_internship', 1)->where('supervisor_id', $supervisor->id);
-        })->where('department_id', Auth::user()->department_id)->get();
-
+        $students = Student::where('supervisor_id', Auth::user()->supervisor->id)->get();
         return view('supervisor.Internship.students-list', compact('students'));
     }
 
 
 
-    public function show(User $user){
+    public function show(Student $student){
 
-        if($user->department_id != Auth::user()->department_id ||
-        !$user->students[0]->in_internship || $user->students[0]->supervisor->user_id != Auth::user()->id)
-            return back();
 
-        $student = $user;
+        if ($student->supervisor_id != Auth::user()->supervisor->id)
+            return to_route('supervisor.student-list');
+
+        $student = $student;
         return view('supervisor.Internship.report', compact('student'));
     }
 

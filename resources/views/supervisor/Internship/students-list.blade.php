@@ -27,9 +27,9 @@
                         @foreach ($students as $student)
                             <tr>
                                 <th>{{ $loop->iteration }}</th>
-                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-                                <td>{{ $student->university_id }}</td>
-                                <td>{{ $student->email }}</td>
+                                <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                                <td>{{ $student->user->university_id }}</td>
+                                <td>{{ $student->user->email }}</td>
                                 <td><a href="{{ route('supervisor.report', $student) }}">view report</a></td>
                             </tr>
                         @endforeach

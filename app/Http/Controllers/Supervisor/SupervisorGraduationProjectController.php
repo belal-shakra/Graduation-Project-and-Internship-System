@@ -19,21 +19,23 @@ class SupervisorGraduationProjectController extends Controller
 
 
     public function index(){
-        $gp_id = Supervisor::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
-        $project = GraduationProject::find($gp_id);
-
-        return view('supervisor.Graduation-Project.teams', compact(['project']));
+        
+        $projects = Auth::user()->supervisor->graduation_projects;
+        return view('supervisor.Graduation-Project.teams', compact(['projects']));
     }
 
 
 
-    public function show(){
+    public function show(GraduationProject $graduation_project){
         
-        $gp_id = Supervisor::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
-        $project = GraduationProject::find($gp_id);
+        if(!($graduation_project->supervisors->contains(Auth::user()->supervisor)))
+            return to_route('supervisor.teams');
 
+
+        $project = $graduation_project;
         $labels = PostLabel::all();
-        $posts = Post::where('graduation_project_id', $gp_id)->get()->sortDesc();
+        $posts = Post::where('graduation_project_id', $graduation_project->id)->get()->sortDesc();
+
 
         return view('supervisor.Graduation-Project.team-details', compact(['project', 'labels', 'posts']));
     }

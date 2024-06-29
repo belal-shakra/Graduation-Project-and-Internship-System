@@ -15,9 +15,9 @@
             <div class="py-2">
                 <table class="table-bordered bg-white">
                     <thead>
-                        <th class="px-3 py-2">{{ $student->first_name }} {{ $student->last_name }}</th>
-                        <th class="px-3 py-2">{{ $student->university_id }}</th>
-                        <th class="px-3 py-2">{{ $student->email }}</th>
+                        <th class="px-3 py-2">{{ $student->user->first_name }} {{ $student->user->last_name }}</th>
+                        <th class="px-3 py-2">{{ $student->user->university_id }}</th>
+                        <th class="px-3 py-2">{{ $student->user->email }}</th>
                     </thead>
                 </table>
             </div>
@@ -25,7 +25,7 @@
 
 
 
-        @if ($student->students[0]->internship_courses)
+        @if (count($student->internship_courses))
             <section class="container mx-auto py-3">
                 <h2 class="fw-light">Courses</h2>
                 <div class="py-2 table-responsive">
@@ -40,7 +40,7 @@
                         </thead>
                         <tbody class="table-group-divider">
                             
-                            @foreach ($student->students[0]->internship_courses as $course)
+                            @foreach ($student->internship_courses as $course)
                                 <tr>
                                     <th>{{ $loop->iteration }}</th>
                                     <td>{{ $course->name }}</td>
@@ -48,7 +48,7 @@
                                     <td>{{ $course->provider }}</td>
                                     <td class="p-2" style="width: 15rem;">
                                         @if ($course->certificate)
-                                            <a href="{{ asset('storage/Internship/courses/'.$student->students[0]->id) }}/{{ $course->certificate }}"
+                                            <a href="{{ asset('storage/Internship/courses/'.$student->id) }}/{{ $course->certificate }}"
                                             class="d-inline-block text-truncate" style="max-width: 15rem;" target="_black">
                                                 certificate
                                             </a>
@@ -123,7 +123,7 @@
 
 
 
-        @if ($student->students[0]->internship_company)
+        @if ($student->internship_company)
             <section class="container mx-auto py-3">
                 <div class="py-3">
                     <h2 class="fw-light">Company</h2>
@@ -137,10 +137,10 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <tr>
-                                    <td>{{ $student->students[0]->internship_company->company_name }}</td>
-                                    <td>{{ $student->students[0]->internship_company->address }}</td>
-                                    <td>{{ $student->students[0]->internship_company->starting_date }}</td>
-                                    <td>{{ $student->students[0]->internship_company->ending_date }}</td>
+                                    <td>{{ $student->internship_company->company_name }}</td>
+                                    <td>{{ $student->internship_company->address }}</td>
+                                    <td>{{ $student->internship_company->starting_date }}</td>
+                                    <td>{{ $student->internship_company->ending_date }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -152,7 +152,7 @@
                             <div class="input-group border-a rounded">
                                 <span class="input-group-text fw-bold">Superviser</span>
                                 <input type="text" class="form-control bg-white" disabled
-                                value="{{ $student->students[0]->internship_company->supervisor_name }}">
+                                value="{{ $student->internship_company->supervisor_name }}">
                             </div>
                         </div>
 
@@ -160,7 +160,7 @@
                             <div class="input-group border-a rounded">
                             <span class="input-group-text fw-bold">Email</span>
                             <input type="text" class="form-control bg-white" disabled
-                            value="{{ $student->students[0]->internship_company->supervisor_email }}">
+                            value="{{ $student->internship_company->supervisor_email }}">
                             </div>
                         </div>
                     </div>
@@ -175,8 +175,8 @@
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <tr>
-                                        <td>{{ $student->students[0]->internship_company->description }}</td>
-                                        <td>{{ $student->students[0]->internship_company->technologies }}</td>
+                                        <td>{{ $student->internship_company->description }}</td>
+                                        <td>{{ $student->internship_company->technologies }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -202,7 +202,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('supervisor.storeCompanyNote', ['company'=>$student->students[0]->internship_company, 'status'=>true]) }}"
+                                <form action="{{ route('supervisor.storeCompanyNote', ['company'=>$student->internship_company, 'status'=>true]) }}"
                                     method="post">
                                     @csrf
                                     <div class="mb-3">
@@ -228,7 +228,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('supervisor.storeCompanyNote', ['company'=>$student->students[0]->internship_company, 'status'=>0]) }}"
+                                <form action="{{ route('supervisor.storeCompanyNote', ['company'=>$student->internship_company, 'status'=>0]) }}"
                                     method="post">
                                     @csrf
                                     <div class="mb-3">

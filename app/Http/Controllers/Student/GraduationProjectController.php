@@ -34,13 +34,12 @@ class GraduationProjectController extends Controller
          */
 
 
-        $student = Student::firstWhere('user_id', Auth::user()->id);
-        $gp = GraduationProject::find($student->graduation_project_id);
+        $gp = Auth::user()->student->graduation_project;
         if($gp){
             return redirect()->route('student.graduation-project.edit');
         }
         else {
-            $student_no = $student->user->department->no_team_member;
+            $student_no = Auth::user()->student->user->department->no_team_member;
             return view('student.Graduation-Project.reg-gp', compact(['student_no']));
         }
     }
@@ -66,7 +65,7 @@ class GraduationProjectController extends Controller
         $this->addSupervisors($gpModel);
 
 
-        $this->send_notification($gpModel, '');
+        $this->send_to_department('A new Team is created.');
 
         return redirect()->route('student.graduation-project.edit')->with('GpFilledSuccessfully', 'The Form has been filled successfully.');
     }
@@ -80,6 +79,7 @@ class GraduationProjectController extends Controller
      */
     public function edit(GraduationProject $graduation_project)
     {
+
         $isInGp = Student::firstWhere('user_id', Auth::user()->id)->graduation_project_id;
         if(!$isInGp)
             return redirect()->route('student.graduation-project.create');
@@ -113,6 +113,8 @@ class GraduationProjectController extends Controller
         $graduation_project->update($updatedForm);
         $this->addStudents($graduation_project);
         $this->addSupervisors($graduation_project);
+
+        $this->send_to_department('A team edit Gradution Project Info.');
 
         return redirect()->route('student.graduation-project.edit')->with('GpUpdateSuccessfully', 'The Form has been updated successfully.');
     }
@@ -297,6 +299,7 @@ class GraduationProjectController extends Controller
         $this->removeSupervisors($project);
         foreach(session('acceptedSupervisors', []) as $user){
             $user->supervisor->graduation_projects()->attach($project->id);
+            $this->sned_to_supervisor($user->id, 'You\'re a supervisor for a Graduation Project Team.');
         }
     }
 
@@ -312,6 +315,7 @@ class GraduationProjectController extends Controller
     }
 
     private function removeSupervisors($project){
+        
         foreach($project->supervisors as $supervisor){
             $supervisor->graduation_projects()->detach($project->id);
         }
@@ -319,24 +323,24 @@ class GraduationProjectController extends Controller
 
 
 
-
-    private function send_notification($gp, $msg){
-        $student_name = $gp->student->user->first_name .' '. $gp->student->user->last;
+    public function sned_to_supervisor($supervisor_id, $message){
         Notification::create([
-            'title'   => 'Internship | Company',
-            'message' => $student_name . ' '. $msg . ' a course of internship - courses.',
+            'title'   => 'Graduation Project | Create',
+            'message' => $message,
             'type'    => 'supervisor',
             'is_read' => false,
-            'user_id' => $gp->student->supervisor_id,
+            'user_id' => $supervisor_id,
         ]);
+    }
 
 
-
+    private function send_to_department($message){
         $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
         $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;
+
         Notification::create([
-            'title'   => 'Internship | Company',
-            'message' => $student_name . ' '. $msg .' a course of internship - courses.',
+            'title'   => 'Graduation Project | Create',
+            'message' => $message,
             'type'    => 'department',
             'is_read' => false,
             'user_id' => $head_id,
