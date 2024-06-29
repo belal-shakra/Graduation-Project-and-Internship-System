@@ -40,7 +40,9 @@
                                         <strong class="ps-2 pe-1">
                                             {{ $comment->user->first_name }} {{ $comment->user->last_name }}
                                         </strong>
-                                        <span class="text-secondary fst-italic">3h ago</span>
+                                        <span class="text-secondary fst-italic">
+                                            {{ Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}
+                                        </span>
                                     </div>
 
                                     <div>

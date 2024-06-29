@@ -9,7 +9,7 @@
                         @else
                             <i class="bi bi-circle-fill text-primary"></i>
                         @endif
-                        <span class="ps-3 pe-2">{{ $post->created_at->format('D, j-n-Y') }}</span>
+                        <span class="ps-3 pe-2">{{ Carbon\Carbon::parse($post->created_at, 'UTC')->setTimezone('Asia/Amman')->format('D, j-n-Y') }}</span>
                     </div>
 
                     @if ($post->user_id == Auth::user()->id)
@@ -67,7 +67,7 @@
                 <div id="footer" class="my-2 mt-3 px-3">
                     <span>
                         by <b>{{ $post->user->first_name }} {{ $post->user->last_name }}</b>
-                        at {{ $post->created_at->format('H:i') }}
+                        at {{ Carbon\Carbon::parse($post->created_at, 'UTC')->setTimezone('Asia/Amman')->format('H:i') }}
                     </span>
                 </div>
             </div>
