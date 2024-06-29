@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DepartmentInternshipController extends Controller
 {
+    private $weeks;
+
+
+    public function __construct()
+    {
+        $this->weeks = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'];
+    }
+
     public function index(){
 
         $students = Student::whereHas('user', function($query){
@@ -26,7 +34,7 @@ class DepartmentInternshipController extends Controller
             $query->where('department_id', Auth::user()->department_id);
         })->get();
 
-        $week = Auth::user()->department->week;
+        $week = $this->weeks[Auth::user()->department->week -1];
 
         return view('department.Internship.in-internship', compact(['students', 'supervisors', 'week']));
     }

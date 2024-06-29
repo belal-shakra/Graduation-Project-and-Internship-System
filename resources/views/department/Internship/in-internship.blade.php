@@ -28,10 +28,10 @@
                             </div>
 
 
-                            @if ($week <= 6)
+                            @if (Auth::user()->department->week <= 6)
                                 <div>
                                     <div class="modal-body">
-                                        Are you sure to send First weekly following form to companies supervisors ?
+                                        Are you sure to send {{ $week }} weekly following form to companies supervisors ?
                                     </div>
                                     <div class="modal-footer">
                                         <form action="{{ route('weekly.mail') }}" method="post">
@@ -43,10 +43,10 @@
                             @else
                                 <div>
                                     <div class="modal-body">
-                                        <span class="text-danger">You already send six weekly following form.</span>
+                                        <span class="text-danger">You already sent six weekly following form.</span>
                                     </div>
                                     <div class="modal-footer">
-                                        <form action="{% url 'send_email' dept.dept_name week %}" method="post">
+                                        <form action="" method="post">
                                             <input type="submit" value="Send Emails" class="btn btn-primary" disabled>
                                         </form>
                                     </div>

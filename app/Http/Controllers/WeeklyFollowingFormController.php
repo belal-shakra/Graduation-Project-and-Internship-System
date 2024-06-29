@@ -27,12 +27,17 @@ class WeeklyFollowingFormController extends Controller
 
 
     public function weeklyFollowing($username){
-        $user = User::firstWhere('username', $username);
+
+        $GLOBALS['username'] = $username;
 
         try {
-            $student = Student::where('in_internship', 1)->firstWhere('user_id', $user->id);
+            $student = Student::whereHas('user', function($query){
+                $query->where('username', $GLOBALS['username']);
+            })->get()->first();
+
             $week = $student->user->department->week;
             $week = $this->weeks[$week-1];
+
         }
         catch (\Throwable $th) {
             return abort(404);
@@ -47,10 +52,11 @@ class WeeklyFollowingFormController extends Controller
     public function store(WeeklyFormRequest $request){
         $form = $request->validated();
 
-        $user = User::firstWhere('username', $form['student']);
-        $student_id = Student::firstWhere('user_id', $user->id)->id;
-        $form['student_id'] = $student_id;
-        $form['week'] = $user->department->week;
+        $student = Student::whereHas('user', function($query){
+            $query->where('username', $GLOBALS['username']);
+        })->get()->first();
+        $form['student_id'] = $student->id;
+        $form['week'] = $student->user->department->week;
 
         WeeklyFollowing::create($form);
 
