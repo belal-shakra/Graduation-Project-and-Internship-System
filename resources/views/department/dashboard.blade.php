@@ -4,7 +4,6 @@
 @section('content')
 
 
-
     <main class="container-fluid py-5 px- mt-5 col-lg-12 col-xl-8">
         <h1 class="ps-3 py-4 fw-light">Dashboard</h1>
 
@@ -79,7 +78,7 @@
                                 <div class="col-10 col-lg-9 col-xl-10">
                                     <h5 class="card-title small lead fw-bold">Exceed 90 Hours</h5>
                                     <p class="card-text">
-                                        <span class="fs-4">{{ $exceed90 }}</span>/ <small>{{ $all_stus }}</small>
+                                        <span class="fs-4">{{ $exceed90 }}</span>/ <small>{{ $students_count }}</small>
                                     </p>
                                 </div>
                                 <div class="col-2 col-lg-3 col-xl-2">
@@ -131,7 +130,7 @@
                             <div class="card-body row">
                                 <div class="col-10">
                                     <h5 class="card-title small lead fw-bold">Expected to Graduate</h5>
-                                    <p class="card-text"><span class="fs-4">{{ $expectTG }}</span>/ <small>{{ $all_stus }}</small></p>
+                                    <p class="card-text"><span class="fs-4">{{ $expectTG }}</span>/ <small>{{ $students_count }}</small></p>
                                 </div>
                                 <div class="col-2">
                                     <i class="bi bi-mortarboard-fill fs-1"></i>

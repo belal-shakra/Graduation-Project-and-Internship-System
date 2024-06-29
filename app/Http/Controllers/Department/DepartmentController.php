@@ -33,19 +33,18 @@ class DepartmentController extends Controller
      */
     public function home(){
 
-        $department = Department::find(Auth::user()->department_id);
-        $student_type_id = UserType::firstWhere('name', 'student')->id;
-        $student_ids = User::where('department_id', Auth::user()->department_id)
-                            ->where('user_type_id', $student_type_id)->get('id');
+            $department = Auth::user()->department;
 
+        $students = Student::whereHas('user', function($query){
+            $query->where('department_id', Auth::user()->department->id);
+        })->get();
 
-        $all_stus = count($student_ids);
+        $students_count = count($students->all());
         $exceed90 = 0;
         $in_gp = 0;
         $in_int = 0;
         $expectTG = 0;
-        foreach($student_ids as $id){
-            $student = Student::firstWhere('user_id', $id->id);
+        foreach($students as $student){
 
             if($student->hour >= 90){
                 $exceed90++;
@@ -62,7 +61,7 @@ class DepartmentController extends Controller
         }
 
 
-        return view('department.dashboard', compact(['department' ,'all_stus', 'exceed90', 'in_gp', 'in_int', 'expectTG']));
+        return view('department.dashboard', compact(['department', 'students_count', 'exceed90', 'in_gp', 'in_int', 'expectTG']));
     }
 
 
