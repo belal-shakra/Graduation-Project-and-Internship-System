@@ -24,8 +24,6 @@ class SupervisorInternshipController extends Controller
 
 
     public function show(Student $student){
-
-
         if ($student->supervisor_id != Auth::user()->supervisor->id)
             return to_route('supervisor.student-list');
 
