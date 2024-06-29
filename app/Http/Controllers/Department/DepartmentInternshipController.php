@@ -67,6 +67,7 @@ class DepartmentInternshipController extends Controller
                         'message' => 'Your Internship Supervisor is '.$supervisor_name,
                         'type' => 'student',
                         'is_read' => false,
+                        'route' => route('student.company.create'),
                         'user_id' => $student->user->id,
                     ]);
 
@@ -75,6 +76,7 @@ class DepartmentInternshipController extends Controller
                         'message' => 'You are Internship Supervisor for '.$student_name,
                         'type' => 'supervisor',
                         'is_read' => false,
+                        'route' => route('supervisor.report', $student),
                         'user_id' => $supervisor->user->id,
                     ]);
 

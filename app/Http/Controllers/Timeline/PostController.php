@@ -8,6 +8,7 @@ use App\Http\Requests\AddPostRequest;
 use App\Models\Comment;
 use App\Models\File;
 use App\Models\GraduationProject;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\PostLabel;
 use App\Models\Student;

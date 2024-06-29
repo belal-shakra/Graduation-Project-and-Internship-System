@@ -65,7 +65,7 @@ class GraduationProjectController extends Controller
         $this->addSupervisors($gpModel);
 
 
-        $this->send_to_department('A new Team is created.');
+        $this->send_to_department($gpModel, 'A new Team is created.');
 
         return redirect()->route('student.graduation-project.edit')->with('GpFilledSuccessfully', 'The Form has been filled successfully.');
     }
@@ -114,7 +114,7 @@ class GraduationProjectController extends Controller
         $this->addStudents($graduation_project);
         $this->addSupervisors($graduation_project);
 
-        $this->send_to_department('A team edit Gradution Project Info.');
+        $this->send_to_department($graduation_project, 'A team edit Gradution Project Info.');
 
         return redirect()->route('student.graduation-project.edit')->with('GpUpdateSuccessfully', 'The Form has been updated successfully.');
     }
@@ -299,7 +299,7 @@ class GraduationProjectController extends Controller
         $this->removeSupervisors($project);
         foreach(session('acceptedSupervisors', []) as $user){
             $user->supervisor->graduation_projects()->attach($project->id);
-            $this->sned_to_supervisor($user->id, 'You\'re a supervisor for a Graduation Project Team.');
+            $this->sned_to_supervisor($user->id, $project, 'You\'re a supervisor for a Graduation Project Team.');
         }
     }
 
@@ -323,18 +323,19 @@ class GraduationProjectController extends Controller
 
 
 
-    public function sned_to_supervisor($supervisor_id, $message){
+    public function sned_to_supervisor($supervisor_id, GraduationProject $graduation_project, $message){
         Notification::create([
             'title'   => 'Graduation Project | Create',
             'message' => $message,
             'type'    => 'supervisor',
             'is_read' => false,
+            'route'   => route('supervisor.show', $graduation_project),
             'user_id' => $supervisor_id,
         ]);
     }
 
 
-    private function send_to_department($message){
+    private function send_to_department(GraduationProject $graduation_project, $message){
         $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
         $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;
 
@@ -343,6 +344,7 @@ class GraduationProjectController extends Controller
             'message' => $message,
             'type'    => 'department',
             'is_read' => false,
+            'route'   => route('department.team-details', $graduation_project),
             'user_id' => $head_id,
         ]);
     }

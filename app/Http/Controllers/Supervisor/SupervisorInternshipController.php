@@ -49,6 +49,7 @@ class SupervisorInternshipController extends Controller
             'message' => 'Your Supervisor '. $review .' your Internship course.',
             'type'    => 'student',
             'is_read' => false,
+            'route'   => route('student.course.create'),
             'user_id' => $course->student->user->id,
         ]);
 
@@ -76,6 +77,7 @@ class SupervisorInternshipController extends Controller
             'message' => 'Your Supervisor '. $review .' your Company Internship.',
             'type'    => 'student',
             'is_read' => false,
+            'route'   => route('student.company.create'),
             'user_id' => $company->student->user->id,
         ]);
 

@@ -41,6 +41,4 @@ class SupervisorGraduationProjectController extends Controller
     }
 
 
-
-
 }

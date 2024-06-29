@@ -30,7 +30,6 @@ class NotificationController extends Controller
     }
 
 
-    
     public function read_one(Notification $notification){
 
         if(!$notification->is_read){
@@ -39,7 +38,8 @@ class NotificationController extends Controller
         }
 
 
-        return back();
+
+        return redirect($notification->route);
     }
 
 

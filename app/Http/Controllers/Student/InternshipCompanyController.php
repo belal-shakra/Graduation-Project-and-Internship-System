@@ -100,6 +100,7 @@ class InternshipCompanyController extends Controller
             'message' => $student_name . ' '. $msg . ' the company internship form.',
             'type'    => 'supervisor',
             'is_read' => false,
+            'route'   => route('supervisor.report', Auth::user()->student),
             'user_id' => $company->student->supervisor_id,
         ]);
 
@@ -112,6 +113,7 @@ class InternshipCompanyController extends Controller
             'message' => $student_name . ' '. $msg .' the company internship form.',
             'type'    => 'department',
             'is_read' => false,
+            'route'   => route('department.show', Auth::user()->student),
             'user_id' => $head_id,
         ]);
     }
