@@ -18,7 +18,6 @@
                 </li>
                 <ul class="nav collapse mx-2 mt-1 alert alert-secondary px-0 py-1 show" id="drop-grad">
                     <a class="nav-link link-dark" href="{{ route('student.graduation-project.create') }}"><li class="nav-ite">Register Form</li></a>
-                    <li class="nav-item"><a class="nav-link link-dark" href="">Recommended Projects</a></li>
                     <li class="nav-item"><a class="nav-link link-dark" href="{{ route('student.timeline') }}">Timeline</a></li>
                 </ul>
 
