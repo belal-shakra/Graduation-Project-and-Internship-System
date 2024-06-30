@@ -3,7 +3,7 @@
 <img src="public/assets/img/all/Project-logo.png">
 
 
-**Created By :** Belal Shakra
+**Created By :** Belal Shakra  
 **Email :**
 
 
@@ -79,6 +79,8 @@ php artisan migrate
 ## Important Notes
 
 * The project considers the student and supervisors and some other info already registered in the univresity database, so to use the website you must run all previouse commands, and enter the database to get the email for student, supervisor and department head.  
+
+* By default, all passwords are 123.  
 
 * To enter website use these urls :
   * for student side : 127.0.0.1/
