@@ -17,10 +17,6 @@
                             <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
                             <ul class="dropdown-menu shadow">
                                 <li>
-                                    <a href="{{ route('post.edit', $post) }}" class="dropdown-item">Edit</a>
-                                </li>
-
-                                <li>
                                     <form action="" method="post">
                                         @csrf
                                         @method('delete')
