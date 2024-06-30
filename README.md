@@ -27,9 +27,9 @@ In addition, can set the supervisor for all students for internship displays the
 
 * Recommended Projects : the department can add recommended projects for students to choose from it if he want.  
 
-* Graduation Project Team : now the graduation project team cannot contains students from different department, so the next step is take ability to do this.  
+* Graduation Project Team : now the graduation project team cannot contains students from different departments, so the next step is take ability to do this.  
 
-* Notification System : the current notifying way isn't efficent, the future work is use laravel way to notify the users.  
+* Notification System : the current notifying way isn't efficient, the future work is use laravel way to notify the users.  
 
 
 ## Installation
