@@ -9,7 +9,7 @@
 
 ## Overview
 
-Graduation-Project-and-Internship-System aims to transform the gradution project and internhsip procedurals to digital procedurals in KASIT school (King Abdullah II School of Information Technology) at Jordan University.  
+Graduation-Project-and-Internship-System aims to transform the gradution project and internshsip procedures to digital procedures in KASIT school (King Abdullah II School of Information Technology) at Jordan University.  
 
 The project have three type of users: student, supervisor, and head of the department.  
 
