@@ -23,6 +23,15 @@ Also he can displays the students that eceed 90 hour (so can register in this tw
 In addition, can set the supervisor for all students for internship displays the internship student that belong to department and them full reports.  
 
 
+### Future Work
+
+* Recommended Projects : the department can add recommended projects for students to choose from it if he want.  
+
+* Graduation Project Team : now the graduation project team cannot contains students from different department, so the next step is take ability to do this.  
+
+* Notification System : the current notifying way isn't efficent, the future work is use laravel way to notify the users.  
+
+
 ## Installation
 
 To get started, clone this repository.
