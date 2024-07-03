@@ -106,6 +106,7 @@ class InternshipCourseController extends Controller
             'message' => $student_name . ' '. $msg . ' a course of internship - courses.',
             'type'    => 'supervisor',
             'is_read' => false,
+            'route' => route('supervisor.report', Auth::user()),
             'user_id' => $course->student->supervisor_id,
         ]);
 
@@ -118,6 +119,7 @@ class InternshipCourseController extends Controller
             'message' => $student_name . ' '. $msg .' a course of internship - courses.',
             'type'    => 'department',
             'is_read' => false,
+            'route' => route('department.show', Auth::user()),
             'user_id' => $head_id,
         ]);
     }
