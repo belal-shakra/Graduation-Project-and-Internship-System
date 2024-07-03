@@ -27,7 +27,7 @@ class SupervisorInternshipController extends Controller
         if ($student->supervisor_id != Auth::user()->supervisor->id)
             return to_route('supervisor.student-list');
 
-        return view('supervisor.Internship.report', compact(['student'=>$student]));
+        return view('supervisor.Internship.report', ['student'=>$student]);
     }
 
 
