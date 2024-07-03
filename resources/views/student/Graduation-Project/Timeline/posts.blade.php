@@ -17,7 +17,7 @@
                             <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
                             <ul class="dropdown-menu shadow">
                                 <li>
-                                    <form action="" method="post">
+                                    <form action="{{ route('post.destroy', $post) }}" method="post">
                                         @csrf
                                         @method('delete')
                                         <input type="submit" value="Delete" class="bg-danger text-white dropdown-item">
