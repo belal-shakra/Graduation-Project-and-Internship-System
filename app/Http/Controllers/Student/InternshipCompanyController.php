@@ -52,6 +52,8 @@ class InternshipCompanyController extends Controller
      */
     public function edit()
     {
+        if(!Auth::user()->student->internship_company)
+            return to_route('student.company.create');
         return view('student.Internship.edit-company', ['company' => Auth::user()->student->internship_company]);
     }
 
@@ -83,7 +85,7 @@ class InternshipCompanyController extends Controller
     {
         if($company->student_id == Auth::user()->student->id){
             $company->delete();
-            return to_route('company.create');
+            return to_route('student.company.create');
         }
 
         return back();
