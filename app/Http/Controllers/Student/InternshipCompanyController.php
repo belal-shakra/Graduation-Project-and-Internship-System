@@ -101,7 +101,7 @@ class InternshipCompanyController extends Controller
             'type'    => 'supervisor',
             'is_read' => false,
             'route'   => route('supervisor.report', Auth::user()->student),
-            'user_id' => $company->student->supervisor_id,
+            'user_id' => $company->student->supervisor->user_id,
         ]);
 
 

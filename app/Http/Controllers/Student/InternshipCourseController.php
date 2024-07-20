@@ -102,12 +102,12 @@ class InternshipCourseController extends Controller
     private function send_notification($course, $msg){
         $student_name = $course->student->user->first_name .' '. $course->student->user->last;
         Notification::create([
-            'title'   => 'Internship | Company',
+            'title'   => 'Internship | Courses',
             'message' => $student_name . ' '. $msg . ' a course of internship - courses.',
             'type'    => 'supervisor',
             'is_read' => false,
             'route' => route('supervisor.report', Auth::user()),
-            'user_id' => $course->student->supervisor_id,
+            'user_id' => $course->student->supervisor->user_id,
         ]);
 
 
@@ -115,7 +115,7 @@ class InternshipCourseController extends Controller
         $user_type = UserType::firstWhere('name', 'supervisor&head')->id;
         $head_id = User::where('user_type_id', $user_type)->firstWhere('department_id', Auth::user()->department_id)->id;
         Notification::create([
-            'title'   => 'Internship | Company',
+            'title'   => 'Internship | Courses',
             'message' => $student_name . ' '. $msg .' a course of internship - courses.',
             'type'    => 'department',
             'is_read' => false,
